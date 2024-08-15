@@ -16,7 +16,7 @@ namespace EmberaEngine.Engine.Imgui
 
         IntPtr Context;
         public ImguiAPI imguiAPI;
-        bool MenuBar = true;
+        public static bool customTitlebar = false;
         public static bool UseDockspace = false;
 
         public void InitIMGUI(GameWindow window, int width, int height)
@@ -39,12 +39,28 @@ namespace EmberaEngine.Engine.Imgui
             base.OnUpdate(deltaTime);
         }
 
+        public void SetFont(ImFontPtr ptr)
+        {
+            imguiAPI._CurrentFont = ptr;
+        }
+
+        public void SetIconFont(string path, int size, (ushort, ushort) range)
+        {
+            ImguiAPI.LoadIconFont(path, size, range);
+        }
+
+        public void RecreateFontDevice()
+        {
+            imguiAPI.DestroyDeviceObjects();
+            imguiAPI.CreateDeviceResources();
+        }
+
         public void Begin(float deltaTime)
         {
             imguiAPI.Update(deltaTime);
             if (ImguiLayer.UseDockspace)
             {
-                imguiAPI.SetUpDockspace();
+                imguiAPI.SetUpDockspace(customTitlebar);
             }
         }
         

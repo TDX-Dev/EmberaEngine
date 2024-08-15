@@ -89,3 +89,16 @@ C:\Programming\Embera Engine\EngineStarter\obj\Release\net7.0\EngineStarter.pdb
 C:\Programming\Embera Engine\EngineStarter\obj\Release\net7.0\EngineStarter.genruntimeconfig.cache
 C:\Programming\Embera Engine\EngineStarter\obj\Release\net7.0\ref\EngineStarter.dll
 C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\ER.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\forkawesome-webfont.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\JetBrainsMono-Bold.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\JetBrainsMono-Medium.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\JetBrainsMono-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\MaterialIcons-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\OpenFontIcons.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\OpenSans.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\Roboto-Medium.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\TerminalDosis-Bold.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Editor\Assets\Fonts\TerminalDosis-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\Newtonsoft.Json.dll
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\ElementalEditor.dll
+C:\Programming\Embera Engine\EngineStarter\bin\Release\net7.0\ElementalEditor.pdb

@@ -22,7 +22,8 @@ namespace EmberaEngine.Engine.Rendering
 
         public static void BeginFrame()
         {
-            GraphicsState.ErrorCheck();
+            GraphicsState.Clear(true, true);
+            //GraphicsState.ErrorCheck();
             Renderer2D.BeginRender();
         }
 
@@ -43,6 +44,10 @@ namespace EmberaEngine.Engine.Rendering
             Renderer2D.Resize(width, height);
         }
 
+        public static Framebuffer GetCompositeBuffer()
+        {
+            return Renderer2D.GetComposite2D();
+        }
 
 
     }

@@ -139,6 +139,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ElementalEditor\ElementalEditor.csproj" />
     <ProjectReference Include="..\EmberaEngine\EmberaEngine.csproj" />
   </ItemGroup>
 

@@ -24,6 +24,10 @@ namespace EmberaEngine.Engine.Core
         public virtual void OnKeyDown(KeyboardEvent keyboardEvent) { }
         // This method only contains the text input keys
         public virtual void OnTextInput(TextInputEvent textInputEvent) { }
+        // This method is called whenever any mouse button is pressed or released
+        public virtual void OnMouseButton(MouseButtonEvent buttonEvent) { }
+        // This method is called when any mouse movement is made
+        public virtual void OnMouseMove(MouseMoveEvent moveEvent) { }
         // This method is called whenever the application window is resized
         public virtual void OnResize(int width, int height) { }
         // This method is called before the imgui renderer commences rendering

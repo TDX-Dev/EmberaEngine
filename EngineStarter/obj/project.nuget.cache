@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zmu7l+N1ocgCGuHmiO2r+O3KBzGQ/xqnRVOZ/c7gEzzMvRzqAvLMksslPGjW7Fe9LozaBepAw2RU689B3JIr6g==",
+  "dgSpecHash": "MyJI0sD4dcE=",
   "success": true,
   "projectFilePath": "C:\\Programming\\Embera Engine\\EngineStarter\\EngineStarter.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\maari\\.nuget\\packages\\box2d\\2.3.0\\box2d.2.3.0.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\imgui.net\\1.87.2\\imgui.net.1.87.2.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\maari\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\opentk\\4.7.5\\opentk.4.7.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\opentk.compute\\4.7.5\\opentk.compute.4.7.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\opentk.core\\4.7.5\\opentk.core.4.7.5.nupkg.sha512",
@@ -21,7 +22,7 @@
     "C:\\Users\\maari\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.7.5\\opentk.windowing.graphicslibraryframework.4.7.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\sharpfont.dependencies\\2.6.0\\sharpfont.dependencies.2.6.0.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\sixlabors.fonts\\2.0.0\\sixlabors.fonts.2.0.0.nupkg.sha512",
-    "C:\\Users\\maari\\.nuget\\packages\\sixlabors.imagesharp\\3.0.2\\sixlabors.imagesharp.3.0.2.nupkg.sha512",
+    "C:\\Users\\maari\\.nuget\\packages\\sixlabors.imagesharp\\3.1.5\\sixlabors.imagesharp.3.1.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp\\2.88.6\\skiasharp.2.88.6.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.6\\skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.6\\skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",

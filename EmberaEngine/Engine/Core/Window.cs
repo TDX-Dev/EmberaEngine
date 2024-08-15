@@ -11,6 +11,7 @@ namespace EmberaEngine.Engine.Core
         public string Name;
         public bool VSync;
         public int Width, Height;
+        public bool customTitlebar;
     }
 
     public class Window : GameWindow
@@ -26,6 +27,7 @@ namespace EmberaEngine.Engine.Core
         })
         {
             base.VSync = specification.VSync ? VSyncMode.On : VSyncMode.Off;
+            this.WindowBorder = specification.customTitlebar ? WindowBorder.Hidden : this.WindowBorder;
             this.CenterWindow();
         }
 

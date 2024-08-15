@@ -17,8 +17,9 @@ C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\Engine\Content\Shader
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\freetype6.dll
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\Engine\Content\Assemblies\freetype6.dll
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\SharpFont.dll
-C:\Programming\Embera Engine\EmberaEngine\obj\Debug\net7.0\EmberaEngine.csproj.CopyComplete
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\SharpFont.xml
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\SharpFont.dll.config
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\Engine\Content\Shaders\2D\font.frag
 C:\Programming\Embera Engine\EmberaEngine\bin\Debug\net7.0\Engine\Content\Shaders\2D\font.vert
+C:\Programming\Embera Engine\EmberaEngine\obj\Debug\net7.0\EmberaEngine.sourcelink.json
+C:\Programming\Embera Engine\EmberaEngine\obj\Debug\net7.0\EmberaEn.52F12D99.Up2Date

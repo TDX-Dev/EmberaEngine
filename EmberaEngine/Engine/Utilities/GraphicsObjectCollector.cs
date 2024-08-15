@@ -18,7 +18,7 @@ namespace EmberaEngine.Engine.Utilities
         public static void AddVAOToDispose(int VAO)
         {
 #if DEBUG
-            Console.WriteLine("DISPOSING VAO");
+            //Console.WriteLine("DISPOSING VAO");
 #endif
             d_VertexArrays.Add(VAO);
         }
@@ -26,7 +26,7 @@ namespace EmberaEngine.Engine.Utilities
         public static void AddVBOToDispose(int VBO)
         {
 #if DEBUG
-            Console.WriteLine("DISPOSING VBO");
+            //Console.WriteLine("DISPOSING VBO");
 #endif
             d_VertexBuffers.Add(VBO);
         }
@@ -34,7 +34,7 @@ namespace EmberaEngine.Engine.Utilities
         public static void AddFBToDispose(int FBO)
         {
 #if DEBUG
-            Console.WriteLine("DISPOSING FBO");
+            //Console.WriteLine("DISPOSING FBO");
 #endif
             d_FrameBuffers.Add(FBO);
         }
@@ -42,7 +42,7 @@ namespace EmberaEngine.Engine.Utilities
         public static void AddTexToDispose(int TO)
         {
 #if DEBUG
-            Console.WriteLine("DISPOSING TEX OBJ");
+            //Console.WriteLine("DISPOSING TEX OBJ");
 #endif
             d_Textures.Add(TO);
         }

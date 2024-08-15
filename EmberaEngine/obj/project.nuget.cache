@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "H9INAyLWy369Y2EL+eexsF2qQaDN0+VjwXf4NhoMqgQC7pkgLbqglKAgm8v44rf7jTSNPT4J89VnOYP2pdNrhw==",
+  "dgSpecHash": "QryNd/hngsM=",
   "success": true,
   "projectFilePath": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj",
   "expectedPackageFiles": [
@@ -21,7 +21,7 @@
     "C:\\Users\\maari\\.nuget\\packages\\opentk.windowing.graphicslibraryframework\\4.7.5\\opentk.windowing.graphicslibraryframework.4.7.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\sharpfont.dependencies\\2.6.0\\sharpfont.dependencies.2.6.0.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\sixlabors.fonts\\2.0.0\\sixlabors.fonts.2.0.0.nupkg.sha512",
-    "C:\\Users\\maari\\.nuget\\packages\\sixlabors.imagesharp\\3.0.2\\sixlabors.imagesharp.3.0.2.nupkg.sha512",
+    "C:\\Users\\maari\\.nuget\\packages\\sixlabors.imagesharp\\3.1.5\\sixlabors.imagesharp.3.1.5.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp\\2.88.6\\skiasharp.2.88.6.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.6\\skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.6\\skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",

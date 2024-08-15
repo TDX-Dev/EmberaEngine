@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Editor\Assets\Fonts\forkawesome-webfont.ttf" />
+    <None Remove="Editor\Assets\Fonts\JetBrainsMono-Bold.ttf" />
+    <None Remove="Editor\Assets\Fonts\JetBrainsMono-Medium.ttf" />
+    <None Remove="Editor\Assets\Fonts\JetBrainsMono-Regular.ttf" />
+    <None Remove="Editor\Assets\Fonts\MaterialIcons-Regular.ttf" />
+    <None Remove="Editor\Assets\Fonts\OpenFontIcons.ttf" />
+    <None Remove="Editor\Assets\Fonts\OpenSans.ttf" />
+    <None Remove="Editor\Assets\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Editor\Assets\Fonts\TerminalDosis-Bold.ttf" />
+    <None Remove="Editor\Assets\Fonts\TerminalDosis-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Editor\Assets\Fonts\forkawesome-webfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\JetBrainsMono-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\JetBrainsMono-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\JetBrainsMono-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\MaterialIcons-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\OpenFontIcons.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\OpenSans.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\Roboto-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\TerminalDosis-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Fonts\TerminalDosis-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmberaEngine\EmberaEngine.csproj" />
+  </ItemGroup>
+
+</Project>

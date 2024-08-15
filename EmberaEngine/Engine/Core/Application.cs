@@ -14,6 +14,8 @@ namespace EmberaEngine.Engine.Core
         public int Width, Height;
         public bool forceVsync;
         public bool useImGui;
+        public bool useImGuiDock;
+        public bool useCustomTitlebar;
     }
 
     public class Application
@@ -30,7 +32,8 @@ namespace EmberaEngine.Engine.Core
                 Name = appSpec.Name,
                 Width = appSpec.Width,
                 Height = appSpec.Height,
-                VSync = appSpec.forceVsync
+                VSync = appSpec.forceVsync,
+                customTitlebar = appSpec.useCustomTitlebar
             };
 
             LayerHandler = new LayerHandler();
@@ -38,6 +41,8 @@ namespace EmberaEngine.Engine.Core
             if (appSpec.useImGui)
             {
                 ImGuiLayer = new ImguiLayer();
+                ImguiLayer.UseDockspace = appSpec.useImGuiDock;
+                ImguiLayer.customTitlebar = appSpec.useCustomTitlebar;
                 LayerHandler.AddLayer(ImGuiLayer);
             }
 
@@ -50,9 +55,35 @@ namespace EmberaEngine.Engine.Core
             window.Resize += OnResize;
             window.TextInput += OnTextInput;
 
+            window.MouseMove += OnMouseMove;
+            window.MouseDown += OnMouseInput;
+            window.MouseEnter += OnMouseEnter;
+            window.MouseLeave += OnMouseLeave;
+            window.MouseUp += OnMouseInput;
+
             Renderer.Initialize(appSpec.Width, appSpec.Height);
 
             this.appSpec = appSpec;
+        }
+
+        private void OnMouseMove(OpenTK.Windowing.Common.MouseMoveEventArgs obj)
+        {
+            LayerHandler.OnMouseMoveEvent(obj);
+        }
+
+        private void OnMouseLeave()
+        {
+
+        }
+
+        private void OnMouseEnter()
+        {
+
+        }
+
+        private void OnMouseInput(OpenTK.Windowing.Common.MouseButtonEventArgs obj)
+        {
+            LayerHandler.OnMouseButtonEvent(obj);
         }
 
         public ImguiAPI? GetImGuiAPI()
@@ -71,9 +102,9 @@ namespace EmberaEngine.Engine.Core
 
         private void OnResize(OpenTK.Windowing.Common.ResizeEventArgs obj)
         {
-            Renderer.Resize(obj.Width, obj.Height);
+            //Renderer.Resize(obj.Width, obj.Height);
             LayerHandler.ResizeLayers(obj.Width, obj.Height);
-            Screen.Size = new OpenTK.Mathematics.Vector2i(obj.Width, obj.Height);
+            //Screen.Size = new OpenTK.Mathematics.Vector2i(obj.Width, obj.Height);
         }
 
         private void OnLoad()
@@ -105,7 +136,6 @@ namespace EmberaEngine.Engine.Core
         private void OnRenderFrame(OpenTK.Windowing.Common.FrameEventArgs obj)
         {
             LayerHandler.RenderLayers();
-
             Renderer.BeginFrame();
             Renderer.RenderFrame();
             Renderer.EndFrame();
@@ -127,6 +157,8 @@ namespace EmberaEngine.Engine.Core
             // Updating
 
             LayerHandler.UpdateLayers((float)obj.Time);
+
+            UIManager.Update();
         }
     }
 }

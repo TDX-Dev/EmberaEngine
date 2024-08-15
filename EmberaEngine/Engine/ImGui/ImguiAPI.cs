@@ -14,6 +14,8 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
 using System.Runtime.InteropServices;
+using MaterialIconFont;
+using SkiaSharp;
 
 namespace EmberaEngine.Engine.Imgui
 {
@@ -66,7 +68,7 @@ namespace EmberaEngine.Engine.Imgui
             io.BackendFlags |= ImGuiBackendFlags.RendererHasVtxOffset;
             io.ConfigFlags |= ImGuiConfigFlags.DockingEnable;
 
-
+            
             RecreateFontDeviceTexture();
 
             ImGui.StyleColorsDark();
@@ -77,10 +79,12 @@ namespace EmberaEngine.Engine.Imgui
             SetPerFrameImGuiData(1f / 60f);
         }
 
-        static unsafe ImFontPtr LoadIconFont(string path, int size, (ushort, ushort) range)
+        public static unsafe ImFontPtr LoadIconFont(string path, int size, (ushort, ushort) range)
         {
             ImFontConfigPtr configuration = new ImFontConfigPtr(ImGuiNative.ImFontConfig_ImFontConfig());
 
+            configuration.GlyphOffset = new System.Numerics.Vector2(0, 6);
+            configuration.GlyphMinAdvanceX = size;
             configuration.MergeMode = true;
             configuration.PixelSnapH = true;
 
@@ -93,7 +97,7 @@ namespace EmberaEngine.Engine.Imgui
 
             try
             {
-                return ImGui.GetIO().Fonts.AddFontFromFileTTF(path, (float)size, configuration, rangeHandle.AddrOfPinnedObject());
+                return ImGui.GetIO().Fonts.AddFontFromFileTTF(path, (float)size, configuration, rangeHandle.AddrOfPinnedObject()); ;
             }
             finally
             {
@@ -104,6 +108,7 @@ namespace EmberaEngine.Engine.Imgui
                     rangeHandle.Free();
                 }
             }
+
         }
 
         public void DestroyDeviceObjects()
@@ -162,6 +167,8 @@ namespace EmberaEngine.Engine.Imgui
         public void RecreateFontDeviceTexture()
         {
             ImGuiIOPtr io = ImGui.GetIO();
+
+
             io.Fonts.GetTexDataAsRGBA32(out IntPtr pixels, out int width, out int height, out int bytesPerPixel);
 
             _fontTexture = new Texture("ImGui Text Atlas", width, height, pixels);
@@ -170,7 +177,7 @@ namespace EmberaEngine.Engine.Imgui
 
             io.Fonts.SetTexID((IntPtr)_fontTexture.GLTexture);
 
-            io.Fonts.ClearTexData();
+            //io.Fonts.ClearTexData();
         }
 
         /// <summary>
@@ -234,7 +241,7 @@ namespace EmberaEngine.Engine.Imgui
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
             if (io.Fonts.Fonts.Size != FontCount)
             {
-                //Console.WriteLine("Remaking Atlas, Font Count " + io.Fonts.Fonts.Size);
+                Console.WriteLine("Remaking Atlas, Font Count " + io.Fonts.Fonts.Size);
                 RecreateFontDeviceTexture();
                 FontCount = io.Fonts.Fonts.Size;
             }
@@ -272,9 +279,9 @@ namespace EmberaEngine.Engine.Imgui
             MouseState MouseState = _GameWindow.MouseState.GetSnapshot();
             KeyboardState KeyboardState = _GameWindow.KeyboardState.GetSnapshot();
 
-            io.MouseDown[0] = MouseState.IsButtonDown(MouseButton.Left);
-            io.MouseDown[1] = MouseState.IsButtonDown(MouseButton.Right);
-            io.MouseDown[2] = MouseState.IsButtonDown(MouseButton.Middle);
+            io.MouseDown[0] = MouseState.IsButtonDown(OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Left);
+            io.MouseDown[1] = MouseState.IsButtonDown(OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Right);
+            io.MouseDown[2] = MouseState.IsButtonDown(OpenTK.Windowing.GraphicsLibraryFramework.MouseButton.Middle);
 
             var screenPoint = MouseState.Position;
             io.MousePos = new System.Numerics.Vector2(screenPoint.X, screenPoint.Y);
@@ -385,75 +392,93 @@ namespace EmberaEngine.Engine.Imgui
 
         private void RenderImDrawData(ImDrawDataPtr draw_data)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.Viewport(0, 0, _GameWindow.Size.X, _GameWindow.Size.Y);
-            uint vertexOffsetInVertices = 0;
-            uint indexOffsetInElements = 0;
-
             if (draw_data.CmdListsCount == 0)
             {
                 return;
             }
 
-            uint totalVBSize = (uint)(draw_data.TotalVtxCount * Unsafe.SizeOf<ImDrawVert>());
-            if (totalVBSize > _vertexBufferSize)
+            GL.Viewport(0, 0, _GameWindow.Size.X, _GameWindow.Size.Y);
+            // Get intial state.
+            int prevVAO = GL.GetInteger(GetPName.VertexArrayBinding);
+            int prevArrayBuffer = GL.GetInteger(GetPName.ArrayBufferBinding);
+            int prevProgram = GL.GetInteger(GetPName.CurrentProgram);
+            bool prevBlendEnabled = GL.GetBoolean(GetPName.Blend);
+            bool prevScissorTestEnabled = GL.GetBoolean(GetPName.ScissorTest);
+            int prevBlendEquationRgb = GL.GetInteger(GetPName.BlendEquationRgb);
+            int prevBlendEquationAlpha = GL.GetInteger(GetPName.BlendEquationAlpha);
+            int prevBlendFuncSrcRgb = GL.GetInteger(GetPName.BlendSrcRgb);
+            int prevBlendFuncSrcAlpha = GL.GetInteger(GetPName.BlendSrcAlpha);
+            int prevBlendFuncDstRgb = GL.GetInteger(GetPName.BlendDstRgb);
+            int prevBlendFuncDstAlpha = GL.GetInteger(GetPName.BlendDstAlpha);
+            bool prevCullFaceEnabled = GL.GetBoolean(GetPName.CullFace);
+            bool prevDepthTestEnabled = GL.GetBoolean(GetPName.DepthTest);
+            int prevActiveTexture = GL.GetInteger(GetPName.ActiveTexture);
+            GL.ActiveTexture(OpenTK.Graphics.OpenGL.TextureUnit.Texture0);
+            int prevTexture2D = GL.GetInteger(GetPName.TextureBinding2D);
+            Span<int> prevScissorBox = stackalloc int[4];
+            unsafe
             {
-                int newSize = (int)Math.Max(_vertexBufferSize * 1.5f, totalVBSize);
-
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-                GL.BufferData(BufferTarget.ArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
-                _vertexBufferSize = newSize;
-
-                //Console.WriteLine($"Resized vertex buffer to new size {_vertexBufferSize}");
+                fixed (int* iptr = &prevScissorBox[0])
+                {
+                    GL.GetInteger(GetPName.ScissorBox, iptr);
+                }
+            }
+            Span<int> prevPolygonMode = stackalloc int[2];
+            unsafe
+            {
+                fixed (int* iptr = &prevPolygonMode[0])
+                {
+                    GL.GetInteger(GetPName.PolygonMode, iptr);
+                }
             }
 
-            uint totalIBSize = (uint)(draw_data.TotalIdxCount * sizeof(ushort));
-            if (totalIBSize > _indexBufferSize)
-            {
-                int newSize = (int)Math.Max(_indexBufferSize * 1.5f, totalIBSize);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _indexBuffer);
-                GL.BufferData(BufferTarget.ArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
-                GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-
-                _indexBufferSize = newSize;
-
-                //Console.WriteLine($"Resized index buffer to new size {_indexBufferSize}");
-            }
-
-
+            // Bind the element buffer (thru the VAO) so that we can resize it.
+            GL.BindVertexArray(_vertexArray);
+            // Bind the vertex buffer so that we can resize it.
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
             for (int i = 0; i < draw_data.CmdListsCount; i++)
             {
                 ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
-                GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(vertexOffsetInVertices * Unsafe.SizeOf<ImDrawVert>()), cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd_list.VtxBuffer.Data);
+                int vertexSize = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
+                if (vertexSize > _vertexBufferSize)
+                {
+                    int newSize = (int)Math.Max(_vertexBufferSize * 1.5f, vertexSize);
 
-                //ImguiUtils.CheckGLError($"Data Vert {i}");
+                    GL.BufferData(BufferTarget.ArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+                    _vertexBufferSize = newSize;
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _indexBuffer);
-                GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(indexOffsetInElements * sizeof(ushort)), cmd_list.IdxBuffer.Size * sizeof(ushort), cmd_list.IdxBuffer.Data);
+                    Console.WriteLine($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
+                }
 
-                //ImguiUtils.CheckGLError($"Data Idx {i}");
+                int indexSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
+                if (indexSize > _indexBufferSize)
+                {
+                    int newSize = (int)Math.Max(_indexBufferSize * 1.5f, indexSize);
+                    GL.BufferData(BufferTarget.ElementArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+                    _indexBufferSize = newSize;
 
-                vertexOffsetInVertices += (uint)cmd_list.VtxBuffer.Size;
-                indexOffsetInElements += (uint)cmd_list.IdxBuffer.Size;
+                    Console.WriteLine($"Resized dear imgui index buffer to new size {_indexBufferSize}");
+                }
             }
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
             // Setup orthographic projection matrix into our constant buffer
             ImGuiIOPtr io = ImGui.GetIO();
-            
-            
+            Matrix4 mvp = Matrix4.CreateOrthographicOffCenter(
+                0.0f,
+                io.DisplaySize.X,
+                io.DisplaySize.Y,
+                0.0f,
+                -1.0f,
+            1.0f);
+
             _guiShader.Use();
             _guiShader.SetMatrix4("projection_matrix", mvp, false);
             _guiShader.SetInt("in_fontTexture", 0);
-            //ImguiUtils.CheckGLError("Projection");
 
             GL.BindVertexArray(_vertexArray);
-            //ImguiUtils.CheckGLError("VAO");
 
             draw_data.ScaleClipRects(io.DisplayFramebufferScale);
 
@@ -465,12 +490,15 @@ namespace EmberaEngine.Engine.Imgui
             GL.Disable(EnableCap.DepthTest);
 
             // Render command lists
-            int vtx_offset = 0;
-            int idx_offset = 0;
-            
             for (int n = 0; n < draw_data.CmdListsCount; n++)
             {
                 ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
+
+                GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd_list.VtxBuffer.Data);
+                
+
+                GL.BufferSubData(BufferTarget.ElementArrayBuffer, IntPtr.Zero, cmd_list.IdxBuffer.Size * sizeof(ushort), cmd_list.IdxBuffer.Data);
+
                 for (int cmd_i = 0; cmd_i < cmd_list.CmdBuffer.Size; cmd_i++)
                 {
                     ImDrawCmdPtr pcmd = cmd_list.CmdBuffer[cmd_i];
@@ -482,35 +510,99 @@ namespace EmberaEngine.Engine.Imgui
                     {
                         GL.ActiveTexture(OpenTK.Graphics.OpenGL.TextureUnit.Texture0);
                         GL.BindTexture(TextureTarget.Texture2D, (int)pcmd.TextureId);
-                        //ImguiUtils.CheckGLError("Texture");
+                        
 
                         // We do _windowHeight - (int)clip.W instead of (int)clip.Y because gl has flipped Y when it comes to these coordinates
                         var clip = pcmd.ClipRect;
                         GL.Scissor((int)clip.X, _GameWindow.Size.Y - (int)clip.W, (int)(clip.Z - clip.X), (int)(clip.W - clip.Y));
-                        //ImguiUtils.CheckGLError("Scissor");
+                        
 
-                        GL.DrawElementsBaseVertex(PrimitiveType.Triangles, (int)pcmd.ElemCount, DrawElementsType.UnsignedShort, (IntPtr)(idx_offset * sizeof(ushort)), vtx_offset);
-                        //ImguiUtils.CheckGLError("Draw");
+                        if ((io.BackendFlags & ImGuiBackendFlags.RendererHasVtxOffset) != 0)
+                        {
+                            GL.DrawElementsBaseVertex(PrimitiveType.Triangles, (int)pcmd.ElemCount, DrawElementsType.UnsignedShort, (IntPtr)(pcmd.IdxOffset * sizeof(ushort)), unchecked((int)pcmd.VtxOffset));
+                        }
+                        else
+                        {
+                            GL.DrawElements(BeginMode.Triangles, (int)pcmd.ElemCount, DrawElementsType.UnsignedShort, (int)pcmd.IdxOffset * sizeof(ushort));
+                        }
                     }
-
-                    idx_offset += (int)pcmd.ElemCount;
                 }
-                vtx_offset += cmd_list.VtxBuffer.Size;
             }
 
             GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.ScissorTest);
+
+            // Reset state
+            GL.BindTexture(TextureTarget.Texture2D, prevTexture2D);
+            GL.ActiveTexture((OpenTK.Graphics.OpenGL.TextureUnit)prevActiveTexture);
+            GL.UseProgram(prevProgram);
+            GL.BindVertexArray(prevVAO);
+            GL.Scissor(prevScissorBox[0], prevScissorBox[1], prevScissorBox[2], prevScissorBox[3]);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, prevArrayBuffer);
+            GL.BlendEquationSeparate((BlendEquationMode)prevBlendEquationRgb, (BlendEquationMode)prevBlendEquationAlpha);
+            GL.BlendFuncSeparate(
+                (BlendingFactorSrc)prevBlendFuncSrcRgb,
+                (BlendingFactorDest)prevBlendFuncDstRgb,
+                (BlendingFactorSrc)prevBlendFuncSrcAlpha,
+                (BlendingFactorDest)prevBlendFuncDstAlpha);
+            if (prevBlendEnabled) GL.Enable(EnableCap.Blend); else GL.Disable(EnableCap.Blend);
+            if (prevDepthTestEnabled) GL.Enable(EnableCap.DepthTest); else GL.Disable(EnableCap.DepthTest);
+            if (prevCullFaceEnabled) GL.Enable(EnableCap.CullFace); else GL.Disable(EnableCap.CullFace);
+            if (prevScissorTestEnabled) GL.Enable(EnableCap.ScissorTest); else GL.Disable(EnableCap.ScissorTest);
+            GL.PolygonMode(MaterialFace.FrontAndBack, (PolygonMode)prevPolygonMode[0]);
         }
 
-        ImGuiWindowFlags windowFlags = /*ImGuiWindowFlags.MenuBar |*/ ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus /*| ImGuiWindowFlags.NoBackground*/ | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.DockNodeHost;
+        ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus /*| ImGuiWindowFlags.NoBackground*/ | ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.DockNodeHost;
         bool firstFrame = true;
 
-        public void SetUpDockspace()
+        public void SetUpDockspace(bool customTitlebar = false)
         {
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new System.Numerics.Vector2(0,0));
             ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
             ImGui.SetNextWindowSize(new System.Numerics.Vector2(_GameWindow.Size.X, _GameWindow.Size.Y));
+
+
+            if (customTitlebar)
+            {
+                windowFlags |= ImGuiWindowFlags.MenuBar;
+                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new System.Numerics.Vector2(0, 5));
+            }
             ImGui.Begin("Dockspace", windowFlags);
+
+            if (customTitlebar)
+            {
+                System.Numerics.Vector2 pos = ImGui.GetCursorScreenPos();
+
+                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(ImGui.GetContentRegionMax().X - 96, 2));
+
+                ImGui.PushStyleColor(ImGuiCol.Button, new System.Numerics.Vector4(0, 0, 0, 0));
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new System.Numerics.Vector4(0, 0, 0, 0));
+
+                if (ImGui.Button(MaterialDesign.Minimize, new System.Numerics.Vector2(25, 25)))
+                {
+                    _GameWindow.WindowState = WindowState.Minimized;
+                }
+
+                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(ImGui.GetContentRegionMax().X - 64, 2));
+                if (ImGui.Button(MaterialDesign.Crop_square, new System.Numerics.Vector2(25, 25)))
+                {
+
+                    _GameWindow.WindowState = WindowState.Maximized;
+                }
+
+
+                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(ImGui.GetContentRegionMax().X - 32, 2));
+                if (ImGui.Button(MaterialDesign.Close, new System.Numerics.Vector2(25, 25)))
+                {
+                    _GameWindow.Close();
+                }
+
+                ImGui.PopStyleColor(2);
+
+                ImGui.PopStyleVar();
+
+                ImGui.SetCursorScreenPos(pos);
+            }
             
             if (firstFrame) { DockspaceID = ImGui.GetID("Dockspace"); firstFrame = false; }
 

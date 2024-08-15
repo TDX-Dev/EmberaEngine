@@ -13,6 +13,10 @@ namespace EmberaEngine.Engine.Rendering
             Console.WriteLine(GL.GetError());
         }
 
+        public static void ClearColor(int r, int g, int b, int a)
+        {
+            GL.ClearColor(r, g, b, a);
+        }
         public static void Clear(bool color = true, bool depth = false, bool stencil = false)
         {
             ClearBufferMask clearMask = color ? ClearBufferMask.ColorBufferBit : ClearBufferMask.None;
@@ -31,6 +35,11 @@ namespace EmberaEngine.Engine.Rendering
         public static void ClearTextureBinding2D()
         {
             GL.BindTexture(TextureTarget.Texture2D, 0);
+        }
+
+        public static void ClearFrameBufferBinding()
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
         public static void SetBlending(bool blend)

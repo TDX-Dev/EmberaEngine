@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EmberaEngine")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8172630e2b31df718a6347aa5cb67377e8fd8c4b")]
 [assembly: System.Reflection.AssemblyProductAttribute("EmberaEngine")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EmberaEngine")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

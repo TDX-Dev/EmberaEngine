@@ -282,7 +282,7 @@
           }
         }
       },
-      "SixLabors.ImageSharp/3.0.2": {
+      "SixLabors.ImageSharp/3.1.5": {
         "type": "package",
         "compile": {
           "lib/net6.0/SixLabors.ImageSharp.dll": {
@@ -1053,10 +1053,10 @@
         "sixlabors.fonts.nuspec"
       ]
     },
-    "SixLabors.ImageSharp/3.0.2": {
-      "sha512": "PlwUHnLZ67G1i0xXDYQJYbFiJsvXiEFWtKdV0QvY9j+dFasYbl+vWXXY42/asTsNjchsH5BLuoRzlf8Fa8lzpg==",
+    "SixLabors.ImageSharp/3.1.5": {
+      "sha512": "lNtlq7dSI/QEbYey+A0xn48z5w4XHSffF8222cC4F4YwTXfEImuiBavQcWjr49LThT/pRmtWJRcqA/PlL+eJ6g==",
       "type": "package",
-      "path": "sixlabors.imagesharp/3.0.2",
+      "path": "sixlabors.imagesharp/3.1.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1065,7 +1065,7 @@
         "lib/net6.0/SixLabors.ImageSharp.dll",
         "lib/net6.0/SixLabors.ImageSharp.xml",
         "sixlabors.imagesharp.128.png",
-        "sixlabors.imagesharp.3.0.2.nupkg.sha512",
+        "sixlabors.imagesharp.3.1.5.nupkg.sha512",
         "sixlabors.imagesharp.nuspec"
       ]
     },
@@ -1337,7 +1337,7 @@
       "OpenTK >= 4.7.5",
       "SharpFont.Dependencies >= 2.6.0",
       "SixLabors.Fonts >= 2.0.0",
-      "SixLabors.ImageSharp >= 3.0.2",
+      "SixLabors.ImageSharp >= 3.1.5",
       "SkiaSharp >= 2.88.6",
       "System.Drawing.Common >= 7.0.0"
     ]
@@ -1375,6 +1375,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1407,7 +1412,7 @@
           },
           "SixLabors.ImageSharp": {
             "target": "Package",
-            "version": "[3.0.2, )"
+            "version": "[3.1.5, )"
           },
           "SkiaSharp": {
             "target": "Package",
@@ -1434,7 +1439,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

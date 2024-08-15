@@ -52,14 +52,14 @@ namespace EmberaEngine.Engine.Components
 
             if (component != null)
             {
-                SpriteManager.AddRenderSprite(component.canvas.id, renderSprite);
+                CanvasManager.AddRenderSprite(component.canvas.id, renderSprite);
             }
         }
 
         public override void OnUpdate(float dt)
         {
             renderSprite.transform = gameObject.transform.position.Xy;
-            renderSprite.scale = gameObject.transform.scale.Xy;
+            renderSprite.scale = gameObject.transform.scale.Xy / 2;
             renderSprite.rotationAngle = gameObject.transform.rotation.X;
             renderSprite.Sprite = Sprite;
             renderSprite.order = sortingOrder;
@@ -67,7 +67,7 @@ namespace EmberaEngine.Engine.Components
 
         public override void OnDestroy()
         {
-            SpriteManager.RemoveRenderSprite(renderSprite);
+            CanvasManager.RemoveRenderSprite(renderSprite);
         }
 
 

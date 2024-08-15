@@ -48,7 +48,7 @@ namespace EmberaEngine.Engine.Components
 
             CanvasComponent component = IterateGetParentComponent(gameObject) ?? gameObject.scene.GetComponent<CanvasComponent>();
 
-            SpriteManager.AddRenderText(component.canvas.id, textObject);
+            CanvasManager.AddRenderText(component.canvas.id, textObject);
         }
 
         public override void OnDestroy()
@@ -66,6 +66,7 @@ namespace EmberaEngine.Engine.Components
             {
                 prevContent = Content;
                 ReconstructMesh();
+                //Console.WriteLine("RECONSTRUCTING");
             }
         }
 
@@ -76,7 +77,7 @@ namespace EmberaEngine.Engine.Components
             textObject.textMesh?.Dispose();
             vertices.Clear();
 
-            if (Content.Trim() == "") { textObject.textMesh = new Mesh(); return; }
+            if (Content.Trim() == "") { textObject.textMesh = new Mesh(); Console.WriteLine("RETURNING"); return; }
 
             for (int y = 0; y < Content.Length; y++)
             {

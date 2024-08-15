@@ -54,7 +54,10 @@ namespace EmberaEngine.Engine.Utilities
 
         public void Draw()
         {
-            if (!Renderable || VAO == null) { Console.WriteLine("Non renderable"); return; }
+            if (!Renderable || VAO == null) {
+                Console.WriteLine("Non renderable"); 
+                return; 
+            }
 
             if (IBO == null)
             {

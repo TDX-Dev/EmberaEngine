@@ -51,6 +51,41 @@ namespace EmberaEngine.Engine.Core
             }
         }
 
+        public void OnMouseMoveEvent(OpenTK.Windowing.Common.MouseMoveEventArgs obj)
+        {
+            MouseMoveEvent mouseMoveEvent = new MouseMoveEvent()
+            {
+                position = obj.Position,
+                delta = obj.Delta
+            };
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                layers[i].OnMouseMove(mouseMoveEvent);
+            }
+
+            //Input.OnMouseMove(mouseMoveEvent);
+        }
+
+        public void OnMouseButtonEvent(OpenTK.Windowing.Common.MouseButtonEventArgs obj)
+        {
+            MouseButtonEvent mouseBtnEvent = new MouseButtonEvent()
+            {
+                Button = (MouseButton)obj.Button,
+                Action = (InputAction)obj.Action,
+                Modifiers = (KeyModifiers)obj.Modifiers,
+            };
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                layers[i].OnMouseButton(mouseBtnEvent);
+            }
+
+
+            // These events must be passed by the game runtime itself
+            //Input.OnMouseInput(mouseBtnEvent);
+        }
+
         public void ResizeLayers(int width, int height)
         {
             for (int i = 0; i < layers.Count; i++)

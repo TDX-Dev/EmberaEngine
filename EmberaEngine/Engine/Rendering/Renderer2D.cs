@@ -10,13 +10,19 @@ using EmberaEngine.Engine.Rendering;
 
 namespace EmberaEngine.Engine.Rendering
 {
-    class Renderer2D
+    public class Renderer2D
     {
 
         static Shader Basic2DShader;
         static Shader Font2DShader;
         public static Matrix4 Projection;
         static Mesh PlaneMesh;
+
+        // Framebuffer Textures
+        static Texture CompositeBufferTexture;
+
+        // Framebuffers
+        static Framebuffer CompositeBuffer2D;
 
         public static void Initialize(int width, int height)
         {
@@ -32,11 +38,22 @@ namespace EmberaEngine.Engine.Rendering
             VertexArray PlaneVAO = new VertexArray(vertexBuffer);
             PlaneMesh = new Mesh();
             PlaneMesh.SetVertexArrayObject(PlaneVAO);
+
+            // Setting up composite buffer
+            CompositeBufferTexture = new Texture(TextureTarget2d.Texture2D);
+            CompositeBufferTexture.TexImage2D(width, height, PixelInternalFormat.Rgba16f, PixelFormat.Rgba, PixelType.Float, IntPtr.Zero);
+            CompositeBufferTexture.GenerateMipmap();
+
+            CompositeBuffer2D = new Framebuffer();
+            CompositeBuffer2D.AttachFramebufferTexture(OpenTK.Graphics.OpenGL.FramebufferAttachment.ColorAttachment0, CompositeBufferTexture);
         }
 
         public static void BeginRender()
         {
+
+            CompositeBuffer2D.Bind();
             GraphicsState.Clear(true, true);
+            GraphicsState.ClearColor(0, 0, 0, 1);
             GraphicsState.SetViewport(0, 0, Renderer.Width, Renderer.Height);
             GraphicsState.SetCulling(false);
             GraphicsState.SetDepthTest(false);
@@ -50,7 +67,7 @@ namespace EmberaEngine.Engine.Rendering
 
             Basic2DShader.SetMatrix4("W_PROJECTION_MATRIX", Projection);
 
-            foreach (RenderCanvas value in SpriteManager.Canvases)
+            foreach (RenderCanvas value in CanvasManager.Canvases)
             {
                 Basic2DShader.SetMatrix4("W_PROJECTION_MATRIX", value.Projection);
 
@@ -80,7 +97,7 @@ namespace EmberaEngine.Engine.Rendering
 
             Font2DShader.SetMatrix4("W_PROJECTION_MATRIX", Projection);
 
-            foreach (RenderCanvas value in SpriteManager.Canvases)
+            foreach (RenderCanvas value in CanvasManager.Canvases)
             {
                 Font2DShader.SetMatrix4("W_PROJECTION_MATRIX", value.Projection);
 
@@ -103,21 +120,24 @@ namespace EmberaEngine.Engine.Rendering
                 }
             }
 
-            GraphicsState.ClearTextureBinding2D();
-
-
-
-
         }
 
         public static void EndRender()
         {
-
+            GraphicsState.ClearTextureBinding2D();
+            GraphicsState.ClearFrameBufferBinding();
         }
 
         public static void Resize(int width, int height)
         {
+            CompositeBufferTexture.TexImage2D(width, height, PixelInternalFormat.Rgba16f, PixelFormat.Rgba, PixelType.Float, IntPtr.Zero);
+            CompositeBufferTexture.GenerateMipmap();
             Projection = Graphics.CreateOrthographic2D(width, height, 1f, -1f);
+        }
+
+        public static Framebuffer GetComposite2D()
+        {
+            return CompositeBuffer2D;
         }
 
 

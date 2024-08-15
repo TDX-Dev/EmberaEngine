@@ -26,7 +26,12 @@ namespace EmberaEngine.Engine.Core
         {
             children = new List<GameObject>();
             Components = new List<Component>();
-            transform = AddComponent<Transform>();
+
+            // This is because the scene object doesnt get assigned to the game object on initialization (obviously!)
+            // So to prevent errors on calling ComponentAdded from scene, this bandaid solution has been implemented.
+            transform = new Transform();
+            transform.gameObject = this;
+            Components.Add(transform);
         }
 
         public T AddComponent<T>() where T : Component, new()
@@ -34,6 +39,7 @@ namespace EmberaEngine.Engine.Core
             T _component = new();
             _component.gameObject = this;
             Components.Add(_component);
+            scene.ComponentAdded(_component);
             return _component;
         }
 
@@ -42,6 +48,7 @@ namespace EmberaEngine.Engine.Core
             Component _component = component;
             _component.gameObject = this;
             Components.Add(_component);
+            scene.ComponentAdded(_component);
             return _component;
         }
 

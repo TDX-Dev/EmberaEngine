@@ -1,0 +1,1354 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Programming\\Embera Engine\\EmberaEngine\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\viewportpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\experimentalpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\debuglogpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\experimentals\\webstreamer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\utils\\viewportutil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\canvascomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\canvascomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\buttoncomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\buttoncomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\editorlayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\component.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\component.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\renderer2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\renderer2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\debug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\debug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\gameobjectpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\input.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\input.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\utils\\guizmo2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\framebuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\framebuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\rigidbody2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\rigidbody2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\graphics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\graphics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\graphicsstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\graphicsstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\scene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\fontutilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\fontutilities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\content\\shaders\\2d\\font.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\content\\shaders\\2d\\font.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\panel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\layer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\layer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\layerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\layerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\utils\\ui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\graphicsobjectcollector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\graphicsobjectcollector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\textcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\textcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\elemental.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\assetdatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\assetdatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\utils\\dragdropservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\panels\\projectassetpanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\gameobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\gameobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\extras\\debug.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\mesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\mesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\imgui\\imguiapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\imgui\\imguiapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\imgui\\imguiutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\imgui\\imguiutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\imgui\\imguilayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\imgui\\imguilayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\window.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\window.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\canvasmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\canvasmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\spriterenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\spriterenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\shadermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\shadermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\content\\shaders\\2d\\font.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\content\\shaders\\2d\\font.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\assets\\fonts\\materialdesignicons.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4526623-F077-4C4B-AD2D-2120372ADFDF}|..\\ElementalEditor\\ElementalEditor.csproj|c:\\programming\\embera engine\\elementaleditor\\editor\\assets\\fonts\\openiconfont.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\debuglayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\rendergraph.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\rendergraph.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\keyutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\keyutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\inpututils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\inpututils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\renderer3d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\renderer3d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\untitled.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\bg.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\sprite.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\rendering\\textmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\rendering\\textmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\recttransform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\recttransform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\animatedcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\animatedcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\anchorcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\anchorcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\screen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\screen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\content\\shaders\\2d\\sprite2d.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\content\\shaders\\2d\\sprite2d.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\vertexarray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\vertexarray.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\vertexbuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\vertexbuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\content\\shaders\\2d\\sprite2d.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\content\\shaders\\2d\\sprite2d.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\enginestarter.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\emberaengine.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:emberaengine.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maari\\.nuget\\packages\\freetype\\2.8.0.1\\build\\publisher-info.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\maari\\.nuget\\packages\\sharpfont\\4.0.1\\build\\SharpFont.props||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\physicsmanager2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\physicsmanager2d.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\components\\transform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\components\\transform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\vertexdefinitions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\vertexdefinitions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\core\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\core\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C75CBAD-5C7E-44E1-B516-46CB801A0E00}|..\\EngineStarter\\EngineStarter.csproj|c:\\programming\\embera engine\\enginestarter\\jetbrainsmono-regular.ttf||{25834150-CD7E-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\utilrandom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\utilrandom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|c:\\programming\\embera engine\\emberaengine\\engine\\utilities\\indexbuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0ED7409C-F24C-42F0-9103-3E9DD20D00C5}|EmberaEngine.csproj|solutionrelative:engine\\utilities\\indexbuffer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 244,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Component.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\Component.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\Component.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\Component.cs",
+              "RelativeToolTip": "Engine\\Components\\Component.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-18T13:00:09.292Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Renderer2D.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer2D.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\Renderer2D.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer2D.cs",
+              "RelativeToolTip": "Engine\\Rendering\\Renderer2D.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwC8AAACOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:25:12.023Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "WebStreamer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Experimentals\\WebStreamer.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Experimentals\\WebStreamer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Experimentals\\WebStreamer.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Experimentals\\WebStreamer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-19T10:26:45.222Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UIManager.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\UIManager.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\UIManager.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\UIManager.cs",
+              "RelativeToolTip": "Engine\\Core\\UIManager.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAADgv1QAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-21T06:31:24.481Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ExperimentalPanel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ExperimentalPanel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\ExperimentalPanel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ExperimentalPanel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\ExperimentalPanel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-19T11:09:12.54Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ViewportPanel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ViewportPanel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\ViewportPanel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ViewportPanel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\ViewportPanel.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAywIQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-03T10:40:35.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Image.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Image.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\Image.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Image.cs",
+              "RelativeToolTip": "Engine\\Utilities\\Image.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAawBcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-05T17:20:27.366Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CanvasComponent.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\CanvasComponent.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\CanvasComponent.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\CanvasComponent.cs",
+              "RelativeToolTip": "Engine\\Components\\CanvasComponent.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAYwFQAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-23T08:11:31.987Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DebugLogPanel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\DebugLogPanel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\DebugLogPanel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\DebugLogPanel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\DebugLogPanel.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAywCsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-08T08:02:27.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ViewportUtil.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\ViewportUtil.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Utils\\ViewportUtil.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\ViewportUtil.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Utils\\ViewportUtil.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-06T16:09:25.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "GameObjectPanel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\GameObjectPanel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\GameObjectPanel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\GameObjectPanel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\GameObjectPanel.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAQwFcAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T12:57:26.755Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Renderer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\Renderer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer.cs",
+              "RelativeToolTip": "Engine\\Rendering\\Renderer.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAywCoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T06:44:14.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EditorLayer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\EditorLayer.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\EditorLayer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\EditorLayer.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\EditorLayer.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAIwB8AAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T10:30:51.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ButtonComponent.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\ButtonComponent.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\ButtonComponent.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\ButtonComponent.cs",
+              "RelativeToolTip": "Engine\\Components\\ButtonComponent.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAkwCkAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-12-13T15:27:03.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Input.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Input.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Input.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Input.cs",
+              "RelativeToolTip": "Engine\\Core\\Input.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA6wB4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-21T09:28:41.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Debug.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Debug.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Debug.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Debug.cs",
+              "RelativeToolTip": "Engine\\Core\\Debug.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-08T14:49:34.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Framebuffer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Framebuffer.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\Framebuffer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Framebuffer.cs",
+              "RelativeToolTip": "Engine\\Rendering\\Framebuffer.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAzwEwAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T10:07:21.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Guizmo2D.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\Guizmo2D.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Utils\\Guizmo2D.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\Guizmo2D.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Utils\\Guizmo2D.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-08T09:17:07.684Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "RigidBody2D.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\RigidBody2D.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\RigidBody2D.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\RigidBody2D.cs",
+              "RelativeToolTip": "Engine\\Components\\RigidBody2D.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAqwEUAAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-21T10:31:28.243Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Graphics.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Graphics.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\Graphics.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Graphics.cs",
+              "RelativeToolTip": "Engine\\Rendering\\Graphics.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-11-04T06:26:29.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Application.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Application.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Application.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Application.cs",
+              "RelativeToolTip": "Engine\\Core\\Application.cs",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAcwGoAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-12T07:43:33.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Scene.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Scene.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Scene.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Scene.cs",
+              "RelativeToolTip": "Engine\\Core\\Scene.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:36:13.522Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "GraphicsState.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\GraphicsState.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\GraphicsState.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\GraphicsState.cs",
+              "RelativeToolTip": "Engine\\Rendering\\GraphicsState.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAABCwBEAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-20T07:31:36.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "FontUtilities.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\FontUtilities.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\FontUtilities.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\FontUtilities.cs",
+              "RelativeToolTip": "Engine\\Utilities\\FontUtilities.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAlwCsAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-24T10:03:54.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "font.frag",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\font.frag",
+              "RelativeDocumentMoniker": "Engine\\Content\\Shaders\\2D\\font.frag",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\font.frag",
+              "RelativeToolTip": "Engine\\Content\\Shaders\\2D\\font.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2023-11-03T09:34:31.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Texture.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Texture.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Texture.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Texture.cs",
+              "RelativeToolTip": "Engine\\Core\\Texture.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAcwD0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-11-04T06:26:15.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Layer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Layer.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Layer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Layer.cs",
+              "RelativeToolTip": "Engine\\Core\\Layer.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAASwB4AAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-15T19:08:32.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Panel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\Panel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\Panel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\Panel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\Panel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T12:57:40.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "LayerHandler.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\LayerHandler.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\LayerHandler.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\LayerHandler.cs",
+              "RelativeToolTip": "Engine\\Core\\LayerHandler.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAIwFAAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-15T19:08:27.153Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "TextComponent.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\TextComponent.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\TextComponent.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\TextComponent.cs",
+              "RelativeToolTip": "Engine\\Components\\TextComponent.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAuwEQAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-11-03T09:12:54.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "UI.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\UI.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Utils\\UI.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\UI.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Utils\\UI.cs",
+              "ViewState": "AgIAAHUBAAAAAAAAAEBXwJYBAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-03T10:58:55.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "AssetDatabase.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\AssetDatabase.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\AssetDatabase.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\AssetDatabase.cs",
+              "RelativeToolTip": "Engine\\Utilities\\AssetDatabase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:29:38.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "GraphicsObjectCollector.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\GraphicsObjectCollector.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\GraphicsObjectCollector.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\GraphicsObjectCollector.cs",
+              "RelativeToolTip": "Engine\\Utilities\\GraphicsObjectCollector.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAA2wCwAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:32:03.137Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Elemental.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Elemental.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Elemental.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Elemental.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Elemental.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAA6wBUAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T10:26:14.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "DragDropService.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\DragDropService.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Utils\\DragDropService.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Utils\\DragDropService.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Utils\\DragDropService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-05T16:21:50.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "ProjectAssetPanel.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ProjectAssetPanel.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Panels\\ProjectAssetPanel.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Panels\\ProjectAssetPanel.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Panels\\ProjectAssetPanel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T13:01:42.536Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "GameObject.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\GameObject.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\GameObject.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\GameObject.cs",
+              "RelativeToolTip": "Engine\\Core\\GameObject.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAIA6wB4AAAB1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:36:36.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Debug.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Extras\\Debug.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Extras\\Debug.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Extras\\Debug.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Extras\\Debug.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAywDoAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T10:51:42.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "ImguiUtils.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiUtils.cs",
+              "RelativeDocumentMoniker": "Engine\\ImGui\\ImguiUtils.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiUtils.cs",
+              "RelativeToolTip": "Engine\\ImGui\\ImguiUtils.cs",
+              "ViewState": "AgIAAGMAAAAAAAAAAAA1wHUAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T11:58:36.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\Program.cs",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\Program.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\Program.cs",
+              "RelativeToolTip": "..\\EngineStarter\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-12T07:48:08.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "Mesh.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Mesh.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\Mesh.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Mesh.cs",
+              "RelativeToolTip": "Engine\\Utilities\\Mesh.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAxwDgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:30:51.456Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "ImguiAPI.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiAPI.cs",
+              "RelativeDocumentMoniker": "Engine\\ImGui\\ImguiAPI.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiAPI.cs",
+              "RelativeToolTip": "Engine\\ImGui\\ImguiAPI.cs",
+              "ViewState": "AgIAAIABAAAAAAAAAAAowI8BAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:38:08.125Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Window.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Window.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Window.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Window.cs",
+              "RelativeToolTip": "Engine\\Core\\Window.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAmwB0AAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-12T07:45:23.402Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "ImguiLayer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiLayer.cs",
+              "RelativeDocumentMoniker": "Engine\\ImGui\\ImguiLayer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\ImGui\\ImguiLayer.cs",
+              "RelativeToolTip": "Engine\\ImGui\\ImguiLayer.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAA5wD4AAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T12:31:41.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "CanvasManager.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\CanvasManager.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\CanvasManager.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\CanvasManager.cs",
+              "RelativeToolTip": "Engine\\Rendering\\CanvasManager.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAIwDkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-20T05:20:25.117Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "SpriteRenderer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\SpriteRenderer.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\SpriteRenderer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\SpriteRenderer.cs",
+              "RelativeToolTip": "Engine\\Components\\SpriteRenderer.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA4wDYAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-20T07:09:44.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "font.vert",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\font.vert",
+              "RelativeDocumentMoniker": "Engine\\Content\\Shaders\\2D\\font.vert",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\font.vert",
+              "RelativeToolTip": "Engine\\Content\\Shaders\\2D\\font.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2023-11-03T09:34:40.333Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "ShaderManager.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\ShaderManager.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\ShaderManager.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\ShaderManager.cs",
+              "RelativeToolTip": "Engine\\Core\\ShaderManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:27:44.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "IndexBuffer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\IndexBuffer.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\IndexBuffer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\IndexBuffer.cs",
+              "RelativeToolTip": "Engine\\Utilities\\IndexBuffer.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAA4wBYAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:31:32.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "EmberaEngine",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj",
+              "RelativeDocumentMoniker": "EmberaEngine.csproj",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj",
+              "RelativeToolTip": "EmberaEngine.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2023-10-19T17:51:37.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "EngineStarter",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\EngineStarter.csproj",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\EngineStarter.csproj",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\EngineStarter.csproj",
+              "RelativeToolTip": "..\\EngineStarter\\EngineStarter.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2023-11-04T07:18:30.269Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "SceneManager.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\SceneManager.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\SceneManager.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\SceneManager.cs",
+              "RelativeToolTip": "Engine\\Core\\SceneManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-18T13:13:35.154Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "sprite2d.vert",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\sprite2d.vert",
+              "RelativeDocumentMoniker": "Engine\\Content\\Shaders\\2D\\sprite2d.vert",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\sprite2d.vert",
+              "RelativeToolTip": "Engine\\Content\\Shaders\\2D\\sprite2d.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2023-10-20T07:41:25.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "VertexBuffer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexBuffer.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\VertexBuffer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexBuffer.cs",
+              "RelativeToolTip": "Engine\\Utilities\\VertexBuffer.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAIBTwGoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-19T18:03:23.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "VertexArray.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexArray.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\VertexArray.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexArray.cs",
+              "RelativeToolTip": "Engine\\Utilities\\VertexArray.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAIBDwE0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-19T18:03:14.684Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "sprite2d.frag",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\sprite2d.frag",
+              "RelativeDocumentMoniker": "Engine\\Content\\Shaders\\2D\\sprite2d.frag",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Content\\Shaders\\2D\\sprite2d.frag",
+              "RelativeToolTip": "Engine\\Content\\Shaders\\2D\\sprite2d.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2023-10-20T07:41:32.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "Screen.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Screen.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Screen.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Screen.cs",
+              "RelativeToolTip": "Engine\\Core\\Screen.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-23T08:22:08.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "AnchorComponent.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\AnchorComponent.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\AnchorComponent.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\AnchorComponent.cs",
+              "RelativeToolTip": "Engine\\Components\\AnchorComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-24T04:36:18.315Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "AnimatedComponent.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\AnimatedComponent.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\AnimatedComponent.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\AnimatedComponent.cs",
+              "RelativeToolTip": "Engine\\Components\\AnimatedComponent.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAIBTwBgAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-23T13:25:56.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "RectTransform.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\RectTransform.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\RectTransform.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\RectTransform.cs",
+              "RelativeToolTip": "Engine\\Components\\RectTransform.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-02-20T15:46:57.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "TextManager.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\TextManager.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\TextManager.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\TextManager.cs",
+              "RelativeToolTip": "Engine\\Rendering\\TextManager.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAywBIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-11-03T09:21:34.987Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "sprite.png",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\sprite.png",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\sprite.png",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\sprite.png",
+              "RelativeToolTip": "..\\EngineStarter\\sprite.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-02-20T15:52:23.779Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "bg.png",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\bg.png",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\bg.png",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\bg.png",
+              "RelativeToolTip": "..\\EngineStarter\\bg.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-02-20T15:52:29.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "untitled.png",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\untitled.png",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\untitled.png",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\untitled.png",
+              "RelativeToolTip": "..\\EngineStarter\\untitled.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2024-02-20T15:52:32.586Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "Renderer3D.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer3D.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\Renderer3D.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\Renderer3D.cs",
+              "RelativeToolTip": "Engine\\Rendering\\Renderer3D.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:25:05.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "InputUtils.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\InputUtils.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\InputUtils.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\InputUtils.cs",
+              "RelativeToolTip": "Engine\\Utilities\\InputUtils.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAywBcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T20:12:24.665Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "KeyUtils.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\KeyUtils.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\KeyUtils.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\KeyUtils.cs",
+              "RelativeToolTip": "Engine\\Utilities\\KeyUtils.cs",
+              "ViewState": "AgIAALwAAAAAAAAAAAAiwMUAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:44:20.267Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "RenderGraph.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\RenderGraph.cs",
+              "RelativeDocumentMoniker": "Engine\\Rendering\\RenderGraph.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Rendering\\RenderGraph.cs",
+              "RelativeToolTip": "Engine\\Rendering\\RenderGraph.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvw0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:33:38.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "DebugLayer.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\DebugLayer.cs",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\DebugLayer.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\DebugLayer.cs",
+              "RelativeToolTip": "..\\EngineStarter\\DebugLayer.cs",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAwwKUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T12:04:01.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "OpenIconFont.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Assets\\Fonts\\OpenIconFont.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Assets\\Fonts\\OpenIconFont.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Assets\\Fonts\\OpenIconFont.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Assets\\Fonts\\OpenIconFont.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T13:16:54.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "MaterialDesignIcons.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Assets\\Fonts\\MaterialDesignIcons.cs",
+              "RelativeDocumentMoniker": "..\\ElementalEditor\\Editor\\Assets\\Fonts\\MaterialDesignIcons.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\ElementalEditor\\Editor\\Assets\\Fonts\\MaterialDesignIcons.cs",
+              "RelativeToolTip": "..\\ElementalEditor\\Editor\\Assets\\Fonts\\MaterialDesignIcons.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-02T13:16:55.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "SharpFont.props",
+              "DocumentMoniker": "C:\\Users\\maari\\.nuget\\packages\\sharpfont\\4.0.1\\build\\SharpFont.props",
+              "RelativeDocumentMoniker": "..\\..\\..\\Users\\maari\\.nuget\\packages\\sharpfont\\4.0.1\\build\\SharpFont.props",
+              "ToolTip": "C:\\Users\\maari\\.nuget\\packages\\sharpfont\\4.0.1\\build\\SharpFont.props",
+              "RelativeToolTip": "..\\..\\..\\Users\\maari\\.nuget\\packages\\sharpfont\\4.0.1\\build\\SharpFont.props",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2023-11-01T09:31:27.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "publisher-info.txt",
+              "DocumentMoniker": "C:\\Users\\maari\\.nuget\\packages\\freetype\\2.8.0.1\\build\\publisher-info.txt",
+              "RelativeDocumentMoniker": "..\\..\\..\\Users\\maari\\.nuget\\packages\\freetype\\2.8.0.1\\build\\publisher-info.txt",
+              "ToolTip": "C:\\Users\\maari\\.nuget\\packages\\freetype\\2.8.0.1\\build\\publisher-info.txt",
+              "RelativeToolTip": "..\\..\\..\\Users\\maari\\.nuget\\packages\\freetype\\2.8.0.1\\build\\publisher-info.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2023-11-01T09:22:49.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "PhysicsManager2D.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\PhysicsManager2D.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\PhysicsManager2D.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\PhysicsManager2D.cs",
+              "RelativeToolTip": "Engine\\Core\\PhysicsManager2D.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-21T10:00:02.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "Helper.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Helper.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\Helper.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\Helper.cs",
+              "RelativeToolTip": "Engine\\Utilities\\Helper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-21T10:11:47.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "Transform.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\Transform.cs",
+              "RelativeDocumentMoniker": "Engine\\Components\\Transform.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Components\\Transform.cs",
+              "RelativeToolTip": "Engine\\Components\\Transform.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-21T09:43:03.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "VertexDefinitions.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexDefinitions.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\VertexDefinitions.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\VertexDefinitions.cs",
+              "RelativeToolTip": "Engine\\Utilities\\VertexDefinitions.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAA4wAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-20T08:14:40.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "Shader.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Shader.cs",
+              "RelativeDocumentMoniker": "Engine\\Core\\Shader.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Core\\Shader.cs",
+              "RelativeToolTip": "Engine\\Core\\Shader.cs",
+              "ViewState": "AgIAALoAAAAAAAAAAAAEwMkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:26:43.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "JetBrainsMono-Regular.ttf",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EngineStarter\\JetBrainsMono-Regular.ttf",
+              "RelativeDocumentMoniker": "..\\EngineStarter\\JetBrainsMono-Regular.ttf",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EngineStarter\\JetBrainsMono-Regular.ttf",
+              "RelativeToolTip": "..\\EngineStarter\\JetBrainsMono-Regular.ttf",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKSSURBVDhPzZTPbxJBFMffDLCwQAUxEOkP0FJCDzUlUQ7\u002BBxy8eSYSD/43JvY/8O7Vi\u002BEPKL0QEy8NNZHUSrSAsfxmZ3/43uzOFqiJ9eZn8zKzb2a\u002B773ZmWVbW1uBYDAIjDH4F2i\u002B4zh2v993xuOx60QHe43sIVHE9d4Kis5QSLRarfeNRuNDs9k8o4FgqVQ6KJcPy/H4xgY5boksZz6f2\u002Bl0\u002Bl44HE5gxu\u002BOj4/bgXq9/nJ7eycXQ7D0awK0EyG37zXroFAIua/regrN7vV654FarfYim81uapoWlrEVjuN1bqL2m3NOWTIUzmCmDzCn71yOeOCeXhu9q8fz/YlUKgW5XI4Xi8VspVJ5xWmiZVkrYrZt37Bl//JcyhYzZVg6x7KjUnB5MombpgW/RgZMZkK\u002Buz7TD0zzCOoTJIrGSNgXVCZMG4YTEz6fT\u002BGyP/eFyFR261mSKeGVDGmRwOy6lws4\u002BTSEMxSdL0x/TM2jdjkAoVr/o6hBwzDhx4DExvCxTe3EH1PmfTGJElJweqUFxHAi4BtmF8QwMZ3Bl\u002B4MWqcjPxu/tbF11oJ4cDyfMh45p1MTej9nEEex/XwIIADQ7howGBpgWqsC60ZQw/FGSMdCWDDF/VpgyYl4AA4KEdjZjIDAjb4YGPJjUXY3ypdC1Jc94GqzRxPLnhhga7EwJO7okE7pcFiMwf5D3bmcOpZp2\u002B5qZF3Qxe1zQwg5ENehm8\u002BEvj7K66CFGMSjIXi8F4NnTxJXTwvR06gWFHLFX2Bvjo7eFnZ3DyKRiIPlkDb\u002BdZYjwwJtjGfsLp1dedYYdw8zl7dE9vFOzzudzgWrVqvPk8lkBq\u002BO5pbhlrQmKhcqpBj9wbx/Mo0JIcwrxPX8vwD8Bk7yChnmb0LrAAAAAElFTkSuQmCC",
+              "WhenOpened": "2023-10-19T18:04:13.548Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "UtilRandom.cs",
+              "DocumentMoniker": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\UtilRandom.cs",
+              "RelativeDocumentMoniker": "Engine\\Utilities\\UtilRandom.cs",
+              "ToolTip": "C:\\Programming\\Embera Engine\\EmberaEngine\\Engine\\Utilities\\UtilRandom.cs",
+              "RelativeToolTip": "Engine\\Utilities\\UtilRandom.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAiwAYAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-10-16T08:35:41.033Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -23,7 +23,6 @@ C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.Genera
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.AssemblyInfoInputs.cache
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.AssemblyInfo.cs
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.csproj.CoreCompileInputs.cache
-C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.csproj.CopyComplete
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.dll
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\refint\EngineStarter.dll
 C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.pdb
@@ -89,3 +88,18 @@ C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Engine\Content\Shade
 C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Engine\Content\Shaders\2D\font.vert
 C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\LD.ttf
 C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\ER.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\ElementalEditor.dll
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\ElementalEditor.pdb
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\forkawesome-webfont.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\JetBrainsMono-Bold.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\JetBrainsMono-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\MaterialIcons-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\OpenFontIcons.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\OpenSans.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\Roboto-Medium.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\TerminalDosis-Bold.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\TerminalDosis-Regular.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Editor\Assets\Fonts\JetBrainsMono-Medium.ttf
+C:\Programming\Embera Engine\EngineStarter\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineStarter.sourcelink.json
+C:\Programming\Embera Engine\EngineStarter\obj\Debug\net7.0\EngineSt.6ED51568.Up2Date

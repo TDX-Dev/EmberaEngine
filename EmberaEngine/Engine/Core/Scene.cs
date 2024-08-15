@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EmberaEngine.Engine.Components;
+using nkast.Aether.Physics2D.Common;
 
 namespace EmberaEngine.Engine.Core
 {
@@ -9,6 +10,9 @@ namespace EmberaEngine.Engine.Core
 
         public List<GameObject> GameObjects;
         public PhysicsManager2D PhysicsManager2D;
+        public bool IsPlaying = false;
+
+        public event Action<Component> OnComponentAdded = (c) => {};
 
         public Scene()
         {
@@ -52,6 +56,7 @@ namespace EmberaEngine.Engine.Core
 
         public void Play()
         {
+            IsPlaying = true;
             foreach (GameObject gameObject in GameObjects)
             {
                 gameObject.OnStart();
@@ -68,5 +73,14 @@ namespace EmberaEngine.Engine.Core
             PhysicsManager2D.Update(dt);
         }
 
+        public void ComponentAdded(Component component)
+        {
+            OnComponentAdded.Invoke(component);
+
+            if (IsPlaying)
+            {
+                component.OnStart();
+            }
+        } 
     }
 }

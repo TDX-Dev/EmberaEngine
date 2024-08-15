@@ -1,0 +1,1480 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0": {
+      "Aether.Physics2D/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Aether.Physics2D.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Aether.Physics2D.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Box2D/2.3.0": {
+        "type": "package"
+      },
+      "ImGui.NET/1.87.2": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.4.0"
+        },
+        "compile": {
+          "lib/net6.0/ImGui.NET.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/ImGui.NET.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libcimgui.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-universal/native/libcimgui.dylib": {
+            "assetType": "native",
+            "rid": "osx-universal"
+          },
+          "runtimes/win-x64/native/cimgui.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/cimgui.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "OpenTK/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Compute": "4.7.5",
+          "OpenTK.Core": "4.7.5",
+          "OpenTK.Graphics": "4.7.5",
+          "OpenTK.Input": "4.7.5",
+          "OpenTK.Mathematics": "4.7.5",
+          "OpenTK.OpenAL": "4.7.5",
+          "OpenTK.Windowing.Common": "4.7.5",
+          "OpenTK.Windowing.Desktop": "4.7.5",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "4.7.5"
+        }
+      },
+      "OpenTK.Compute/4.7.5": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Compute.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Compute.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Core/4.7.5": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/OpenTK.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/OpenTK.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Graphics/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Graphics.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Graphics.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Input/4.7.5": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/OpenTK.Input.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/OpenTK.Input.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Mathematics/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "5.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Mathematics.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Mathematics.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.OpenAL/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.OpenAL.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.OpenAL.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.redist.glfw/3.3.8.30": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libglfw.so.3.3": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/libglfw.3.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/libglfw.3.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/glfw3.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/glfw3.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "OpenTK.Windowing.Common/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.5, 4.8.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.Common.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.Common.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Windowing.Desktop/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.Mathematics": "[4.7.5, 4.8.0)",
+          "OpenTK.Windowing.Common": "[4.7.5, 4.8.0)",
+          "OpenTK.Windowing.GraphicsLibraryFramework": "[4.7.5, 4.8.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "OpenTK.Windowing.GraphicsLibraryFramework/4.7.5": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK.Core": "[4.7.5, 4.8.0)",
+          "OpenTK.redist.glfw": "3.3.8.30"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SharpFont.Dependencies/2.6.0": {
+        "type": "package",
+        "build": {
+          "build/_._": {}
+        }
+      },
+      "SixLabors.Fonts/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.Fonts.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.Fonts.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "SixLabors.ImageSharp/3.1.5": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/_._": {}
+        }
+      },
+      "SkiaSharp/2.88.6": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "2.88.6",
+          "SkiaSharp.NativeAssets.macOS": "2.88.6"
+        },
+        "compile": {
+          "lib/net6.0/SkiaSharp.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SkiaSharp.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.macOS/2.88.6": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/_._": {}
+        },
+        "runtime": {
+          "lib/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Win32/2.88.6": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/_._": {}
+        },
+        "runtime": {
+          "lib/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "System.Drawing.Common/7.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "7.0.0"
+        },
+        "compile": {
+          "lib/net7.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net7.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/5.0.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.1/System.Runtime.CompilerServices.Unsafe.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "EmberaEngine/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Aether.Physics2D": "2.0.0",
+          "Box2D": "2.3.0",
+          "ImGui.NET": "1.87.2",
+          "OpenTK": "4.7.5",
+          "SharpFont.Dependencies": "2.6.0",
+          "SixLabors.Fonts": "2.0.0",
+          "SixLabors.ImageSharp": "3.1.5",
+          "SkiaSharp": "2.88.6",
+          "System.Drawing.Common": "7.0.0"
+        },
+        "compile": {
+          "bin/placeholder/EmberaEngine.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EmberaEngine.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Aether.Physics2D/2.0.0": {
+      "sha512": "GT64PKbk+3XIUVXB1ueDQU9+l/MaswYD9DTkuJDxnW4eE6X20VEVyIshTGUY+hmVOLJlnWD+i1+nTgNH6kRMDQ==",
+      "type": "package",
+      "path": "aether.physics2d/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "aether.physics2d.2.0.0.nupkg.sha512",
+        "aether.physics2d.nuspec",
+        "icon.png",
+        "lib/net40/Aether.Physics2D.dll",
+        "lib/net40/Aether.Physics2D.xml",
+        "lib/netstandard2.0/Aether.Physics2D.dll",
+        "lib/netstandard2.0/Aether.Physics2D.xml"
+      ]
+    },
+    "Box2D/2.3.0": {
+      "sha512": "Ac6y7onmMdbi6AXHyS63TbEawjCxJtxEjE3iclYNNqHvY6Iw6LGULnEv+rHOwhpJTUytDU89bZgj/AGhGS2ZMg==",
+      "type": "package",
+      "path": "box2d/2.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "box2d.2.3.0.nupkg.sha512",
+        "box2d.nuspec",
+        "build/configurations.autopkg",
+        "build/native/Box2D.targets",
+        "build/native/default-propertiesui.xml",
+        "build/native/docs/Doxyfile",
+        "build/native/docs/images/Chain1.png",
+        "build/native/docs/images/Chain1.svg",
+        "build/native/docs/images/DebugDraw.png",
+        "build/native/docs/images/GhostCollision.png",
+        "build/native/docs/images/GhostCollision.svg",
+        "build/native/docs/images/GhostVertices.png",
+        "build/native/docs/images/GhostVertices.svg",
+        "build/native/docs/images/SelfIntersect.png",
+        "build/native/docs/images/SelfIntersect.svg",
+        "build/native/docs/images/SkinCollision.png",
+        "build/native/docs/images/SkinCollision.svg",
+        "build/native/docs/images/SkinnedPolygon.png",
+        "build/native/docs/images/SkinnedPolygon.svg",
+        "build/native/docs/images/Tunnel1.png",
+        "build/native/docs/images/Tunnel1.svg",
+        "build/native/docs/images/WheelJoint.png",
+        "build/native/docs/images/WheelJoint.svg",
+        "build/native/docs/images/bodyOrigin.gif",
+        "build/native/docs/images/captured.png",
+        "build/native/docs/images/captured.svg",
+        "build/native/docs/images/convex_concave.gif",
+        "build/native/docs/images/distance.png",
+        "build/native/docs/images/distance.svg",
+        "build/native/docs/images/distanceJoint.gif",
+        "build/native/docs/images/gearJoint.gif",
+        "build/native/docs/images/manifolds.png",
+        "build/native/docs/images/manifolds.svg",
+        "build/native/docs/images/missed.png",
+        "build/native/docs/images/missed.svg",
+        "build/native/docs/images/modules.png",
+        "build/native/docs/images/modules.svg",
+        "build/native/docs/images/prismaticJoint.gif",
+        "build/native/docs/images/pulleyJoint.gif",
+        "build/native/docs/images/raycast.png",
+        "build/native/docs/images/raycast.svg",
+        "build/native/docs/images/regionquery.png",
+        "build/native/docs/images/regionquery.svg",
+        "build/native/docs/images/revoluteJoint.gif",
+        "build/native/docs/images/testbed.gif",
+        "build/native/docs/images/tunneling.png",
+        "build/native/docs/images/tunneling.svg",
+        "build/native/docs/images/winding.png",
+        "build/native/docs/images/winding.svg",
+        "build/native/docs/manual.docx",
+        "build/native/docs/manual_Chinese.docx",
+        "build/native/include/Box2D/Box2D.h",
+        "build/native/include/Box2D/Collision/Shapes/b2ChainShape.h",
+        "build/native/include/Box2D/Collision/Shapes/b2CircleShape.h",
+        "build/native/include/Box2D/Collision/Shapes/b2EdgeShape.h",
+        "build/native/include/Box2D/Collision/Shapes/b2PolygonShape.h",
+        "build/native/include/Box2D/Collision/Shapes/b2Shape.h",
+        "build/native/include/Box2D/Collision/b2BroadPhase.h",
+        "build/native/include/Box2D/Collision/b2Collision.h",
+        "build/native/include/Box2D/Collision/b2Distance.h",
+        "build/native/include/Box2D/Collision/b2DynamicTree.h",
+        "build/native/include/Box2D/Collision/b2TimeOfImpact.h",
+        "build/native/include/Box2D/Common/b2BlockAllocator.h",
+        "build/native/include/Box2D/Common/b2Draw.h",
+        "build/native/include/Box2D/Common/b2GrowableStack.h",
+        "build/native/include/Box2D/Common/b2Math.h",
+        "build/native/include/Box2D/Common/b2Settings.h",
+        "build/native/include/Box2D/Common/b2StackAllocator.h",
+        "build/native/include/Box2D/Common/b2Timer.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2CircleContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2Contact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2ContactSolver.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h",
+        "build/native/include/Box2D/Dynamics/Contacts/b2PolygonContact.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2DistanceJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2FrictionJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2GearJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2Joint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2MotorJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2MouseJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2PrismaticJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2PulleyJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2RevoluteJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2RopeJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2WeldJoint.h",
+        "build/native/include/Box2D/Dynamics/Joints/b2WheelJoint.h",
+        "build/native/include/Box2D/Dynamics/b2Body.h",
+        "build/native/include/Box2D/Dynamics/b2ContactManager.h",
+        "build/native/include/Box2D/Dynamics/b2Fixture.h",
+        "build/native/include/Box2D/Dynamics/b2Island.h",
+        "build/native/include/Box2D/Dynamics/b2TimeStep.h",
+        "build/native/include/Box2D/Dynamics/b2World.h",
+        "build/native/include/Box2D/Dynamics/b2WorldCallbacks.h",
+        "build/native/include/Box2D/Rope/b2Rope.h",
+        "build/native/lib/Win32/Debug/Desktop/Box2D.lib",
+        "build/native/lib/Win32/Debug/Desktop/Box2D.pdb",
+        "build/native/lib/Win32/Release/Desktop/Box2D.lib",
+        "build/native/lib/Win32/Release/Desktop/Box2D.pdb",
+        "build/native/lib/x64/Debug/Desktop/Box2D.lib",
+        "build/native/lib/x64/Debug/Desktop/Box2D.pdb",
+        "build/native/lib/x64/Release/Desktop/Box2D.lib",
+        "build/native/lib/x64/Release/Desktop/Box2D.pdb",
+        "build/publisher-info.txt",
+        "src/native/Box2D/Box2D.h",
+        "src/native/Box2D/Box2DConfig.cmake.in",
+        "src/native/Box2D/CMakeLists.txt",
+        "src/native/Box2D/Collision/Shapes/b2ChainShape.cpp",
+        "src/native/Box2D/Collision/Shapes/b2ChainShape.h",
+        "src/native/Box2D/Collision/Shapes/b2CircleShape.cpp",
+        "src/native/Box2D/Collision/Shapes/b2CircleShape.h",
+        "src/native/Box2D/Collision/Shapes/b2EdgeShape.cpp",
+        "src/native/Box2D/Collision/Shapes/b2EdgeShape.h",
+        "src/native/Box2D/Collision/Shapes/b2PolygonShape.cpp",
+        "src/native/Box2D/Collision/Shapes/b2PolygonShape.h",
+        "src/native/Box2D/Collision/Shapes/b2Shape.h",
+        "src/native/Box2D/Collision/b2BroadPhase.cpp",
+        "src/native/Box2D/Collision/b2BroadPhase.h",
+        "src/native/Box2D/Collision/b2CollideCircle.cpp",
+        "src/native/Box2D/Collision/b2CollideEdge.cpp",
+        "src/native/Box2D/Collision/b2CollidePolygon.cpp",
+        "src/native/Box2D/Collision/b2Collision.cpp",
+        "src/native/Box2D/Collision/b2Collision.h",
+        "src/native/Box2D/Collision/b2Distance.cpp",
+        "src/native/Box2D/Collision/b2Distance.h",
+        "src/native/Box2D/Collision/b2DynamicTree.cpp",
+        "src/native/Box2D/Collision/b2DynamicTree.h",
+        "src/native/Box2D/Collision/b2TimeOfImpact.cpp",
+        "src/native/Box2D/Collision/b2TimeOfImpact.h",
+        "src/native/Box2D/Common/b2BlockAllocator.cpp",
+        "src/native/Box2D/Common/b2BlockAllocator.h",
+        "src/native/Box2D/Common/b2Draw.cpp",
+        "src/native/Box2D/Common/b2Draw.h",
+        "src/native/Box2D/Common/b2GrowableStack.h",
+        "src/native/Box2D/Common/b2Math.cpp",
+        "src/native/Box2D/Common/b2Math.h",
+        "src/native/Box2D/Common/b2Settings.cpp",
+        "src/native/Box2D/Common/b2Settings.h",
+        "src/native/Box2D/Common/b2StackAllocator.cpp",
+        "src/native/Box2D/Common/b2StackAllocator.h",
+        "src/native/Box2D/Common/b2Timer.cpp",
+        "src/native/Box2D/Common/b2Timer.h",
+        "src/native/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2CircleContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2CircleContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2Contact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2Contact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2ContactSolver.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2ContactSolver.h",
+        "src/native/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.h",
+        "src/native/Box2D/Dynamics/Contacts/b2PolygonContact.cpp",
+        "src/native/Box2D/Dynamics/Contacts/b2PolygonContact.h",
+        "src/native/Box2D/Dynamics/Joints/b2DistanceJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2DistanceJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2FrictionJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2FrictionJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2GearJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2GearJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2Joint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2Joint.h",
+        "src/native/Box2D/Dynamics/Joints/b2MotorJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2MotorJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2MouseJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2MouseJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2PrismaticJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2PulleyJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2PulleyJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2RevoluteJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2RopeJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2RopeJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2WeldJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2WeldJoint.h",
+        "src/native/Box2D/Dynamics/Joints/b2WheelJoint.cpp",
+        "src/native/Box2D/Dynamics/Joints/b2WheelJoint.h",
+        "src/native/Box2D/Dynamics/b2Body.cpp",
+        "src/native/Box2D/Dynamics/b2Body.h",
+        "src/native/Box2D/Dynamics/b2ContactManager.cpp",
+        "src/native/Box2D/Dynamics/b2ContactManager.h",
+        "src/native/Box2D/Dynamics/b2Fixture.cpp",
+        "src/native/Box2D/Dynamics/b2Fixture.h",
+        "src/native/Box2D/Dynamics/b2Island.cpp",
+        "src/native/Box2D/Dynamics/b2Island.h",
+        "src/native/Box2D/Dynamics/b2TimeStep.h",
+        "src/native/Box2D/Dynamics/b2World.cpp",
+        "src/native/Box2D/Dynamics/b2World.h",
+        "src/native/Box2D/Dynamics/b2WorldCallbacks.cpp",
+        "src/native/Box2D/Dynamics/b2WorldCallbacks.h",
+        "src/native/Box2D/Rope/b2Rope.cpp",
+        "src/native/Box2D/Rope/b2Rope.h",
+        "src/native/Box2D/UseBox2D.cmake",
+        "src/native/Build/Data/DroidSans.ttf",
+        "src/native/Build/Readme.txt",
+        "src/native/Build/vs2015/Box2D.sln",
+        "src/native/Build/vs2015/Box2D.vcxproj",
+        "src/native/Build/vs2015/Box2D.vcxproj.filters",
+        "src/native/Build/vs2015/HelloWorld.vcxproj",
+        "src/native/Build/vs2015/HelloWorld.vcxproj.filters",
+        "src/native/Build/vs2015/Testbed.vcxproj",
+        "src/native/Build/vs2015/Testbed.vcxproj.filters",
+        "src/native/Build/vs2015/glew.vcxproj",
+        "src/native/Build/vs2015/glew.vcxproj.filters",
+        "src/native/Build/vs2015/glfw.vcxproj",
+        "src/native/Build/vs2015/glfw.vcxproj.filters",
+        "src/native/Build/vs2015/imgui.ini",
+        "src/native/Build/vs2015/imgui.vcxproj",
+        "src/native/Build/vs2015/imgui.vcxproj.filters",
+        "src/native/Build/xcode6/Box2D.xcodeproj/project.pbxproj",
+        "src/native/Build/xcode6/Box2D.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+        "src/native/Building.txt",
+        "src/native/CMakeLists.txt",
+        "src/native/Changes.txt",
+        "src/native/HelloWorld/CMakeLists.txt",
+        "src/native/HelloWorld/HelloWorld.cpp",
+        "src/native/License.txt",
+        "src/native/Readme.txt",
+        "src/native/Testbed/CMakeLists.txt",
+        "src/native/Testbed/Framework/DebugDraw.cpp",
+        "src/native/Testbed/Framework/DebugDraw.h",
+        "src/native/Testbed/Framework/Main.cpp",
+        "src/native/Testbed/Framework/Test.cpp",
+        "src/native/Testbed/Framework/Test.h",
+        "src/native/Testbed/Tests/AddPair.h",
+        "src/native/Testbed/Tests/ApplyForce.h",
+        "src/native/Testbed/Tests/BasicSliderCrank.h",
+        "src/native/Testbed/Tests/BodyTypes.h",
+        "src/native/Testbed/Tests/Breakable.h",
+        "src/native/Testbed/Tests/Bridge.h",
+        "src/native/Testbed/Tests/BulletTest.h",
+        "src/native/Testbed/Tests/Cantilever.h",
+        "src/native/Testbed/Tests/Car.h",
+        "src/native/Testbed/Tests/Chain.h",
+        "src/native/Testbed/Tests/CharacterCollision.h",
+        "src/native/Testbed/Tests/CollisionFiltering.h",
+        "src/native/Testbed/Tests/CollisionProcessing.h",
+        "src/native/Testbed/Tests/CompoundShapes.h",
+        "src/native/Testbed/Tests/Confined.h",
+        "src/native/Testbed/Tests/ContinuousTest.h",
+        "src/native/Testbed/Tests/ConvexHull.h",
+        "src/native/Testbed/Tests/ConveyorBelt.h",
+        "src/native/Testbed/Tests/DistanceTest.h",
+        "src/native/Testbed/Tests/Dominos.h",
+        "src/native/Testbed/Tests/DumpShell.h",
+        "src/native/Testbed/Tests/DynamicTreeTest.h",
+        "src/native/Testbed/Tests/EdgeShapes.h",
+        "src/native/Testbed/Tests/EdgeTest.h",
+        "src/native/Testbed/Tests/Gears.h",
+        "src/native/Testbed/Tests/HeavyOnLight.h",
+        "src/native/Testbed/Tests/HeavyOnLightTwo.h",
+        "src/native/Testbed/Tests/Mobile.h",
+        "src/native/Testbed/Tests/MobileBalanced.h",
+        "src/native/Testbed/Tests/MotorJoint.h",
+        "src/native/Testbed/Tests/OneSidedPlatform.h",
+        "src/native/Testbed/Tests/Pinball.h",
+        "src/native/Testbed/Tests/PolyCollision.h",
+        "src/native/Testbed/Tests/PolyShapes.h",
+        "src/native/Testbed/Tests/Prismatic.h",
+        "src/native/Testbed/Tests/Pulleys.h",
+        "src/native/Testbed/Tests/Pyramid.h",
+        "src/native/Testbed/Tests/RayCast.h",
+        "src/native/Testbed/Tests/Revolute.h",
+        "src/native/Testbed/Tests/Rope.h",
+        "src/native/Testbed/Tests/RopeJoint.h",
+        "src/native/Testbed/Tests/SensorTest.h",
+        "src/native/Testbed/Tests/ShapeEditing.h",
+        "src/native/Testbed/Tests/SliderCrank.h",
+        "src/native/Testbed/Tests/SphereStack.h",
+        "src/native/Testbed/Tests/TestEntries.cpp",
+        "src/native/Testbed/Tests/TheoJansen.h",
+        "src/native/Testbed/Tests/Tiles.h",
+        "src/native/Testbed/Tests/TimeOfImpact.h",
+        "src/native/Testbed/Tests/Tumbler.h",
+        "src/native/Testbed/Tests/VaryingFriction.h",
+        "src/native/Testbed/Tests/VaryingRestitution.h",
+        "src/native/Testbed/Tests/VerticalStack.h",
+        "src/native/Testbed/Tests/Web.h",
+        "src/native/glew/CMakeLists.txt",
+        "src/native/glew/glew.c",
+        "src/native/glew/glew.h",
+        "src/native/glew/glxew.h",
+        "src/native/glew/wglew.h",
+        "src/native/glfw/CMakeLists.txt",
+        "src/native/glfw/cocoa_init.m",
+        "src/native/glfw/cocoa_monitor.m",
+        "src/native/glfw/cocoa_platform.h",
+        "src/native/glfw/cocoa_window.m",
+        "src/native/glfw/context.c",
+        "src/native/glfw/egl_context.c",
+        "src/native/glfw/egl_context.h",
+        "src/native/glfw/eglext.h",
+        "src/native/glfw/glext.h",
+        "src/native/glfw/glfw3.h",
+        "src/native/glfw/glfw3.pc.in",
+        "src/native/glfw/glfw3Config.cmake.in",
+        "src/native/glfw/glfw3native.h",
+        "src/native/glfw/glfw_config.h",
+        "src/native/glfw/glfw_config.h.in",
+        "src/native/glfw/glx_context.c",
+        "src/native/glfw/glx_context.h",
+        "src/native/glfw/glxext.h",
+        "src/native/glfw/init.c",
+        "src/native/glfw/input.c",
+        "src/native/glfw/internal.h",
+        "src/native/glfw/iokit_joystick.h",
+        "src/native/glfw/iokit_joystick.m",
+        "src/native/glfw/linux_joystick.c",
+        "src/native/glfw/linux_joystick.h",
+        "src/native/glfw/mach_time.c",
+        "src/native/glfw/mir_init.c",
+        "src/native/glfw/mir_monitor.c",
+        "src/native/glfw/mir_platform.h",
+        "src/native/glfw/mir_window.c",
+        "src/native/glfw/monitor.c",
+        "src/native/glfw/nsgl_context.h",
+        "src/native/glfw/nsgl_context.m",
+        "src/native/glfw/posix_time.c",
+        "src/native/glfw/posix_time.h",
+        "src/native/glfw/posix_tls.c",
+        "src/native/glfw/posix_tls.h",
+        "src/native/glfw/wgl_context.c",
+        "src/native/glfw/wgl_context.h",
+        "src/native/glfw/wglext.h",
+        "src/native/glfw/win32_init.c",
+        "src/native/glfw/win32_monitor.c",
+        "src/native/glfw/win32_platform.h",
+        "src/native/glfw/win32_time.c",
+        "src/native/glfw/win32_tls.c",
+        "src/native/glfw/win32_tls.h",
+        "src/native/glfw/win32_window.c",
+        "src/native/glfw/window.c",
+        "src/native/glfw/winmm_joystick.c",
+        "src/native/glfw/winmm_joystick.h",
+        "src/native/glfw/wl_init.c",
+        "src/native/glfw/wl_monitor.c",
+        "src/native/glfw/wl_platform.h",
+        "src/native/glfw/wl_window.c",
+        "src/native/glfw/x11_init.c",
+        "src/native/glfw/x11_monitor.c",
+        "src/native/glfw/x11_platform.h",
+        "src/native/glfw/x11_window.c",
+        "src/native/glfw/xkb_unicode.c",
+        "src/native/glfw/xkb_unicode.h",
+        "src/native/imgui/imconfig.h",
+        "src/native/imgui/imgui.cpp",
+        "src/native/imgui/imgui.h",
+        "src/native/imgui/imgui.ini",
+        "src/native/imgui/imgui_demo.cpp",
+        "src/native/imgui/imgui_draw.cpp",
+        "src/native/imgui/imgui_impl_glfw_gl3.cpp",
+        "src/native/imgui/imgui_impl_glfw_gl3.h",
+        "src/native/imgui/imgui_internal.h",
+        "src/native/imgui/stb_rect_pack.h",
+        "src/native/imgui/stb_textedit.h",
+        "src/native/imgui/stb_truetype.h",
+        "src/native/premake4.lua"
+      ]
+    },
+    "ImGui.NET/1.87.2": {
+      "sha512": "R9CmXj/0220nOfKKgxNQwvy5tAnSlfSKNSLaUPe/0vngjDCxgCoxNVgnf3nXbbI80zzwCwatEoEUTVRcxwsqHA==",
+      "type": "package",
+      "path": "imgui.net/1.87.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net40/ImGui.NET.targets",
+        "imgui.net.1.87.2.nupkg.sha512",
+        "imgui.net.nuspec",
+        "lib/net6.0/ImGui.NET.dll",
+        "lib/net6.0/ImGui.NET.xml",
+        "runtimes/linux-x64/native/libcimgui.so",
+        "runtimes/osx-universal/native/libcimgui.dylib",
+        "runtimes/win-x64/native/cimgui.dll",
+        "runtimes/win-x86/native/cimgui.dll"
+      ]
+    },
+    "Microsoft.Win32.SystemEvents/7.0.0": {
+      "sha512": "2nXPrhdAyAzir0gLl8Yy8S5Mnm/uBSQQA7jEsILOS1MTyS7DbmV1NgViMtvV1sfCD1ebITpNwb1NIinKeJgUVQ==",
+      "type": "package",
+      "path": "microsoft.win32.systemevents/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Win32.SystemEvents.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Win32.SystemEvents.targets",
+        "lib/net462/Microsoft.Win32.SystemEvents.dll",
+        "lib/net462/Microsoft.Win32.SystemEvents.xml",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "lib/net7.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/net7.0/Microsoft.Win32.SystemEvents.xml",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.xml",
+        "microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+        "microsoft.win32.systemevents.nuspec",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.xml",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "OpenTK/4.7.5": {
+      "sha512": "eFcD4adeP+bTOfjFT44K8gJxr9CabE/F3tQgFkQdHvOb+xI3ynWZ8m0MNZ5vwhTAVSKWFCv12pC5lMhFPAYYOQ==",
+      "type": "package",
+      "path": "opentk/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "opentk.4.7.5.nupkg.sha512",
+        "opentk.nuspec"
+      ]
+    },
+    "OpenTK.Compute/4.7.5": {
+      "sha512": "Vd/ZSX2d/WeAJiPXPXkf823CjOtFKBkcQKu1gYiQYYy6xx5Hv7nUt50t+X/1ZEph54hJBtVFi/ePtvMpIss6VQ==",
+      "type": "package",
+      "path": "opentk.compute/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Compute.dll",
+        "lib/netcoreapp3.1/OpenTK.Compute.pdb",
+        "lib/netcoreapp3.1/OpenTK.Compute.xml",
+        "opentk.compute.4.7.5.nupkg.sha512",
+        "opentk.compute.nuspec"
+      ]
+    },
+    "OpenTK.Core/4.7.5": {
+      "sha512": "qRnNUImMQexp0dezp70XkD/DV5lOpDXou+wzYM79u1F4c986hmIK5SyM5gRlVZBPYdSLv1lhSPpEPIcJrWGKRg==",
+      "type": "package",
+      "path": "opentk.core/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.1/OpenTK.Core.dll",
+        "lib/netstandard2.1/OpenTK.Core.pdb",
+        "lib/netstandard2.1/OpenTK.Core.xml",
+        "opentk.core.4.7.5.nupkg.sha512",
+        "opentk.core.nuspec"
+      ]
+    },
+    "OpenTK.Graphics/4.7.5": {
+      "sha512": "8PrVCl/C7v9LUO/3dwXzqfAkp/QnCdQBY62a7VT53cXCEuj/RwkQijDMp3TxOuOhLvUSyIbyt/MFa2yxqmoRUQ==",
+      "type": "package",
+      "path": "opentk.graphics/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Graphics.dll",
+        "lib/netcoreapp3.1/OpenTK.Graphics.pdb",
+        "lib/netcoreapp3.1/OpenTK.Graphics.xml",
+        "lib/netstandard2.1/OpenTK.Graphics.dll",
+        "lib/netstandard2.1/OpenTK.Graphics.pdb",
+        "lib/netstandard2.1/OpenTK.Graphics.xml",
+        "opentk.graphics.4.7.5.nupkg.sha512",
+        "opentk.graphics.nuspec"
+      ]
+    },
+    "OpenTK.Input/4.7.5": {
+      "sha512": "tV2QVTzfRsaCUa1oLThiEoEq0Rj/XDE0pNCWjh6mJeziv6+lxsOy+3BvK3n5G1nnA41P0+ZwRFdyhjcZqVLy/g==",
+      "type": "package",
+      "path": "opentk.input/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/OpenTK.Input.dll",
+        "lib/netstandard2.0/OpenTK.Input.pdb",
+        "lib/netstandard2.0/OpenTK.Input.xml",
+        "opentk.input.4.7.5.nupkg.sha512",
+        "opentk.input.nuspec"
+      ]
+    },
+    "OpenTK.Mathematics/4.7.5": {
+      "sha512": "pTdhfAMe+eeIu31OTgJ9UwHK14L2hMxigx9wduANBM7eKZwEd6V+cFhzobJJXzc1RjX/weBB6wVcKg6u9XJVQw==",
+      "type": "package",
+      "path": "opentk.mathematics/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Mathematics.dll",
+        "lib/netcoreapp3.1/OpenTK.Mathematics.pdb",
+        "lib/netcoreapp3.1/OpenTK.Mathematics.xml",
+        "lib/netstandard2.1/OpenTK.Mathematics.dll",
+        "lib/netstandard2.1/OpenTK.Mathematics.pdb",
+        "lib/netstandard2.1/OpenTK.Mathematics.xml",
+        "opentk.mathematics.4.7.5.nupkg.sha512",
+        "opentk.mathematics.nuspec"
+      ]
+    },
+    "OpenTK.OpenAL/4.7.5": {
+      "sha512": "o0jEaAJnCZytgs17TbmJGRpyrOAfShyDz7dlbjoE9a0clM6QIl1nY9+ct9wnNCXds1NnctKveUzDqIJ5XBcm/A==",
+      "type": "package",
+      "path": "opentk.openal/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.OpenAL.dll",
+        "lib/netcoreapp3.1/OpenTK.OpenAL.pdb",
+        "lib/netcoreapp3.1/OpenTK.OpenAL.xml",
+        "opentk.openal.4.7.5.nupkg.sha512",
+        "opentk.openal.nuspec"
+      ]
+    },
+    "OpenTK.redist.glfw/3.3.8.30": {
+      "sha512": "dYk7CJ+eOKHVn5IPKCBzmRDHcDy6+oy0fxPntTcl48+NTmOf15e2vKtF9BM7vQFWA8UFmT09Zk05mNHYa3zYWA==",
+      "type": "package",
+      "path": "opentk.redist.glfw/3.3.8.30",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "COPYING.md",
+        "lib/netstandard2.0/_._",
+        "opentk.png",
+        "opentk.redist.glfw.3.3.8.30.nupkg.sha512",
+        "opentk.redist.glfw.nuspec",
+        "runtimes/linux-x64/native/libglfw.so.3.3",
+        "runtimes/osx-arm64/native/libglfw.3.dylib",
+        "runtimes/osx-x64/native/libglfw.3.dylib",
+        "runtimes/win-x64/native/glfw3.dll",
+        "runtimes/win-x86/native/glfw3.dll"
+      ]
+    },
+    "OpenTK.Windowing.Common/4.7.5": {
+      "sha512": "vEO4MgZX1sarZ0q2wgySn0lKunqCTIX2pk/alO76sNZ3vh8lrQsAv+n9qUynD5JRxESiox0HktYxPoIkeUej4A==",
+      "type": "package",
+      "path": "opentk.windowing.common/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Common.dll",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Common.pdb",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Common.xml",
+        "lib/netstandard2.1/OpenTK.Windowing.Common.dll",
+        "lib/netstandard2.1/OpenTK.Windowing.Common.pdb",
+        "lib/netstandard2.1/OpenTK.Windowing.Common.xml",
+        "opentk.windowing.common.4.7.5.nupkg.sha512",
+        "opentk.windowing.common.nuspec"
+      ]
+    },
+    "OpenTK.Windowing.Desktop/4.7.5": {
+      "sha512": "8yfpN501XAGfNmxE6Ys/RxokVe1WiyeeiYR6uUjUkJUYf4W9rpK2tZqpspGoHjzL5Io1zo7XIKaW1T8S4NK2AQ==",
+      "type": "package",
+      "path": "opentk.windowing.desktop/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.dll",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.pdb",
+        "lib/netcoreapp3.1/OpenTK.Windowing.Desktop.xml",
+        "opentk.windowing.desktop.4.7.5.nupkg.sha512",
+        "opentk.windowing.desktop.nuspec"
+      ]
+    },
+    "OpenTK.Windowing.GraphicsLibraryFramework/4.7.5": {
+      "sha512": "zBSlfqgmtRZD41XlWVKbArtStLjOlvhMIaS6ETbYdbp6Nl/m3oPqnOGegfP12lFe2FvxBq/nRGgaNiQ/VSVPRg==",
+      "type": "package",
+      "path": "opentk.windowing.graphicslibraryframework/4.7.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.dll",
+        "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.pdb",
+        "lib/netcoreapp3.1/OpenTK.Windowing.GraphicsLibraryFramework.xml",
+        "opentk.windowing.graphicslibraryframework.4.7.5.nupkg.sha512",
+        "opentk.windowing.graphicslibraryframework.nuspec"
+      ]
+    },
+    "SharpFont.Dependencies/2.6.0": {
+      "sha512": "MuR0lFIZI1pSw0QAgdzK0teIUkkMjh4Q/3Hm06BQKuOiSmbJCglox5Ny+8XK6VQDkOrw5cuMw85K3HdTEYWk+w==",
+      "type": "package",
+      "path": "sharpfont.dependencies/2.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bin/msvc10/x64/freetype6.dll",
+        "bin/msvc10/x86/freetype6.dll",
+        "bin/msvc11/x64/freetype6.dll",
+        "bin/msvc11/x86/freetype6.dll",
+        "bin/msvc12/x64/freetype6.dll",
+        "bin/msvc12/x86/freetype6.dll",
+        "bin/msvc9/x64/freetype6.dll",
+        "bin/msvc9/x86/freetype6.dll",
+        "build/SharpFont.Dependencies.props",
+        "sharpfont.dependencies.2.6.0.nupkg.sha512",
+        "sharpfont.dependencies.nuspec"
+      ]
+    },
+    "SixLabors.Fonts/2.0.0": {
+      "sha512": "7kQOwkob8OBTmUWXGUBZuLvRC436IChLzXX0oF3ak+YqXwQDAs9MpuKdvujygcVhs8RyykBSpBpReCi5cQG+iA==",
+      "type": "package",
+      "path": "sixlabors.fonts/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net6.0/SixLabors.Fonts.dll",
+        "lib/net6.0/SixLabors.Fonts.xml",
+        "sixlabors.fonts.128.png",
+        "sixlabors.fonts.2.0.0.nupkg.sha512",
+        "sixlabors.fonts.nuspec"
+      ]
+    },
+    "SixLabors.ImageSharp/3.1.5": {
+      "sha512": "lNtlq7dSI/QEbYey+A0xn48z5w4XHSffF8222cC4F4YwTXfEImuiBavQcWjr49LThT/pRmtWJRcqA/PlL+eJ6g==",
+      "type": "package",
+      "path": "sixlabors.imagesharp/3.1.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "build/SixLabors.ImageSharp.props",
+        "lib/net6.0/SixLabors.ImageSharp.dll",
+        "lib/net6.0/SixLabors.ImageSharp.xml",
+        "sixlabors.imagesharp.128.png",
+        "sixlabors.imagesharp.3.1.5.nupkg.sha512",
+        "sixlabors.imagesharp.nuspec"
+      ]
+    },
+    "SkiaSharp/2.88.6": {
+      "sha512": "wdfeBAQrEQCbJIRgAiargzP1Uy+0grZiG4CSgBnhAgcJTsPzlifIaO73JRdwIlT3TyBoeU9jEqzwFUhl4hTYnQ==",
+      "type": "package",
+      "path": "skiasharp/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "interactive-extensions/dotnet/SkiaSharp.DotNet.Interactive.dll",
+        "lib/monoandroid1.0/SkiaSharp.dll",
+        "lib/monoandroid1.0/SkiaSharp.pdb",
+        "lib/monoandroid1.0/SkiaSharp.xml",
+        "lib/net462/SkiaSharp.dll",
+        "lib/net462/SkiaSharp.pdb",
+        "lib/net462/SkiaSharp.xml",
+        "lib/net6.0-android30.0/SkiaSharp.dll",
+        "lib/net6.0-android30.0/SkiaSharp.pdb",
+        "lib/net6.0-android30.0/SkiaSharp.xml",
+        "lib/net6.0-ios13.6/SkiaSharp.dll",
+        "lib/net6.0-ios13.6/SkiaSharp.pdb",
+        "lib/net6.0-ios13.6/SkiaSharp.xml",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.dll",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.pdb",
+        "lib/net6.0-maccatalyst13.5/SkiaSharp.xml",
+        "lib/net6.0-macos10.15/SkiaSharp.dll",
+        "lib/net6.0-macos10.15/SkiaSharp.pdb",
+        "lib/net6.0-macos10.15/SkiaSharp.xml",
+        "lib/net6.0-tizen7.0/SkiaSharp.dll",
+        "lib/net6.0-tizen7.0/SkiaSharp.pdb",
+        "lib/net6.0-tizen7.0/SkiaSharp.xml",
+        "lib/net6.0-tvos13.4/SkiaSharp.dll",
+        "lib/net6.0-tvos13.4/SkiaSharp.pdb",
+        "lib/net6.0-tvos13.4/SkiaSharp.xml",
+        "lib/net6.0/SkiaSharp.dll",
+        "lib/net6.0/SkiaSharp.pdb",
+        "lib/net6.0/SkiaSharp.xml",
+        "lib/netcoreapp3.1/SkiaSharp.dll",
+        "lib/netcoreapp3.1/SkiaSharp.pdb",
+        "lib/netcoreapp3.1/SkiaSharp.xml",
+        "lib/netstandard1.3/SkiaSharp.dll",
+        "lib/netstandard1.3/SkiaSharp.pdb",
+        "lib/netstandard1.3/SkiaSharp.xml",
+        "lib/netstandard2.0/SkiaSharp.dll",
+        "lib/netstandard2.0/SkiaSharp.pdb",
+        "lib/netstandard2.0/SkiaSharp.xml",
+        "lib/netstandard2.1/SkiaSharp.dll",
+        "lib/netstandard2.1/SkiaSharp.pdb",
+        "lib/netstandard2.1/SkiaSharp.xml",
+        "lib/tizen40/SkiaSharp.dll",
+        "lib/tizen40/SkiaSharp.pdb",
+        "lib/tizen40/SkiaSharp.xml",
+        "lib/uap10.0.10240/SkiaSharp.dll",
+        "lib/uap10.0.10240/SkiaSharp.pdb",
+        "lib/uap10.0.10240/SkiaSharp.xml",
+        "lib/uap10.0.16299/SkiaSharp.dll",
+        "lib/uap10.0.16299/SkiaSharp.pdb",
+        "lib/uap10.0.16299/SkiaSharp.xml",
+        "lib/xamarinios1.0/SkiaSharp.dll",
+        "lib/xamarinios1.0/SkiaSharp.pdb",
+        "lib/xamarinios1.0/SkiaSharp.xml",
+        "lib/xamarinmac2.0/SkiaSharp.dll",
+        "lib/xamarinmac2.0/SkiaSharp.pdb",
+        "lib/xamarinmac2.0/SkiaSharp.xml",
+        "lib/xamarintvos1.0/SkiaSharp.dll",
+        "lib/xamarintvos1.0/SkiaSharp.pdb",
+        "lib/xamarintvos1.0/SkiaSharp.xml",
+        "lib/xamarinwatchos1.0/SkiaSharp.dll",
+        "lib/xamarinwatchos1.0/SkiaSharp.pdb",
+        "lib/xamarinwatchos1.0/SkiaSharp.xml",
+        "skiasharp.2.88.6.nupkg.sha512",
+        "skiasharp.nuspec"
+      ]
+    },
+    "SkiaSharp.NativeAssets.macOS/2.88.6": {
+      "sha512": "Sko9LFxRXSjb3OGh5/RxrVRXxYo48tr5NKuuSy6jB85GrYt8WRqVY1iLOLwtjPiVAt4cp+pyD4i30azanS64dw==",
+      "type": "package",
+      "path": "skiasharp.nativeassets.macos/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/net462/SkiaSharp.NativeAssets.macOS.targets",
+        "build/net6.0-macos10.15/SkiaSharp.NativeAssets.macOS.targets",
+        "build/xamarinmac2.0/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net462/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net6.0-macos10.15/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/xamarinmac2.0/SkiaSharp.NativeAssets.macOS.targets",
+        "lib/net462/_._",
+        "lib/net6.0-macos10.15/_._",
+        "lib/net6.0/_._",
+        "lib/netcoreapp3.1/_._",
+        "lib/netstandard1.3/_._",
+        "lib/xamarinmac2.0/_._",
+        "runtimes/osx/native/libSkiaSharp.dylib",
+        "skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
+        "skiasharp.nativeassets.macos.nuspec"
+      ]
+    },
+    "SkiaSharp.NativeAssets.Win32/2.88.6": {
+      "sha512": "7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ==",
+      "type": "package",
+      "path": "skiasharp.nativeassets.win32/2.88.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/net462/SkiaSharp.NativeAssets.Win32.targets",
+        "buildTransitive/net462/SkiaSharp.NativeAssets.Win32.targets",
+        "lib/net462/_._",
+        "lib/net6.0/_._",
+        "lib/netcoreapp3.1/_._",
+        "lib/netstandard1.3/_._",
+        "runtimes/win-arm64/native/libSkiaSharp.dll",
+        "runtimes/win-x64/native/libSkiaSharp.dll",
+        "runtimes/win-x86/native/libSkiaSharp.dll",
+        "skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
+        "skiasharp.nativeassets.win32.nuspec"
+      ]
+    },
+    "System.Buffers/4.4.0": {
+      "sha512": "AwarXzzoDwX6BgrhjoJsk6tUezZEozOT5Y9QKF94Gl4JK91I4PIIBkBco9068Y9/Dra8Dkbie99kXB8+1BaYKw==",
+      "type": "package",
+      "path": "system.buffers/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Buffers.dll",
+        "lib/netstandard1.1/System.Buffers.xml",
+        "lib/netstandard2.0/System.Buffers.dll",
+        "lib/netstandard2.0/System.Buffers.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.1/System.Buffers.dll",
+        "ref/netstandard1.1/System.Buffers.xml",
+        "ref/netstandard2.0/System.Buffers.dll",
+        "ref/netstandard2.0/System.Buffers.xml",
+        "system.buffers.4.4.0.nupkg.sha512",
+        "system.buffers.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Drawing.Common/7.0.0": {
+      "sha512": "KIX+oBU38pxkKPxvLcLfIkOV5Ien8ReN78wro7OF5/erwcmortzeFx+iBswlh2Vz6gVne0khocQudGwaO1Ey6A==",
+      "type": "package",
+      "path": "system.drawing.common/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Drawing.Common.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Drawing.Common.targets",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net462/System.Drawing.Common.dll",
+        "lib/net462/System.Drawing.Common.xml",
+        "lib/net6.0/System.Drawing.Common.dll",
+        "lib/net6.0/System.Drawing.Common.xml",
+        "lib/net7.0/System.Drawing.Common.dll",
+        "lib/net7.0/System.Drawing.Common.xml",
+        "lib/netstandard2.0/System.Drawing.Common.dll",
+        "lib/netstandard2.0/System.Drawing.Common.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.xml",
+        "runtimes/win/lib/net7.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/net7.0/System.Drawing.Common.xml",
+        "system.drawing.common.7.0.0.nupkg.sha512",
+        "system.drawing.common.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "System.Numerics.Vectors/4.4.0": {
+      "sha512": "UiLzLW+Lw6HLed1Hcg+8jSRttrbuXv7DANVj0DkL9g6EnnzbL75EB7EWsw5uRbhxd/4YdG8li5XizGWepmG3PQ==",
+      "type": "package",
+      "path": "system.numerics.vectors/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Numerics.Vectors.dll",
+        "lib/net46/System.Numerics.Vectors.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Numerics.Vectors.dll",
+        "lib/netstandard1.0/System.Numerics.Vectors.xml",
+        "lib/netstandard2.0/System.Numerics.Vectors.dll",
+        "lib/netstandard2.0/System.Numerics.Vectors.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Numerics.Vectors.dll",
+        "ref/net46/System.Numerics.Vectors.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.0/System.Numerics.Vectors.dll",
+        "ref/netstandard1.0/System.Numerics.Vectors.xml",
+        "ref/netstandard2.0/System.Numerics.Vectors.dll",
+        "ref/netstandard2.0/System.Numerics.Vectors.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.numerics.vectors.4.4.0.nupkg.sha512",
+        "system.numerics.vectors.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Runtime.CompilerServices.Unsafe/5.0.0": {
+      "sha512": "ZD9TMpsmYJLrxbbmdvhwt9YEgG5WntEnZ/d1eH8JBX9LBp+Ju8BSBhUGbZMNVHHomWo2KVImJhTDl2hIgw/6MA==",
+      "type": "package",
+      "path": "system.runtime.compilerservices.unsafe/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net45/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/net45/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/net461/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard2.1/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard2.1/System.Runtime.CompilerServices.Unsafe.xml",
+        "system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "EmberaEngine/1.0.0": {
+      "type": "project",
+      "path": "../EmberaEngine/EmberaEngine.csproj",
+      "msbuildProject": "../EmberaEngine/EmberaEngine.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net7.0": [
+      "EmberaEngine >= 1.0.0",
+      "Newtonsoft.Json >= 13.0.3"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\maari\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj",
+      "projectName": "ElementalEditor",
+      "projectPath": "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj",
+      "packagesPath": "C:\\Users\\maari\\.nuget\\packages\\",
+      "outputPath": "C:\\Programming\\Embera Engine\\ElementalEditor\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\maari\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "projectReferences": {
+            "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj": {
+              "projectPath": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net7.0": {
+        "targetAlias": "net7.0",
+        "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

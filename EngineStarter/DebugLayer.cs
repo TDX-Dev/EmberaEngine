@@ -10,6 +10,7 @@ using EmberaEngine.Engine.Utilities;
 using OpenTK.Graphics.OpenGL;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Rendering;
+using OpenTK.Mathematics;
 
 namespace EngineStarter
 {
@@ -29,22 +30,24 @@ namespace EngineStarter
         }
 
         TextComponent t;
+        CanvasComponent t1;
 
         void LoadTestSandbox()
         {
             GameObject mainScreenCanvas = scene.addGameObject("MainCanvas");
-            mainScreenCanvas.AddComponent<CanvasComponent>().ScaleMode = CanvasScaleMode.ScaleWithScreen;
+            t1 = mainScreenCanvas.AddComponent<CanvasComponent>();
+            t1.ScaleMode = CanvasScaleMode.ScaleWithScreen;
 
             GameObject playText = scene.addGameObject("PlayText");
-            playText.AddComponent<TextComponent>().Content = "Play";
-            playText.transform.position.X = 400 - 50;
+            playText.AddComponent<ButtonComponent>();
+            playText.transform.position.X = 400;
             playText.transform.position.Y = 300;
-            playText.transform.scale *= 2;
+            playText.transform.scale.X = 800;
+            playText.transform.scale.Y = 600;
 
-            GameObject screenText = scene.addGameObject("new");
-            SpriteRenderer sr = screenText.AddComponent<SpriteRenderer>();
             Image image = new EmberaEngine.Engine.Utilities.Image();
-            image.LoadPNG("animationExample/tile (1).png");
+            image.LoadPNG("untitled.png");
+
 
             Texture debugTexture = new Texture(EmberaEngine.Engine.Core.TextureTarget2d.Texture2D);
             debugTexture.SetFilter(EmberaEngine.Engine.Core.TextureMinFilter.Linear, EmberaEngine.Engine.Core.TextureMagFilter.Linear);
@@ -52,11 +55,17 @@ namespace EngineStarter
             debugTexture.TexImage2D<byte>(image.Width, image.Height, EmberaEngine.Engine.Core.PixelInternalFormat.Rgba16f, EmberaEngine.Engine.Core.PixelFormat.Rgba, EmberaEngine.Engine.Core.PixelType.UnsignedByte, image.Pixels);
             debugTexture.GenerateMipmap();
 
+            playText.AddComponent<SpriteRenderer>().Sprite = debugTexture;
+
+            GameObject screenText = scene.addGameObject("new");
+            SpriteRenderer sr = screenText.AddComponent<SpriteRenderer>();
+
             sr.Sprite = debugTexture;
-            sr.SolidColor = new OpenTK.Mathematics.Vector4(0, 1, 0, 0.2f);
+            //sr.SolidColor = new OpenTK.Mathematics.Vector4(0, 1, 0, 0.2f);
             screenText.transform.position.X = 400 - 50;
             screenText.transform.position.Y = 300;
-            screenText.transform.scale *= 100;
+            screenText.transform.scale.X = 200;
+            screenText.transform.scale.Y = 100;
 
         }
 
@@ -66,6 +75,20 @@ namespace EngineStarter
         {
 
             scene.OnUpdate(deltaTime);
+
+            
+
+
+        }
+
+        public override void OnMouseMove(MouseMoveEvent moveEvent)
+        {
+
+        }
+
+        public override void OnMouseButton(MouseButtonEvent buttonEvent)
+        {
+
         }
 
         public override void OnRender()

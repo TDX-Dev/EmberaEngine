@@ -14,7 +14,7 @@
           "OpenTK": "4.7.5",
           "SharpFont.Dependencies": "2.6.0",
           "SixLabors.Fonts": "2.0.0",
-          "SixLabors.ImageSharp": "3.0.2",
+          "SixLabors.ImageSharp": "3.1.5",
           "SkiaSharp": "2.88.6",
           "System.Drawing.Common": "7.0.0",
           "SharpFont": "4.0.1.200"
@@ -231,11 +231,11 @@
           }
         }
       },
-      "SixLabors.ImageSharp/3.0.2": {
+      "SixLabors.ImageSharp/3.1.5": {
         "runtime": {
           "lib/net6.0/SixLabors.ImageSharp.dll": {
             "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.0.2.0"
+            "fileVersion": "3.1.5.0"
           }
         }
       },
@@ -436,12 +436,12 @@
       "path": "sixlabors.fonts/2.0.0",
       "hashPath": "sixlabors.fonts.2.0.0.nupkg.sha512"
     },
-    "SixLabors.ImageSharp/3.0.2": {
+    "SixLabors.ImageSharp/3.1.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-PlwUHnLZ67G1i0xXDYQJYbFiJsvXiEFWtKdV0QvY9j+dFasYbl+vWXXY42/asTsNjchsH5BLuoRzlf8Fa8lzpg==",
-      "path": "sixlabors.imagesharp/3.0.2",
-      "hashPath": "sixlabors.imagesharp.3.0.2.nupkg.sha512"
+      "sha512": "sha512-lNtlq7dSI/QEbYey+A0xn48z5w4XHSffF8222cC4F4YwTXfEImuiBavQcWjr49LThT/pRmtWJRcqA/PlL+eJ6g==",
+      "path": "sixlabors.imagesharp/3.1.5",
+      "hashPath": "sixlabors.imagesharp.3.1.5.nupkg.sha512"
     },
     "SkiaSharp/2.88.6": {
       "type": "package",

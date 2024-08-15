@@ -4,6 +4,76 @@
     "C:\\Programming\\Embera Engine\\EngineStarter\\EngineStarter.csproj": {}
   },
   "projects": {
+    "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj",
+        "projectName": "ElementalEditor",
+        "projectPath": "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj",
+        "packagesPath": "C:\\Users\\maari\\.nuget\\packages\\",
+        "outputPath": "C:\\Programming\\Embera Engine\\ElementalEditor\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\maari\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj": {
+                "projectPath": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -34,6 +104,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -66,7 +141,7 @@
             },
             "SixLabors.ImageSharp": {
               "target": "Package",
-              "version": "[3.0.2, )"
+              "version": "[3.1.5, )"
             },
             "SkiaSharp": {
               "target": "Package",
@@ -93,7 +168,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
@@ -121,6 +196,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj": {
+                "projectPath": "C:\\Programming\\Embera Engine\\ElementalEditor\\ElementalEditor.csproj"
+              },
               "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj": {
                 "projectPath": "C:\\Programming\\Embera Engine\\EmberaEngine\\EmberaEngine.csproj"
               }
@@ -131,6 +209,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -152,7 +235,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
