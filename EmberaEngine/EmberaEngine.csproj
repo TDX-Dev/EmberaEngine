@@ -534,6 +534,7 @@
     <PackageReference Include="BepuPhysics" Version="2.4.0" />
     <PackageReference Include="Box2D" Version="2.3.0" />
     <PackageReference Include="ImGui.NET" Version="1.87.2" />
+    <PackageReference Include="MemoryPack" Version="1.21.4" />
     <PackageReference Include="MessagePack" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK" Version="4.7.5" />

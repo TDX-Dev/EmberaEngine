@@ -7,10 +7,11 @@ using nkast.Aether.Physics2D.Common;
 
 namespace EmberaEngine.Engine.Core
 {
-    public class Scene
+    public class Scene : IDisposable
     {
+        private bool _disposed;
 
-        public List<GameObject> GameObjects;
+        public List<GameObject> GameObjects { get; set; }
 
         [IgnoreMember]
         public List<CameraComponent3D> Cameras;
@@ -20,7 +21,7 @@ namespace EmberaEngine.Engine.Core
         [IgnoreMember]
         public PhysicsManager3D PhysicsManager3D;
 
-
+        [IgnoreMember]
         public bool IsPlaying = false;
 
         public event Action<Component> OnComponentAdded = (c) => {};
@@ -176,6 +177,38 @@ namespace EmberaEngine.Engine.Core
             //{
             //    Cameras[i].
             //}
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            // check if already disposed
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Console.WriteLine("Disposing");
+                    for (int i = 0; i < GameObjects.Count; i++)
+                    {
+                        GameObjects[i].OnDestroy();
+                    }
+
+                }
+                // set the bool value to true
+                _disposed = true;
+            }
+        }
+
+        // The consumer object can call
+        // the below dispose method
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~Scene()
+        {
+
+            Dispose(false);
         }
     }
 }

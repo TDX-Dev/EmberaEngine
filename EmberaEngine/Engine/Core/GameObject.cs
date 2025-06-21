@@ -186,7 +186,16 @@ namespace EmberaEngine.Engine.Core
         {
             for (int i = 0; i < Components.Count; i++)
             {
+                Console.WriteLine(Components[i].Type);
                 Components[i].OnDestroy();
+            }
+
+            if (children.Count > 0)
+            {
+                for (int i = 0; i < children.Count; i++)
+                {
+                    children[i].OnDestroy();
+                }
             }
         }
 

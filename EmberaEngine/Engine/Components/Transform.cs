@@ -66,6 +66,7 @@ namespace EmberaEngine.Engine.Components
             get => globalPosition;
             set
             {
+                return;
                 if (gameObject.parentObject != null)
                 {
                     var parentTransform = gameObject.parentObject.transform;
@@ -98,6 +99,7 @@ namespace EmberaEngine.Engine.Components
 
         public void UpdateTransform()
         {
+            if (gameObject == null) return;
             // Construct local matrix from position, rotation, and scale
             localMatrix =
                 Matrix4.CreateScale(scale) *

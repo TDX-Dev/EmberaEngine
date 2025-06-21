@@ -191,6 +191,7 @@ namespace EmberaEngine.Engine.Components
 
         public override void OnDestroy()
         {
+            return;
             if (lightType == LightType.PointLight)
             {
                 LightManager.RemovePointLight(pointLight);

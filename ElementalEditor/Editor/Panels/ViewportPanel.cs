@@ -96,7 +96,12 @@ namespace ElementalEditor.Editor.Panels
                     {
                         if (ImGui.Button("Save Scene"))
                         {
-                            SceneSerializer.Serialize(editor.EditorCurrentScene);
+                            Scene scene = SceneSerializer.Serialize(editor.EditorCurrentScene);
+                            editor.EditorCurrentScene.Dispose();
+                            editor.EditorCurrentScene = null;
+                            editor.EditorCurrentScene = scene;
+                            editor.EditorCurrentScene.Initialize();
+
                         }
                     },
                     new Vector2(100, 40)

@@ -67,10 +67,12 @@ namespace EmberaEngine.Engine.Components
 
         public override void OnDestroy()
         {
+            Console.WriteLine("Help!");
             if (meshes.Length != 0)
             {
                 for (int i = 0; i < meshes.Length; i++)
                 {
+                    Console.WriteLine("Removing!");
                     Mesh mesh = meshes[i];
                     Renderer3D.RemoveMesh(mesh);
                 }
