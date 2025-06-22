@@ -16,8 +16,8 @@ namespace EmberaEngine.SourceGen
         {
             var componentTypes = context.CompilationProvider.Select(static (compilation, _) =>
             {
-                return GetAllTypes(compilation.GlobalNamespace)
-                    .Where(t => t.DeclaredAccessibility == Accessibility.Public && IsDerivedFromComponent(t))
+                return GeneratorUtils.GetAllTypes(compilation.GlobalNamespace)
+                    .Where(t => t.DeclaredAccessibility == Accessibility.Public && GeneratorUtils.IsDerivedFromComponent("Component", "EmberaEngine.Engine.Components", t))
                     .ToImmutableArray();
             });
 
@@ -30,6 +30,7 @@ namespace EmberaEngine.SourceGen
             sb.AppendLine("using System.Runtime.CompilerServices;");
             sb.AppendLine("using EmberaEngine.Engine.Components;");
             sb.AppendLine("using EmberaEngine.Engine.Utilities;");
+            sb.AppendLine("using EmberaEngine.Engine.Serializing;");
             sb.AppendLine();
             sb.AppendLine("namespace EmberaEngine.Generated");
             sb.AppendLine("{");
@@ -42,7 +43,10 @@ namespace EmberaEngine.SourceGen
             foreach (var type in types.Distinct(SymbolEqualityComparer.Default))
             {
                 var fullTypeName = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                sb.AppendLine($"            ComponentRegistry.Register<{fullTypeName}>();");
+                var formatterName = type.Name + "Formatter";
+                var formatterNamespace = "EmberaEngine.Engine.Serializing";
+                var formatterFullName = $"{formatterNamespace}.{formatterName}";
+                sb.AppendLine($"            ComponentRegistry.Register<{fullTypeName}>(() => new {formatterFullName}());");
             }
 
             sb.AppendLine("        }");
@@ -51,55 +55,6 @@ namespace EmberaEngine.SourceGen
             sb.AppendLine("}");
 
             context.AddSource("ComponentGeneratedRegisterType.g.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
-        }
-
-
-
-
-        private static IEnumerable<INamedTypeSymbol> GetAllTypes(INamespaceSymbol ns)
-        {
-            foreach (var member in ns.GetMembers())
-            {
-                if (member is INamespaceSymbol nestedNs)
-                {
-                    foreach (var type in GetAllTypes(nestedNs))
-                    {
-                        yield return type;
-                    }
-                } else if (member is INamedTypeSymbol type)
-                {
-                    yield return type;
-                    foreach (var nestedType in GetNestedTypes(type))
-                    {
-                        yield return nestedType;
-                    }
-                }
-            }
-        }
-
-        private static IEnumerable<INamedTypeSymbol> GetNestedTypes(INamedTypeSymbol type)
-        {
-            foreach (var nestedType in type.GetTypeMembers())
-            {
-                yield return nestedType;
-                foreach(var deeperNested in GetNestedTypes(nestedType))
-                {
-                    yield return deeperNested;
-                }
-            }
-        }
-
-        private static bool IsDerivedFromComponent(INamedTypeSymbol symbol)
-        {
-            var baseType = symbol.BaseType;
-            while (baseType != null)
-            {
-                if (baseType.Name == "Component" && baseType.ContainingNamespace.ToDisplayString() == "EmberaEngine.Engine.Components")
-                    return true;
-
-                baseType = baseType.BaseType;
-            }
-            return false;
         }
 
     }

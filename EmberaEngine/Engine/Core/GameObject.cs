@@ -11,7 +11,7 @@ namespace EmberaEngine.Engine.Core
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name;
 
-        public Transform transform { get; private set; }
+        public Transform transform { get; set; }
 
         private Scene scene;
 
@@ -39,6 +39,10 @@ namespace EmberaEngine.Engine.Core
 
             // This is because the scene object doesnt get assigned to the game object on initialization (obviously!)
             // So to prevent errors on calling ComponentAdded from scene, this bandaid solution has been implemented.
+        }
+
+        public void Initialize()
+        {
             transform = new Transform();
             transform.gameObject = this;
             Components.Add(transform);
@@ -186,7 +190,6 @@ namespace EmberaEngine.Engine.Core
         {
             for (int i = 0; i < Components.Count; i++)
             {
-                Console.WriteLine(Components[i].Type);
                 Components[i].OnDestroy();
             }
 

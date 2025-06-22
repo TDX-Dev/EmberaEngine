@@ -10,27 +10,79 @@ using OpenTK.Mathematics;
 
 namespace EmberaEngine.Engine.Serializing
 {
+    public static class FormatterRegistry
+    {
+        public static readonly List<IMessagePackFormatter> Formatters = new();
+
+        public static void Register(IMessagePackFormatter formatter)
+        {
+            Console.WriteLine(formatter);
+            Formatters.Add(formatter);
+        }
+    }
+
+    public class FormatterRegistryResolver : IFormatterResolver
+    {
+        public static readonly FormatterRegistryResolver Instance = new();
+
+        private readonly Dictionary<Type, object> _formatters = new();
+
+        private FormatterRegistryResolver()
+        {
+            // Register manual formatters
+            RegisterFormatter(new SceneFormatter());
+            RegisterFormatter(new GameObjectFormatter());
+            RegisterFormatter(new Vector2Formatter());
+            RegisterFormatter(new Vector3Formatter());
+            RegisterFormatter(new Vector4Formatter());
+
+            // Register auto-generated formatters
+            foreach (var formatter in FormatterRegistry.Formatters)
+            {
+                RegisterFormatter(formatter);
+            }
+        }
+
+        private void RegisterFormatter(object formatter)
+        {
+            var formatterType = formatter.GetType();
+
+            foreach (var iface in formatterType.GetInterfaces())
+            {
+                if (iface.IsGenericType && iface.GetGenericTypeDefinition() == typeof(IMessagePackFormatter<>))
+                {
+                    var targetType = iface.GetGenericArguments()[0];
+                    _formatters[targetType] = formatter;
+                    break;
+                }
+            }
+        }
+
+        public IMessagePackFormatter<T> GetFormatter<T>()
+        {
+            if (_formatters.TryGetValue(typeof(T), out var formatter))
+            {
+                return (IMessagePackFormatter<T>)formatter;
+            }
+            return null;
+        }
+    }
+
+
     public class SceneSerializer
     {
-        public static Scene currentDeserializingScene;
-        public static GameObject currentDeserializingGameObject;
-        public static bool isDeserializing = false;
+        public static Dictionary<string, GameObject> gameObjectGUIDReference;
 
 
-        public static Scene Serialize(Scene scene)
+        public static string Serialize(Scene scene)
         {
+            gameObjectGUIDReference = new Dictionary<string, GameObject>();
+
             var resolver = CompositeResolver.Create(
-                new IMessagePackFormatter[]
-                {
-                    new SceneFormatter(),
-                new GameObjectFormatter(),
-                new Vector2Formatter(),
-                new Vector3Formatter(),
-                new Vector4Formatter()
-                },
                 new IFormatterResolver[]
                 {
-                ContractlessStandardResolver.Instance // Use Standard or Contractless if you have no attributes
+                    FormatterRegistryResolver.Instance,
+                    ContractlessStandardResolver.Instance
                 }
             );
 
@@ -38,18 +90,24 @@ namespace EmberaEngine.Engine.Serializing
 
             // Serialize scene
             var binary = MessagePackSerializer.Serialize(scene, options);
-
             // Convert to JSON
             var json = MessagePackSerializer.ConvertToJson(binary);
-            //Console.WriteLine(json);
-            var prettyJson = JToken.Parse(json).ToString(Formatting.Indented);
-            Console.WriteLine(prettyJson);
-            isDeserializing = true;
-            Scene scene1 = MessagePackSerializer.Deserialize<Scene>(binary, options);
-            //Console.WriteLine(scene1.GameObjects.Count);
-            isDeserializing = false;
+            return json;
+        }
 
-            return new Scene();// MessagePackSerializer.Deserialize<Scene>(binary, options);
+        public static Scene DeSerialize(byte[] binary)
+        {
+            var resolver = CompositeResolver.Create(
+                new IFormatterResolver[]
+                {
+                                FormatterRegistryResolver.Instance,
+                                ContractlessStandardResolver.Instance
+                }
+            );
+
+            var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
+
+            return MessagePackSerializer.Deserialize<Scene>(binary, options);
         }
     }
 
@@ -59,10 +117,9 @@ namespace EmberaEngine.Engine.Serializing
         {
             // We'll serialize GameObjects and IsPlaying
             writer.WriteMapHeader(2);
-
             writer.Write("GameObjects");
             options.Resolver.GetFormatterWithVerify<List<GameObject>>().Serialize(ref writer, value.GameObjects, options);
-
+            
             writer.Write("IsPlaying");
             writer.Write(value.IsPlaying);
         }
@@ -75,8 +132,6 @@ namespace EmberaEngine.Engine.Serializing
             bool isPlaying = false;
 
             var scene = new Scene();
-
-            SceneSerializer.currentDeserializingScene = scene;
 
             for (int i = 0; i < count; i++)
             {
@@ -131,9 +186,11 @@ namespace EmberaEngine.Engine.Serializing
     {
         public void Serialize(ref MessagePackWriter writer, GameObject value, MessagePackSerializerOptions options)
         {
-            var components = value.GetComponents();
+            var components = value.GetComponents()
+                .Where(comp => comp != value.transform) // Exclude transform from components
+                .ToList();
 
-            writer.WriteMapHeader(5);
+            writer.WriteMapHeader(6);
 
             writer.Write("NAME");
             writer.Write(value.Name);
@@ -146,6 +203,10 @@ namespace EmberaEngine.Engine.Serializing
 
             writer.Write("CHILDREN");
             options.Resolver.GetFormatterWithVerify<List<GameObject>>().Serialize(ref writer, value.children, options);
+
+            // Serialize transform directly
+            writer.Write("TRANSFORM");
+            MessagePackSerializer.Serialize(ref writer, value.transform, options);
 
             writer.Write("COMPONENTS");
             writer.WriteArrayHeader(components.Count);
@@ -161,27 +222,23 @@ namespace EmberaEngine.Engine.Serializing
                 writer.Write(comp.Type);
 
                 writer.Write("DATA");
-                var formatter = ComponentRegistry.GetInjectableFormatter(id);
-
-                // cast to proper formatter type
-                // this is safe because ComponentFormatter<T> implements IInjectableFormatter<T>
-                formatter.Serialize(ref writer, comp, options); // ⚠️ won't compile — see below
-
+                var formatter = ComponentRegistry.GetFormatter(id);
+                formatter.Serialize(ref writer, comp, options);
             }
         }
 
         public GameObject Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
-
             var count = reader.ReadMapHeader();
 
             string name = null;
             Guid id = Guid.Empty;
             Guid? parentId = null;
             List<GameObject> children = null;
+            Transform transform = null;
             List<(ushort, Component)> deserializedComponents = new();
 
-            var go = new GameObject(); // Create GameObject first
+            var go = new GameObject(); // Don't call constructor
 
             for (int i = 0; i < count; i++)
             {
@@ -194,6 +251,8 @@ namespace EmberaEngine.Engine.Serializing
                         break;
                     case "GUID":
                         id = Guid.Parse(reader.ReadString());
+                        go.Id = id;
+                        SceneSerializer.gameObjectGUIDReference.Add(id.ToString(), go);
                         break;
                     case "PARENT_GUID":
                         var parentStr = reader.ReadString();
@@ -201,6 +260,11 @@ namespace EmberaEngine.Engine.Serializing
                         break;
                     case "CHILDREN":
                         children = options.Resolver.GetFormatterWithVerify<List<GameObject>>().Deserialize(ref reader, options);
+                        break;
+                    case "TRANSFORM":
+                        transform = MessagePackSerializer.Deserialize<Transform>(ref reader, options);
+                        go.AddComponent(transform);
+                        go.transform = transform;
                         break;
                     case "COMPONENTS":
                         {
@@ -221,16 +285,11 @@ namespace EmberaEngine.Engine.Serializing
                                             compId = reader.ReadUInt16();
                                             break;
                                         case "TYPE":
-                                            type = reader.ReadString(); // can be skipped
+                                            reader.Skip(); // optional
                                             break;
                                         case "DATA":
-                                            Console.WriteLine("datapass");
-                                            reader.Skip();
-                                            comp = ComponentRegistry.CreateInstance(compId);
-                                            comp.gameObject = go;
-
-                                            var formatter = ComponentRegistry.GetInjectableFormatter(compId);
-                                            //comp = formatter.DeserializeInto(ref reader, options, comp);
+                                            var formatter = ComponentRegistry.GetFormatter(compId);
+                                            comp = formatter.Deserialize(ref reader, options);
                                             break;
                                         default:
                                             reader.Skip();
@@ -243,61 +302,61 @@ namespace EmberaEngine.Engine.Serializing
                             }
                             break;
                         }
-
-
-
                 }
             }
-            go.RemoveComponent<Transform>();
-            go.Name = name;
-            go.Id = id;
-            go.children = children ?? new List<GameObject>();
 
-            // Add components *after* setting up GameObject
+            // Apply values
+            go.Name = name;
+            go.children = children ?? new List<GameObject>();
+            if (transform != null)
+            {
+                transform.gameObject = go;
+            }
+
+            // Add components
+            go.Components = new List<Component>();
+            if (transform != null)
+                go.Components.Add(transform);
+
             foreach (var (compId, comp) in deserializedComponents)
             {
                 comp.gameObject = go;
-
-                // Deserialize into the component using correct formatter with injected GameObject
-                //var formatter = ComponentRegistry.GetFormatter(compId, go);
-                //formatter.Deserialize(ref reader, options);
-
-                go.AddComponent(comp); // optional: if you're using an AddComponent API
+                go.Components.Add(comp);
             }
-
 
             return go;
         }
     }
 
-    public class ComponentFormatter<T> : IInjectableFormatter<T> where T : Component, new()
+
+    public class ComponentFormatter<T> : IMessagePackFormatter<T> where T : Component, new()
     {
         public void Serialize(ref MessagePackWriter writer, T value, MessagePackSerializerOptions options)
         {
             options.Resolver.GetFormatterWithVerify<T>().Serialize(ref writer, value, options);
         }
 
-        public T DeserializeInto(ref MessagePackReader reader, MessagePackSerializerOptions options, T existingInstance)
+        public T Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
-            Console.WriteLine("Deserializing into!");
-            Console.WriteLine(existingInstance.gameObject);
             var raw = options.Resolver.GetFormatterWithVerify<T>();
             var temp = raw.Deserialize(ref reader, options);
-
-            // Inject back the GameObject reference
-            temp.gameObject = existingInstance.gameObject;
             return temp;
         }
     }
 
-
-
-    public interface IInjectableFormatter<T>
+    public class Adapter<T> : IMessagePackFormatter<Component> where T : Component
     {
-        void Serialize(ref MessagePackWriter writer, T value, MessagePackSerializerOptions options);
+        private readonly IMessagePackFormatter<T> inner;
 
-        T DeserializeInto(ref MessagePackReader reader, MessagePackSerializerOptions options, T existingInstance);
+        public Adapter(IMessagePackFormatter<T> inner) => this.inner = inner;
+
+        public void Serialize(ref MessagePackWriter writer, Component value, MessagePackSerializerOptions options)
+            => inner.Serialize(ref writer, (T)value, options); // ✅ Downcast works
+
+        public Component Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+            => inner.Deserialize(ref reader, options);
     }
+
 
 
 

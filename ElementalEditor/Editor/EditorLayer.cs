@@ -228,7 +228,7 @@ namespace ElementalEditor.Editor
 
             //Mesh[] meshLoaderOutput = ModelImporter.LoadModel("Engine/Content/Models/Portal2-Elevator/scene.gltf");
 
-            EditorCurrentScene.addGameObject(meshLoaderOutput.rootObject);
+            //EditorCurrentScene.addGameObject(meshLoaderOutput.rootObject);
         }
 
         GameObject barrelObject;

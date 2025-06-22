@@ -1,4 +1,5 @@
 ﻿using EmberaEngine.Engine.Rendering;
+using EmberaEngine.Engine.Serializing;
 using EmberaEngine.Engine.Utilities;
 using OpenTK.Mathematics;
 using System;
@@ -104,6 +105,7 @@ namespace EmberaEngine.Engine.Components
 
         public LightComponent()
         {
+
             pointLight = LightManager.AddPointLight(Vector3.Zero, color, intensity, radius);
         }
 

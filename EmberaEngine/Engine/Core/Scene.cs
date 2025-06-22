@@ -47,6 +47,7 @@ namespace EmberaEngine.Engine.Core
             GameObject gameObject = new GameObject();
             gameObject.Name = name;
             gameObject.Scene = this;
+            gameObject.Initialize();
             GameObjects.Add(gameObject);
             return gameObject;
         }
@@ -185,7 +186,6 @@ namespace EmberaEngine.Engine.Core
             {
                 if (disposing)
                 {
-                    Console.WriteLine("Disposing");
                     for (int i = 0; i < GameObjects.Count; i++)
                     {
                         GameObjects[i].OnDestroy();
