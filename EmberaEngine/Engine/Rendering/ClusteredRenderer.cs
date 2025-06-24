@@ -192,7 +192,6 @@ namespace EmberaEngine.Engine.Rendering
         public void Render()
         {
             Camera camera = Renderer3D.GetRenderCamera();
-
             if (camera.fovy != oldFOV)
             {
                 CreateScreenViewSSBO(camera);
@@ -209,8 +208,10 @@ namespace EmberaEngine.Engine.Rendering
 
             for (int i = 0; i < meshes.Count; i++)
             {
+                Console.WriteLine("Mesh");
+                Console.WriteLine(meshes[i].Name);
                 Mesh mesh = meshes[i];
-                PBRMaterial material = (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialIndex);
+                PBRMaterial material = (PBRMaterial)GetDefaultMaterial();// (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialReference);
 
                 //if (i == 0)
                 //{
@@ -234,7 +235,7 @@ namespace EmberaEngine.Engine.Rendering
                 GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex + 2);
                 SkyboxManager.GetBRDFLUT().Bind();
 
-                Matrix4 model = mesh.worldMatrix;
+                Matrix4 model = mesh.WorldMatrix;
 
 
                 material.shader.SetVector3("ambientColor", new Vector3(renderSettings.AmbientColor.R, renderSettings.AmbientColor.G, renderSettings.AmbientColor.B));
@@ -349,7 +350,7 @@ namespace EmberaEngine.Engine.Rendering
 
         public Material GetDefaultMaterial()
         {
-            PBRMaterial pbrMaterial = new PBRMaterial();
+            PBRMaterial pbrMaterial = new PBRMaterial(ShaderRegistry.GetShader("CLUSTERED_PBR"));
             pbrMaterial.SetDefaults();
 
             return pbrMaterial;

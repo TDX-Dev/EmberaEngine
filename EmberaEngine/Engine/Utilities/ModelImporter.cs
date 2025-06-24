@@ -1,4 +1,5 @@
 ﻿using Assimp;
+using EmberaEngine.Engine.AssetLoaders;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
@@ -105,6 +106,7 @@ namespace EmberaEngine.Engine.Utilities
                     var processedMesh = ProcessMesh(assimpMesh, scene, node.Transform, virtualPath);
 
                     var meshGO = new GameObject();
+                    meshGO.Initialize();
                     meshGO.Name = assimpMesh.Name != "" ? assimpMesh.Name.Substring(0, Math.Min(10, assimpMesh.Name.Length)) : $"Mesh_{meshIdx}";
 
                     var meshRenderer = meshGO.AddComponent<MeshRenderer>();
@@ -146,6 +148,7 @@ namespace EmberaEngine.Engine.Utilities
                     }
                 }
                 var gameObject = new GameObject();
+                gameObject.Initialize();
                 gameObject.Name = cam.Name;
                 var fallbackCamera = gameObject.AddComponent<CameraComponent3D>();
                 fallbackCamera.FarPlane = cam.ClipPlaneFar;
@@ -187,6 +190,7 @@ namespace EmberaEngine.Engine.Utilities
                     if (targetGO == null)
                     {
                         targetGO = new GameObject();
+                        targetGO.Initialize();
                         targetGO.Name = light.Name;
                         node.Transform.DecomposeNoScaling(out Assimp.Quaternion rot, out Vector3D assimpPos);
                         targetGO.transform.Position = new OpenTK.Mathematics.Vector3(assimpPos.X, assimpPos.Y, assimpPos.Z) * 0.02f;
@@ -289,8 +293,8 @@ namespace EmberaEngine.Engine.Utilities
                 vertices.Add(vertex);
             }
             Mesh mesh1 = new Mesh();
-            mesh1.name = mesh.Name;
-            mesh1.MeshID = mesh.Name.GetHashCode();
+            mesh1.Name = mesh.Name;
+            //mesh1.MeshID = mesh.Name.GetHashCode();
             mesh1.SetPath(path);
             mesh1.SetVertices(vertices.ToArray());
             if (indices.Length != 0)
@@ -312,7 +316,7 @@ namespace EmberaEngine.Engine.Utilities
                 processedMaterialIndices[mesh.MaterialIndex] = materialID;
             }
 
-            mesh1.MaterialIndex = materialID;
+            //mesh1.MaterialIndex = m;
             return mesh1;
         }
 

@@ -16,7 +16,6 @@ namespace EmberaEngine.Engine.Serializing
 
         public static void Register(IMessagePackFormatter formatter)
         {
-            Console.WriteLine(formatter);
             Formatters.Add(formatter);
         }
     }
@@ -74,9 +73,8 @@ namespace EmberaEngine.Engine.Serializing
         public static Dictionary<string, GameObject> gameObjectGUIDReference;
 
 
-        public static string Serialize(Scene scene)
+        public static byte[] Serialize(Scene scene)
         {
-            gameObjectGUIDReference = new Dictionary<string, GameObject>();
 
             var resolver = CompositeResolver.Create(
                 new IFormatterResolver[]
@@ -92,11 +90,13 @@ namespace EmberaEngine.Engine.Serializing
             var binary = MessagePackSerializer.Serialize(scene, options);
             // Convert to JSON
             var json = MessagePackSerializer.ConvertToJson(binary);
-            return json;
+            return binary;
         }
 
         public static Scene DeSerialize(byte[] binary)
         {
+            gameObjectGUIDReference = new Dictionary<string, GameObject>();
+
             var resolver = CompositeResolver.Create(
                 new IFormatterResolver[]
                 {
@@ -117,11 +117,16 @@ namespace EmberaEngine.Engine.Serializing
         {
             // We'll serialize GameObjects and IsPlaying
             writer.WriteMapHeader(2);
+
+            writer.Write("GUID");
+            writer.Write(value.Id.ToString());
+
+            writer.Write("NAME");
+            writer.Write(value.Name);
+
             writer.Write("GameObjects");
             options.Resolver.GetFormatterWithVerify<List<GameObject>>().Serialize(ref writer, value.GameObjects, options);
             
-            writer.Write("IsPlaying");
-            writer.Write(value.IsPlaying);
         }
 
         public Scene Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
@@ -129,7 +134,7 @@ namespace EmberaEngine.Engine.Serializing
             var count = reader.ReadMapHeader();
 
             List<GameObject> gameObjects = null;
-            bool isPlaying = false;
+            Guid guid = new Guid();
 
             var scene = new Scene();
 
@@ -142,8 +147,8 @@ namespace EmberaEngine.Engine.Serializing
                         gameObjects = options.Resolver.GetFormatterWithVerify<List<GameObject>>().Deserialize(ref reader, options);
                         break;
 
-                    case "IsPlaying":
-                        isPlaying = reader.ReadBoolean();
+                    case "GUID":
+                        guid = Guid.Parse(reader.ReadString());
                         break;
 
                     default:
@@ -153,7 +158,7 @@ namespace EmberaEngine.Engine.Serializing
             }
 
             scene.GameObjects = gameObjects ?? new List<GameObject>();
-            scene.IsPlaying = isPlaying;
+            scene.Id = guid;
 
             // Initialize fields that are ignored in serialization
             scene.Initialize();
@@ -344,6 +349,164 @@ namespace EmberaEngine.Engine.Serializing
         }
     }
 
+#pragma warning disable MsgPack009
+    public class SceneMeshFormatter : IMessagePackFormatter<Mesh>
+    {
+        public void Serialize(ref MessagePackWriter writer, Mesh value, MessagePackSerializerOptions options)
+        {
+            writer.WriteMapHeader(1);
+            Console.WriteLine("Serializing");
+            writer.Write("MESH_GUID");
+            writer.Write(value.Id.ToString());
+        }
+
+        public Mesh Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        {
+            reader.ReadMapHeader();
+            
+            Guid meshGuid = Guid.Parse(reader.ReadString());
+
+            return new Mesh();
+        }
+    }
+
+
+    public class MeshFormatter : IMessagePackFormatter<Mesh>
+    {
+        public void Serialize(ref MessagePackWriter writer, Mesh value, MessagePackSerializerOptions options)
+        {
+            var resolver = options.Resolver;
+
+            writer.WriteMapHeader(3);
+
+            // GUID
+            writer.Write("GUID");
+            writer.Write(value.Id.ToString());
+
+            // Vertices
+            writer.Write("VERTICES");
+            var vertices = value.GetVertices();
+            writer.WriteArrayHeader(vertices.Length);
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                writer.WriteMapHeader(5);
+
+                writer.Write("P");
+                resolver.GetFormatterWithVerify<Vector3>().Serialize(ref writer, vertices[i].Position, options);
+
+                writer.Write("N");
+                resolver.GetFormatterWithVerify<Vector3>().Serialize(ref writer, vertices[i].Normal, options);
+
+                writer.Write("TC");
+                resolver.GetFormatterWithVerify<Vector2>().Serialize(ref writer, vertices[i].TexCoord, options);
+
+                writer.Write("T");
+                resolver.GetFormatterWithVerify<Vector3>().Serialize(ref writer, vertices[i].Tangent, options);
+
+                writer.Write("B");
+                resolver.GetFormatterWithVerify<Vector3>().Serialize(ref writer, vertices[i].BiTangent, options);
+            }
+
+            // Indices
+            writer.Write("INDICES");
+            var indices = value.GetIndices();
+            writer.WriteArrayHeader(indices.Length);
+            for (int i = 0; i < indices.Length; i++)
+            {
+                writer.Write(indices[i]);
+            }
+        }
+
+        public Mesh Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        {
+            var resolver = options.Resolver;
+
+            int mapCount = reader.ReadMapHeader();
+
+            Guid guid = Guid.Empty;
+            List<Vertex> vertices = new List<Vertex>();
+            List<int> indices = new List<int>();
+
+            for (int i = 0; i < mapCount; i++)
+            {
+                string key = reader.ReadString();
+                switch (key)
+                {
+                    case "GUID":
+                        guid = Guid.Parse(reader.ReadString());
+                        break;
+
+                    case "VERTICES":
+                        int vertexCount = reader.ReadArrayHeader();
+                        for (int v = 0; v < vertexCount; v++)
+                        {
+                            reader.ReadMapHeader();
+
+                            Vector3 position = default;
+                            Vector3 normal = default;
+                            Vector2 texCoord = default;
+                            Vector3 tangent = default;
+                            Vector3 bitangent = default;
+
+                            for (int p = 0; p < 5; p++)
+                            {
+                                string propKey = reader.ReadString();
+                                switch (propKey)
+                                {
+                                    case "P":
+                                        position = resolver.GetFormatterWithVerify<Vector3>().Deserialize(ref reader, options);
+                                        break;
+                                    case "N":
+                                        normal = resolver.GetFormatterWithVerify<Vector3>().Deserialize(ref reader, options);
+                                        break;
+                                    case "TC":
+                                        texCoord = resolver.GetFormatterWithVerify<Vector2>().Deserialize(ref reader, options);
+                                        break;
+                                    case "T":
+                                        tangent = resolver.GetFormatterWithVerify<Vector3>().Deserialize(ref reader, options);
+                                        break;
+                                    case "B":
+                                        bitangent = resolver.GetFormatterWithVerify<Vector3>().Deserialize(ref reader, options);
+                                        break;
+                                    default:
+                                        reader.Skip(); // future-proof
+                                        break;
+                                }
+                            }
+
+                            vertices.Add(new Vertex(position, normal, texCoord, tangent, bitangent));
+                        }
+                        break;
+
+                    case "INDICES":
+                        int indexCount = reader.ReadArrayHeader();
+                        for (int idx = 0; idx < indexCount; idx++)
+                        {
+                            indices.Add(reader.ReadInt32());
+                        }
+                        break;
+
+                    default:
+                        reader.Skip();
+                        break;
+                }
+            }
+
+            Mesh mesh = new Mesh();
+            mesh.Id = guid;
+            mesh.SetVertices(vertices.ToArray());
+            if (indices.Count > 0)
+            {
+                mesh.SetIndices(indices.ToArray());
+            }
+
+            return mesh;
+        }
+    }
+
+#pragma warning restore MsgPack009
+
+
     public class Adapter<T> : IMessagePackFormatter<Component> where T : Component
     {
         private readonly IMessagePackFormatter<T> inner;
@@ -356,9 +519,6 @@ namespace EmberaEngine.Engine.Serializing
         public Component Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
             => inner.Deserialize(ref reader, options);
     }
-
-
-
 
     public class Vector2Formatter : IMessagePackFormatter<Vector2>
     {
@@ -419,7 +579,4 @@ namespace EmberaEngine.Engine.Serializing
             return new Vector4(x, y, z, w);
         }
     }
-
-
-
 }

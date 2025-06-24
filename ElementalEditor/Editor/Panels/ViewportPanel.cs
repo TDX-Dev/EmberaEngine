@@ -1,4 +1,6 @@
-﻿using ElementalEditor.Editor.Utils;
+﻿using ElementalEditor.Editor.AssetHandling;
+using ElementalEditor.Editor.Utils;
+using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using EmberaEngine.Engine.Serializing;
@@ -7,6 +9,9 @@ using ImGuiNET;
 using MaterialIconFont;
 using OpenTK.Windowing.Desktop;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Text;
+using static EmberaEngine.Engine.Utilities.NewModelImporter;
 
 namespace ElementalEditor.Editor.Panels
 {
@@ -53,7 +58,6 @@ namespace ElementalEditor.Editor.Panels
                 {
                     if (ImGui.BeginCombo("##ResCombo", $"{selectedResolution.Width}x{selectedResolution.Height}", ImGuiComboFlags.HeightLargest))
                     {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0f, 0f, 0f, 1f));
                         for (int i = 0; i < supportedResolutions.Count; i++)
                         {
                             var res = supportedResolutions[i];
@@ -80,7 +84,6 @@ namespace ElementalEditor.Editor.Panels
                             Screen.Size.Y = viewportHeight;
                             editor.EditorCurrentScene.OnResize(viewportWidth, viewportHeight);
                         }
-                        ImGui.PopStyleColor();
                         ImGui.EndCombo();
                     }
                 }, new Vector2(200f)),
@@ -96,14 +99,14 @@ namespace ElementalEditor.Editor.Panels
                     {
                         if (ImGui.Button("Save Scene"))
                         {
-                            string json = SceneSerializer.Serialize(editor.EditorCurrentScene);
+                            byte[] json = SceneSerializer.Serialize(editor.EditorCurrentScene);
 
+                            using (FileStream fs = File.Create(Path.Join(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene1.dscn")))
+                            {
+                                fs.Write(json);
+                            }
 
-                            //editor.EditorCurrentScene.Dispose();
-                            //editor.EditorCurrentScene = null;
-                            //editor.EditorCurrentScene = scene;
-                            //editor.EditorCurrentScene.Initialize();
-
+                            DebugLogPanel.Log("Saved Scene: " + editor.EditorCurrentScene.Name, DebugLogPanel.DebugMessageSeverity.Information, "Editor");
                         }
                     },
                     new Vector2(100, 40)
@@ -207,10 +210,127 @@ namespace ElementalEditor.Editor.Panels
 
             ImGui.PopStyleVar(2);
 
+            if (ImGui.BeginDragDropTarget())
+            {
+                HandleViewportDrop();
+
+
+                ImGui.EndDragDropTarget();
+            }
+
             ImGui.End();
             ImGui.PopStyleVar();
+
+            DrawImportWindow();
         }
 
+        unsafe void HandleViewportDrop()
+        {
+            var payload = ImGui.AcceptDragDropPayload("ASSET_DRAG");
+            if (payload.NativePtr == null) return;
+
+            string data = Marshal.PtrToStringAnsi(payload.Data);
+            
+            string fileExtension = Path.GetExtension(data).Replace(".", "");
+            string resolvedAssetType = AssetType.ResolveAssetType(fileExtension);
+
+
+            if (resolvedAssetType == AssetType.SCENE_FILE)
+            {
+                Scene scene = SceneSerializer.DeSerialize(File.ReadAllBytes(Path.Combine(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, data)));
+
+                editor.EditorCurrentScene.Dispose();
+                editor.EditorCurrentScene = scene;
+                GameObjectPanel.SelectedObject = null;
+                scene.Initialize();
+                scene.Play();
+
+                Renderer3D.SetRenderCamera(editor.EditorCamera.Camera);
+            } else if (resolvedAssetType == AssetType.MODEL_FILE)
+            {
+                OpenImportWindow(data);
+            } else if (resolvedAssetType == AssetType.MESH_FILE)
+            {
+                GameObject go = editor.EditorCurrentScene.addGameObject("MeshObj");
+                MeshRenderer mr = go.AddComponent<MeshRenderer>();
+                Mesh mesh = DiskUtilities.LoadMesh(VirtualFileSystem.ResolvePath(data));
+                mr.SetMesh(mesh);
+
+
+            }
+            
+
+
+        }
+
+        string importFilePath = null;
+        bool showImportWindow = false;
+        float importScale = 1.0f;
+        string meshSavePath = "";
+
+        void OpenImportWindow(string filepath)
+        {
+            importFilePath = filepath;
+            showImportWindow = true;
+        }
+
+        void DrawImportWindow()
+        {
+            if (!showImportWindow) return;
+
+            ImGui.OpenPopup("Import Model");
+
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+
+            if (ImGui.BeginPopupModal("Import Model", ref showImportWindow, ImGuiWindowFlags.AlwaysAutoResize))
+            {
+                ImGui.Text($"Importing:\n{importFilePath}");
+                
+                ImGui.Text("Scale");
+                ImGui.SliderFloat("##Scale", ref importScale, 0.01f, 10.0f);
+
+                ImGui.Text("Save Meshes at");
+                ImGui.SetNextItemWidth(-1);
+                FolderDropdownWidget.FolderDropdown("##Folder Select", ref meshSavePath, Path.Combine(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY));
+
+                if (ImGui.Button("Import", new Vector2(-1, 40)))
+                {
+                    // Actually load the model using your importer
+                    string fullPath = Path.Combine(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, importFilePath);
+                    var spec = new ModelLoaderSpecification()
+                    {
+                        resourcePath = fullPath,
+                        importScale = importScale
+                    };
+
+                    DebugLogPanel.Log("Loading model at: " + importFilePath, DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");
+                    DateTime time = DateTime.Now;
+
+                    var modelData = NewModelImporter.Load(spec);
+
+                    foreach (MeshNode meshNode in modelData.meshNodes)
+                    {
+                        DiskUtilities.SaveMesh(Path.Combine(meshSavePath, meshNode.name + ".dmsh"), meshNode.mesh);
+                    }
+
+                    DebugLogPanel.Log($"Loaded Model ({(DateTime.Now - time).Seconds} Seconds)", DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");
+
+                    // TODO: Save meshes and materials to asset DB here
+
+                    showImportWindow = false;
+                }
+
+                if (ImGui.Button("Cancel", new Vector2(-1, 40)))
+                {
+                    DebugLogPanel.Log("Cancelled Import", DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");
+                    showImportWindow = false;
+                }
+
+                ImGui.EndPopup();
+            }
+
+            ImGui.PopStyleVar();
+        }
 
         void HandleViewportResize()
         {
@@ -257,7 +377,6 @@ namespace ElementalEditor.Editor.Panels
 
         public override void OnMouseMove(MouseMoveEvent move)
         {
-            if (!editor.EditorCurrentScene.IsPlaying) return;
 
             if (freeAspectRatio)
             {

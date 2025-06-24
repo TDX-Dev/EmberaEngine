@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using OpenTK.Mathematics;
@@ -9,32 +7,37 @@ namespace EmberaEngine.Engine.Utilities
 {
     public class Mesh : IDisposable
     {
+        // GPU Resources
+        public VertexBuffer VBO { get; private set; }
+        public IndexBuffer IBO { get; private set; }
+        public VertexArray VAO { get; private set; }
 
-        public VertexBuffer VBO;
-        public IndexBuffer IBO;
-        public VertexArray VAO;
+        // Geometry
+        private Vertex[] vertices;
+        private int[] indices;
 
-        Vertex[] Vertices;
+        // Identification
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Path { get; private set; }
+        public string Name { get; set; }
+        public string FileID { get; set; }
 
-        public uint MaterialIndex;
+        // Material Reference
+        public Guid MaterialReference { get; set; }     // Asset GUID
+        public uint MaterialRenderHandle { get; set; }  // Runtime render handle
 
-        public int MeshID;
-        public int VertexCount;
-        public string path;
-        public string name;
-        public string fileID;
-        public bool Renderable = true;
-        public bool isHighlighted = false ;
+        // State
+        public bool IsRenderable { get; set; } = true;
+        public bool IsHighlighted { get; set; } = false;
+        public bool IsStatic { get; private set; } = true;
 
-        internal Matrix4 worldMatrix;
+        // Transform
+        internal Matrix4 WorldMatrix;
 
-        bool IsStatic = true;
+        private bool isDisposed = false;
 
-        bool isdisposed = false;
-
-        public Mesh()
-        {
-        }
+        // Constructors
+        public Mesh() { }
 
         ~Mesh()
         {
@@ -43,67 +46,54 @@ namespace EmberaEngine.Engine.Utilities
 
         public void Dispose()
         {
-            if (isdisposed) { return; }
+            if (isDisposed) return;
+
             VBO?.Dispose();
             IBO?.Dispose();
             VAO?.Dispose();
-            isdisposed = true;
+
+            isDisposed = true;
+            GC.SuppressFinalize(this);
         }
 
         public void Draw()
         {
-            if (!Renderable || VAO == null) {
-                Console.WriteLine("Non renderable"); 
-                return; 
+            if (!IsRenderable || VAO == null)
+            {
+                return;
             }
 
-            if (IBO == null)
-            {
-                VAO.Render();
-            } else
-            {
+            if (IBO != null)
                 VAO.Render(IBO);
-            }
+            else
+                VAO.Render();
         }
 
-        public void SetPath(string path)
-        {
-            this.path = path;
-        }
+        // Setters
+        public void SetPath(string path) => Path = path;
 
-        public string GetPath()
-        {
-            return path;
-        }
+        public void SetStatic(bool isStatic) => IsStatic = isStatic;
 
-        public void SetStatic(bool value)
+        public void SetVertices(Vertex[] vertexArray)
         {
-            IsStatic = value;
-        }
-
-        public void SetVertices(Vertex[] vertices)
-        {
-            VBO = new VertexBuffer(Vertex.VertexInfo, vertices.Length, IsStatic);
-            VBO.SetData(vertices, vertices.Length);
+            vertices = vertexArray;
+            VBO = new VertexBuffer(Vertex.VertexInfo, vertexArray.Length, IsStatic);
+            VBO.SetData(vertexArray, vertexArray.Length);
             VAO = new VertexArray(VBO);
-            this.VertexCount = vertices.Length;
-            this.Vertices = vertices;
         }
 
-        public void SetVertexArrayObject(VertexArray vao)
+        public void SetIndices(int[] indexArray)
         {
-            VAO = vao;
+            indices = indexArray;
+            IBO = new IndexBuffer(indexArray.Length, IsStatic);
+            IBO.SetData(indexArray, indexArray.Length);
         }
 
-        public void SetIndices(int[] indices)
-        {
-            IBO = new IndexBuffer(indices.Length, IsStatic);
-            IBO.SetData(indices, indices.Length);
-        }
+        public void SetVertexArrayObject(VertexArray vao) => VAO = vao;
 
-        public Vertex[] GetVertices()
-        {
-            return Vertices;
-        }
+        // Getters
+        public Vertex[] GetVertices() => vertices;
+
+        public int[] GetIndices() => indices;
     }
 }

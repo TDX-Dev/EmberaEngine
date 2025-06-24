@@ -7,6 +7,8 @@ namespace EmberaEngine.Engine.Utilities
 {
     public class Primitives
     {
+
+
         public static Vertex[] GetCircle(int segments = 64)
         {
             Vertex[] vertices = new Vertex[segments];

@@ -10,6 +10,8 @@ namespace ElementalEditor.Editor.AssetHandling
     {
         public static string SCENE_FILE = "SCENE";
         public static string MATERIAL_FILE = "MATERIAL";
+        public static string MODEL_FILE = "MODEL";
+        public static string MESH_FILE = "MESH";
         public static string TEXTURE_FILE = "TEXTURE";
         public static string UNKNOWN_FILE = "UNKNOWN";
 
@@ -17,15 +19,20 @@ namespace ElementalEditor.Editor.AssetHandling
 
         static AssetType()
         {
-            knownFileTypes["dscene"] = SCENE_FILE;
+            knownFileTypes["dscn"] = SCENE_FILE;
             knownFileTypes["dmat"] = MATERIAL_FILE;
-            
-            
+            knownFileTypes["dmsh"] = MESH_FILE;
+
+
             knownFileTypes["tga"] = TEXTURE_FILE;
             knownFileTypes["png"] = TEXTURE_FILE;
             knownFileTypes["exr"] = TEXTURE_FILE;
             knownFileTypes["jpg"] = TEXTURE_FILE;
             knownFileTypes["jpeg"] = TEXTURE_FILE;
+
+            knownFileTypes["fbx"] = MODEL_FILE;
+            knownFileTypes["obj"] = MODEL_FILE;
+            knownFileTypes["gltf"] = MODEL_FILE;
         }
 
 

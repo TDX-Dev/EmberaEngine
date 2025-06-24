@@ -27,6 +27,23 @@ namespace EmberaEngine.Engine.Core
         public BodyInertia Inertia;
     }
 
+    public struct PhysicsMaterial
+    {
+        public float Friction;
+        public float Restitution;
+        public float MaxRecoveryVelocity;
+        public SpringSettings SpringSettings;
+
+        public static readonly PhysicsMaterial Default = new PhysicsMaterial
+        {
+            Friction = 0.1f,
+            Restitution = 0f,
+            MaxRecoveryVelocity = 2f,
+            SpringSettings = new SpringSettings(30, 1)
+        };
+    }
+
+
     public class PhysicsManager3D : IDisposable
     {
         public static readonly System.Numerics.Vector3 GlobalGravity = new(0, -9.81f, 0);
@@ -282,7 +299,7 @@ namespace EmberaEngine.Engine.Core
     out PairMaterialProperties pairMaterial)
     where TManifold : unmanaged, IContactManifold<TManifold>
         {
-            pairMaterial.FrictionCoefficient = -1f; // default or from user-defined data
+            pairMaterial.FrictionCoefficient = 0.1f; // default or from user-defined data
             pairMaterial.MaximumRecoveryVelocity = 2f;
             pairMaterial.SpringSettings = new SpringSettings(30, 1);
             return true;

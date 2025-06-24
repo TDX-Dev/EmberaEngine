@@ -2,39 +2,84 @@
 using EmberaEngine.Engine.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Rendering
 {
-
-    public class MaterialManager
+    public static class MaterialManager
     {
-        public static Dictionary<uint, Material> materials;
+        private static readonly Dictionary<uint, Material> _materialsByHandle = new();
+        private static readonly Dictionary<Guid, uint> _guidToHandle = new();
+        private static uint _nextHandle = 1;
 
-        internal static Material nullMaterial;
+        private static PBRMaterial _nullMaterial;
+        private const uint NullHandle = 0;
 
         public static void Initialize()
         {
-            materials = new Dictionary<uint, Material>();
+            _materialsByHandle.Clear();
+            _guidToHandle.Clear();
+            _nextHandle = 1;
 
-            //nullMaterial = new Material(new Shader("Engine/Content/Shaders/3D/basic/base"));
+            _nullMaterial = new PBRMaterial();
+            _nullMaterial.DiffuseTexture = Helper.loadImageAsTex("Engine/Content/Textures/Placeholders/null.png");
+
+            _materialsByHandle[NullHandle] = _nullMaterial;
         }
 
-        public static Material GetMaterial(uint materialId)
+        /// <summary>
+        /// Retrieves a material by its runtime handle.
+        /// </summary>
+        public static Material GetMaterial(uint handle)
         {
-            if (!materials.ContainsKey(materialId)) { return nullMaterial; }
-            return materials[materialId];
+            return _materialsByHandle.TryGetValue(handle, out var mat) ? mat : _nullMaterial;
         }
 
+        /// <summary>
+        /// Adds a material and returns its runtime handle.
+        /// </summary>
         public static uint AddMaterial(Material material)
-        {       
-            uint materialId = (uint)materials.Keys.Count;
+        {
+            if (material == null)
+                throw new ArgumentNullException(nameof(material));
 
-            materials.Add(materialId, material);
+            if (_guidToHandle.TryGetValue(material.Id, out var existingHandle))
+                return existingHandle;
 
-            return materialId;
+            uint newHandle = _nextHandle++;
+            _materialsByHandle[newHandle] = material;
+            _guidToHandle[material.Id] = newHandle;
+            return newHandle;
         }
+
+        /// <summary>
+        /// Gets the runtime handle for a material by asset GUID.
+        /// </summary>
+        public static uint GetHandle(Guid materialId)
+        {
+            return _guidToHandle.TryGetValue(materialId, out var handle) ? handle : NullHandle;
+        }
+
+        /// <summary>
+        /// Removes a material by its handle.
+        /// </summary>
+        public static bool RemoveMaterial(uint handle)
+        {
+            if (!_materialsByHandle.TryGetValue(handle, out var mat))
+                return false;
+
+            _materialsByHandle.Remove(handle);
+            _guidToHandle.Remove(mat.Id);
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the fallback null material handle.
+        /// </summary>
+        public static uint GetFallbackHandle() => NullHandle;
+
+        /// <summary>
+        /// Gets the fallback null material.
+        /// </summary>
+        public static Material GetFallbackMaterial() => _nullMaterial;
     }
 }

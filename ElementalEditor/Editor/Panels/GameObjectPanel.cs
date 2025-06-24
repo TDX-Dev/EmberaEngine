@@ -17,7 +17,7 @@ namespace ElementalEditor.Editor.Panels
 {
     public class GameObjectPanel : Panel
     {
-        public GameObject SelectedObject = null;
+        public static GameObject SelectedObject = null;
         private string searchBuffer = "";
         static int? activeDragComponentIndex = null;
         private static GameObject DraggedObject = null;
@@ -265,25 +265,40 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
                 ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.11f, 0.10f, 0.08f, 1f));
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0));
 
-                // Game object hierarchy rendering
-                var roots = editor.EditorCurrentScene.GameObjects;
-                int rowIndex = 0;
-                for (int i = 0; i < roots.Count; i++)
+                // Scrollable area for GameObject list
+                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 5));
+                if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
                 {
-                    DrawDropZone(roots[i], before: true);
-                    DrawGameObjectRecursive(roots[i], 0, ref rowIndex);
+                    // Push styles for the object list rendering
+                    ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(5, 5));
+                    ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
+                    ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
+                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
+                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.11f, 0.10f, 0.08f, 1f));
+
+                    // Game object hierarchy rendering
+                    var roots = editor.EditorCurrentScene.GameObjects;
+                    int rowIndex = 0;
+                    for (int i = 0; i < roots.Count; i++)
+                    {
+                        DrawDropZone(roots[i], before: true);
+                        DrawGameObjectRecursive(roots[i], 0, ref rowIndex);
+                    }
+
+                    // Drop zone after the last item
+                    if (roots.Count > 0)
+                        DrawDropZone(roots[^1], before: false);
+
+                    // Pop the final style sets
+                    ImGui.PopStyleColor();     // Button color
+                    ImGui.PopStyleVar(4);      // FramePadding, ButtonTextAlign, FrameBorderSize, ItemSpacing
+
+                    ImGui.EndChild();          // End scrollable child
                 }
-
-                // Drop zone after the last item
-                if (roots.Count > 0)
-                    DrawDropZone(roots[^1], before: false);
-
-                // Pop the final style sets
-                ImGui.PopStyleColor();     // Button color
-                ImGui.PopStyleVar(4);      // FramePadding, ButtonTextAlign, FrameBorderSize, ItemSpacing
-
-                ImGui.End();               // End main window
+                ImGui.PopStyleVar();           // WindowPadding for scrollable area
+                ImGui.PopStyleColor();
             }
 
             ImGui.PopStyleVar();           // WindowPadding (from the very beginning)

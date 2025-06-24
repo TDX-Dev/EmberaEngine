@@ -25,6 +25,7 @@
     <None Remove="Editor\Assets\Textures\EditorBrand\DevoidLogo.png" />
     <None Remove="Editor\Assets\Textures\FileTypeTextures\assetCheckerBG.png" />
     <None Remove="Editor\Assets\Textures\FileTypeTextures\material.png" />
+    <None Remove="Editor\Assets\Textures\FileTypeTextures\unkfile.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\DirectionalLightOverlay.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\LightComponentTexture.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\PointLightOverlay.png" />
@@ -86,6 +87,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Editor\Assets\Textures\FileTypeTextures\material.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Textures\FileTypeTextures\unkfile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Editor\Assets\Textures\GizmoTextures\DirectionalLightOverlay.png">

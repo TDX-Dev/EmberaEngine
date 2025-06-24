@@ -83,10 +83,16 @@ namespace EmberaEngine.Engine.Rendering
 
             preFilterTexture = new Texture(TextureTarget2d.TextureCubeMap);
 
-            for (int i = 0; i < 6; i++)
+            for (int mip = 0; mip < maxMipmapCount; mip++)
             {
-                preFilterTexture.TexImage2D(prefilterMapSize.X, prefilterMapSize.Y, OpenTK.Graphics.OpenGL.TextureTarget.TextureCubeMapPositiveX + i, PixelInternalFormat.Rgb16f, PixelFormat.Rgb, PixelType.Float, IntPtr.Zero);
+                int mipWidth = (int)(prefilterMapSize.X * MathF.Pow(0.5f, mip));
+                int mipHeight = (int)(prefilterMapSize.Y * MathF.Pow(0.5f, mip));
+                for (int i = 0; i < 6; i++)
+                {
+                    preFilterTexture.TexImage2D(mipWidth, mipHeight, OpenTK.Graphics.OpenGL.TextureTarget.TextureCubeMapPositiveX + i, PixelInternalFormat.Rgb16f, PixelFormat.Rgb, PixelType.Float, IntPtr.Zero);
+                }
             }
+
             preFilterTexture.SetFilter(TextureMinFilter.LinearMipmapLinear, TextureMagFilter.Linear);
             preFilterTexture.SetWrapMode(TextureWrapMode.ClampToEdge, TextureWrapMode.ClampToEdge, TextureWrapMode.ClampToEdge);
             preFilterTexture.GenerateMipmap();
@@ -128,10 +134,8 @@ namespace EmberaEngine.Engine.Rendering
         public static void Render()
         {
             frameCounter++;
-            if (convertHDRItoCubemap && frameCounter > 0)
+            if (convertHDRItoCubemap && frameCounter > -1)
             {
-                OpenTK.Graphics.OpenGL.GL.Flush();
-                OpenTK.Graphics.OpenGL.GL.Finish();
                 GraphicsState.SetCulling(false);
                 GraphicsState.SetDepthTest(false);
                 GraphicsState.SetBlending(false);
@@ -152,7 +156,6 @@ namespace EmberaEngine.Engine.Rendering
 
         public static void RenderCube()
         {
-
             Camera camera = Renderer3D.GetRenderCamera();
 
             // Clear before drawing skybox
@@ -170,7 +173,7 @@ namespace EmberaEngine.Engine.Rendering
             skyboxTexture.SetActiveUnit(TextureUnit.Texture0);
             skyboxTexture.Bind(OpenTK.Graphics.OpenGL.TextureTarget.TextureCubeMap);
 
-            CubeMesh.Draw();
+            //CubeMesh.Draw();
 
             GraphicsState.SetDepthTest(true);
             GraphicsState.SetDepthMask(true);
@@ -195,6 +198,15 @@ namespace EmberaEngine.Engine.Rendering
 
         static void GenerateBRDFLUT()
         {
+            OpenTK.Graphics.OpenGL.FramebufferErrorCode status = OpenTK.Graphics.OpenGL.GL.CheckFramebufferStatus(OpenTK.Graphics.OpenGL.FramebufferTarget.Framebuffer);
+            if (status != OpenTK.Graphics.OpenGL.FramebufferErrorCode.FramebufferComplete)
+            {
+                Console.WriteLine($"[SkyboxManager] FBO incomplete: {status}");
+            }
+
+            Console.WriteLine("BRDF ABOVE");
+
+
             prefilterMapFB.Bind();
             GraphicsState.Clear(true, true);
 
@@ -205,7 +217,7 @@ namespace EmberaEngine.Engine.Rendering
             brdfLUTShader.Use();
             GraphicsState.Clear(true);
 
-            Graphics.DrawFullScreenTri();
+            //Graphics.DrawFullScreenTri();
 
         }
 
@@ -236,6 +248,13 @@ namespace EmberaEngine.Engine.Rendering
                 {
                     preFilterMapShader.SetMatrix4("W_VIEW_MATRIX", irradianceViewMatrices[i]);
                     prefilterMapFB.SetFramebufferTextureLayer(OpenTK.Graphics.OpenGL.FramebufferAttachment.ColorAttachment0, preFilterTexture, mip, i);
+                    OpenTK.Graphics.OpenGL.FramebufferErrorCode status = OpenTK.Graphics.OpenGL.GL.CheckFramebufferStatus(OpenTK.Graphics.OpenGL.FramebufferTarget.Framebuffer);
+                    if (status != OpenTK.Graphics.OpenGL.FramebufferErrorCode.FramebufferComplete)
+                    {
+                        Console.WriteLine($"[SkyboxManager] FBO incomplete: {status}");
+                    }
+
+                    Console.WriteLine("PREFILTER ABOVE");
 
                     CubeMesh.Draw();
                 }
@@ -266,8 +285,14 @@ namespace EmberaEngine.Engine.Rendering
                 irradianceMapShader.SetMatrix4("W_VIEW_MATRIX", irradianceViewMatrices[i]);
 
                 irradianceMapFB.SetFramebufferTextureLayer(OpenTK.Graphics.OpenGL.FramebufferAttachment.ColorAttachment0, irradianceTexture, 0, i);
+                OpenTK.Graphics.OpenGL.FramebufferErrorCode status = OpenTK.Graphics.OpenGL.GL.CheckFramebufferStatus(OpenTK.Graphics.OpenGL.FramebufferTarget.Framebuffer);
+                if (status != OpenTK.Graphics.OpenGL.FramebufferErrorCode.FramebufferComplete)
+                {
+                    Console.WriteLine($"[SkyboxManager] FBO incomplete: {status}");
+                }
 
-                CubeMesh.Draw();
+                Console.WriteLine("irradiance ABOVE");
+                //CubeMesh.Draw();
             }
 
             irradianceTexture.SetFilter(TextureMinFilter.Linear, TextureMagFilter.Linear);
@@ -286,7 +311,13 @@ namespace EmberaEngine.Engine.Rendering
             for (int i = 0; i < 6; i++)
             {
                 cubemapCreationFB.SetFramebufferTextureLayer(OpenTK.Graphics.OpenGL.FramebufferAttachment.ColorAttachment0, skyboxTexture, 0, i);
+                OpenTK.Graphics.OpenGL.FramebufferErrorCode status = OpenTK.Graphics.OpenGL.GL.CheckFramebufferStatus(OpenTK.Graphics.OpenGL.FramebufferTarget.Framebuffer);
+                if (status != OpenTK.Graphics.OpenGL.FramebufferErrorCode.FramebufferComplete)
+                {
+                    Console.WriteLine($"[SkyboxManager] FBO incomplete: {status}");
+                }
 
+                Console.WriteLine("HDRI ABOVE");
                 panoramaConvertShader.SetInt("face", i);
                 panoramaConvertShader.SetInt("panoramicTexture", 0);
                 GraphicsState.SetTextureActiveBinding(TextureUnit.Texture0);
@@ -295,7 +326,7 @@ namespace EmberaEngine.Engine.Rendering
                 Graphics.DrawFullScreenTri();
             }
             skyboxTexture.SetFilter(TextureMinFilter.Linear, TextureMagFilter.Linear);
-            //skyboxTexture.GenerateMipmap();
+            skyboxTexture.GenerateMipmap();
 
             GraphicsState.CheckFBError();
 

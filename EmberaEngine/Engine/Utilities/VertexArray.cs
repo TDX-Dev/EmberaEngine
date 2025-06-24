@@ -7,13 +7,18 @@ namespace EmberaEngine.Engine.Utilities
 {
     public class VertexArray : IDisposable
     {
-
+        public static int dummyVAO;
         public readonly int VertexArrayObject;
         public readonly VertexBuffer VertexBuffer;
         //public readonly IndexBuffer IndexBuffer;
 
         private bool isdisposed = false;
         private bool isinitialized = false;
+
+        static VertexArray()
+        {
+            dummyVAO = GL.GenVertexArray();
+        }
 
         public VertexArray(VertexBuffer vertexBuffer)
         {

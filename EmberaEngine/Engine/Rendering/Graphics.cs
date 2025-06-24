@@ -94,6 +94,7 @@ namespace EmberaEngine.Engine.Rendering
 
         public static void DrawFullScreenTri()
         {
+            GL.BindVertexArray(VertexArray.dummyVAO);
             GL.DrawArrays(BeginMode.Triangles, 0, 3);
         }
 

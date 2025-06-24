@@ -34,17 +34,17 @@ namespace ElementalEditor.Editor.Utils
                 {
                     if (ImGui.MenuItem("Basic GameObject"))
                     {
-                        gameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Basic Object");
+                        GameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Basic Object");
                     }
                     if (ImGui.MenuItem("Collider Object"))
                     {
-                        gameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Collider Object");
-                        gameObjectPanel.SelectedObject.AddComponent<ColliderComponent3D>();
+                        GameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Collider Object");
+                        GameObjectPanel.SelectedObject.AddComponent<ColliderComponent3D>();
                     }
                     if (ImGui.MenuItem("Camera"))
                     {
-                        gameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Camera Object");
-                        gameObjectPanel.SelectedObject.AddComponent<CameraComponent3D>();
+                        GameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Camera Object");
+                        GameObjectPanel.SelectedObject.AddComponent<CameraComponent3D>();
                     }
 
 
@@ -53,13 +53,13 @@ namespace ElementalEditor.Editor.Utils
                     {
                         if (ImGui.MenuItem("Cube"))
                         {
-                            gameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Cube Primitive");
-                            MeshRenderer meshRenderer = gameObjectPanel.SelectedObject.AddComponent<MeshRenderer>();
+                            GameObjectPanel.SelectedObject = gameObjectPanel.editor.EditorCurrentScene.addGameObject("Cube Primitive");
+                            MeshRenderer meshRenderer = GameObjectPanel.SelectedObject.AddComponent<MeshRenderer>();
 
                             Material material = Renderer3D.ActiveRenderingPipeline.GetDefaultMaterial();
                             material.shader = ShaderRegistry.GetShader("CLUSTERED_PBR");
                             Mesh mesh = Graphics.GetCube();
-                            mesh.MaterialIndex = MaterialManager.AddMaterial(material);
+                            //mesh.MaterialIndex = MaterialManager.AddMaterial(material);
 
 
                             meshRenderer.SetMesh(mesh);

@@ -1,16 +1,20 @@
-﻿using EmberaEngine.Engine.Core;
-using System;
-using System.Collections.Generic;
-using ImGuiNET;
-using EmberaEngine.Engine.Rendering;
+﻿using ElementalEditor.Editor.AssetHandling;
 using ElementalEditor.Editor.Panels;
+using ElementalEditor.Editor.Utils;
+using EmberaEngine.Core;
+using EmberaEngine.Engine.Components;
+using EmberaEngine.Engine.Core;
+using EmberaEngine.Engine.Rendering;
+using EmberaEngine.Engine.Serializing;
+using EmberaEngine.Engine.Utilities;
+using ImGuiNET;
 using MaterialIconFont;
 using OIconFont;
-using EmberaEngine.Engine.Components;
-using ElementalEditor.Editor.Utils;
-using EmberaEngine.Engine.Utilities;
 using OpenTK.Mathematics;
+using System;
+using System.Collections.Generic;
 using static EmberaEngine.Engine.Utilities.ModelImporter;
+using static EmberaEngine.Engine.Utilities.NewModelImporter;
 
 namespace ElementalEditor.Editor
 {
@@ -197,18 +201,37 @@ namespace ElementalEditor.Editor
         {
             SkyboxManager.LoadHDRI(Helper.loadHDRIAsTex("Engine/Content/Textures/Skyboxes/autumn.hdr"));
 
-            GameObject cameraObject = EditorCurrentScene.addGameObject("Camera Boiii");
-            CameraComponent3D camComp = cameraObject.AddComponent<CameraComponent3D>();
-            camComp.ClearColor = new OpenTK.Mathematics.Color4(0, 0, 0, 255);
-            cameraObject.transform.Position = new OpenTK.Mathematics.Vector3(-5, 5f, 0);
-            cameraObject.transform.Rotation = new(0, -25, 0);
-
-            GameObject lightObject = EditorCurrentScene.addGameObject("LightObject");
-            lightObject.transform.Position = new Vector3(0, 6, 0);
-            lightObject.AddComponent<LightComponent>();
+            EditorCurrentScene = SceneSerializer.DeSerialize(File.ReadAllBytes(Path.Combine(projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene2.dscn")));
 
 
-            NewModelImporter.Load("AmbientShadowTesting/ambient_shadow_testing.fbx");
+
+
+            //GameObject cameraObject = EditorCurrentScene.addGameObject("Camera Boiii");
+            //CameraComponent3D camComp = cameraObject.AddComponent<CameraComponent3D>();
+            //camComp.ClearColor = new OpenTK.Mathematics.Color4(0, 0, 0, 255);
+            //cameraObject.transform.Position = new OpenTK.Mathematics.Vector3(-5, 5f, 0);
+            //cameraObject.transform.Rotation = new(0, -25, 0);
+
+            //GameObject lightObject = EditorCurrentScene.addGameObject("LightObject");
+            //lightObject.transform.Position = new Vector3(0, 6, 0);
+            //lightObject.AddComponent<LightComponent>();
+
+
+            ModelGraphData modelGraph = NewModelImporter.Load(new ModelLoaderSpecification()
+            {
+                resourcePath = "AmbientShadowTesting/ambient_shadow_testing.fbx",
+                importScale = .01f,
+            });
+
+            foreach (MeshNode meshNode in modelGraph.meshNodes)
+            {
+                AssetLookup.RegisterFile(meshNode.mesh.Id, Path.Combine("Meshes", meshNode.name + ".dmsh"));
+                DiskUtilities.SaveMesh(VirtualFileSystem.ResolvePath(Path.Combine("Meshes", meshNode.name + ".dmsh")), meshNode.mesh);
+            }
+
+
+
+            //app.window.Close();
 
             //barrelObject = EditorCurrentScene.addGameObject("Barrel");
             //MeshRenderer barrelMeshRenderer = barrelObject.AddComponent<MeshRenderer>();
@@ -216,19 +239,22 @@ namespace ElementalEditor.Editor
 
             //Mesh[] meshLoaderOutput = ModelImporter.LoadModel("Engine/Content/Models/SSAO Test/sphere.obj");
 
-            ModelData meshLoaderOutput = ModelImporter.LoadModel("Sponza/sponza.obj");
+            //ModelData meshLoaderOutput = ModelImporter.LoadModel("Sponza/sponza.obj");
             //ModelData meshLoaderOutput = ModelImporter.LoadModel("JivinModel/barrel.fbx");
 
             //ModelData meshLoaderOutput = ModelImporter.LoadModel("AmbientShadowTesting/ambient_shadow_testing.fbx");
             //ModelData meshLoaderOutput = ModelImporter.LoadModel("ShooterTest/file.fbx");
-            if (meshLoaderOutput.rootObject == null)
-            {
-                return;
-            }
+            //if (meshLoaderOutput.rootObject == null)
+            //{
+            //    return;
+            //}
 
             //Mesh[] meshLoaderOutput = ModelImporter.LoadModel("Engine/Content/Models/Portal2-Elevator/scene.gltf");
 
             //EditorCurrentScene.addGameObject(meshLoaderOutput.rootObject);
+        
+
+
         }
 
         GameObject barrelObject;
@@ -261,7 +287,7 @@ namespace ElementalEditor.Editor
             style.Colors[(int)ImGuiCol.PopupBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.9f);
             style.Colors[(int)ImGuiCol.ChildBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.7f);
 
-            style.Colors[(int)ImGuiCol.PopupBg] = new System.Numerics.Vector4(0.9f, 0.9f, 0.9f, 1f);
+            //style.Colors[(int)ImGuiCol.PopupBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 1f);
 
             style.Colors[(int)ImGuiCol.Text] = new System.Numerics.Vector4(0.74f, 0.71f, 0.71f, 1f);
 

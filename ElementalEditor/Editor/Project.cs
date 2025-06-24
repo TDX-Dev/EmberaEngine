@@ -15,12 +15,12 @@ namespace ElementalEditor.Editor
         public string EngineVersion;
     }
 
-    class Project
+    public class Project
     {
         public static string PROJECT_DEFAULT_FILE_NAME = "project";
         public static string PROJECT_DEFAULT_FILE_EXTENSION = "dproj";
         public static string PROJECT_ENGINE_DIRECTORY_NAME = ".devoid";
-        public static string PROJECT_REGISTRY_FILE_NAME = "assetRegistry.json";
+        public static string PROJECT_REGISTRY_FILE_NAME = "assetRegistry";
         public static string PROJECT_ASSET_THUMBNAIL_DIRECTORY = "Asset Thumbnails";
         public static string PROJECT_METADATA_DIRECTORY = "Metadata";
         public static string PROJECT_GAME_FILES_DIRECTORY = "GameFiles";
@@ -52,6 +52,8 @@ namespace ElementalEditor.Editor
             CreateDirectoryIfNotExist(thumbnailDirectory);
             bool metadataCreated = CreateDirectoryIfNotExist(metadataDirectory);
             CreateDirectoryIfNotExist(gameFilesDirectory);
+
+            AssetMetadataDatabase.CreateDatabase(metadataDirectory);
 
             VirtualFileSystem.Mount(new DirectoryAssetSource(gameFilesDirectory));
 

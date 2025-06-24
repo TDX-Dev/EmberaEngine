@@ -24,6 +24,7 @@ namespace EmberaEngine.Engine.Core
     }
     public abstract class Material : IMaterial
     {
+        public Guid Id = Guid.NewGuid();
         public Shader shader { get; set; }
         public Dictionary<string, object> properties = new Dictionary<string, object>();
 

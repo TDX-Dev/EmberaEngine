@@ -11,6 +11,9 @@ namespace EmberaEngine.Engine.Core
     {
         private bool _disposed;
 
+        public string Name;
+        public Guid Id = Guid.NewGuid();
+
         public List<GameObject> GameObjects { get; set; }
 
         [IgnoreMember]
@@ -191,6 +194,7 @@ namespace EmberaEngine.Engine.Core
                         GameObjects[i].OnDestroy();
                     }
 
+                    PhysicsManager3D.Dispose();
                 }
                 // set the bool value to true
                 _disposed = true;

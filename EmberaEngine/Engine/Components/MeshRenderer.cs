@@ -35,7 +35,7 @@ namespace EmberaEngine.Engine.Components
             for (int i = 0; i < meshes.Length; i++)
             {
                 Mesh mesh = meshes[i];
-                mesh.worldMatrix = gameObject.transform.GetWorldMatrix();
+                mesh.WorldMatrix = gameObject.transform.GetWorldMatrix();
             }
         }
 
