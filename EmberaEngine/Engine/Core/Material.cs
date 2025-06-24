@@ -1,4 +1,5 @@
 ﻿using EmberaEngine.Engine.Rendering;
+using MessagePack;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace EmberaEngine.Engine.Core
 
     public interface IMaterial
     {
+        [IgnoreMember]
         Shader shader { get; }
         void Apply();
     }
@@ -58,11 +60,11 @@ namespace EmberaEngine.Engine.Core
         private Texture roughnessTexture;
         private Texture emissionTexture;
 
-        private bool isDiffuseSet;
-        private bool isNormalSet;
-        private bool isSpecularSet;
-        private bool isRoughnessSet;
-        private bool isEmissionSet;
+        public bool isDiffuseSet;
+        public bool isNormalSet;
+        public bool isSpecularSet;
+        public bool isRoughnessSet;
+        public bool isEmissionSet;
 
         #region PROPERTIES
         public Color4 Albedo
@@ -183,6 +185,12 @@ namespace EmberaEngine.Engine.Core
             isEmissionSet = false;
             isNormalSet = false;
             isRoughnessSet = false;
+
+            DiffuseTexture = Texture.White2DTex;
+            NormalTexture = Texture.White2DTex;
+            EmissionTexture = Texture.Black2DTex;
+            RoughnessTexture = Texture.White2DTex;
+
             textureUnitCount = 4;
 
 

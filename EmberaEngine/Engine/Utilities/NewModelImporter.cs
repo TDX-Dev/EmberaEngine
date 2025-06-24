@@ -1,4 +1,4 @@
-﻿using EmberaEngine.Engine.AssetLoaders;
+﻿using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using OpenTK.Mathematics;
@@ -131,8 +131,6 @@ namespace EmberaEngine.Engine.Utilities
                 
             }
 
-
-            materials.Clear();
 
             return new ModelGraphData()
             {
@@ -303,6 +301,7 @@ namespace EmberaEngine.Engine.Utilities
         {
             var mat = new PBRMaterial();
             mat.SetDefaults();
+            mat.Id = Guid.NewGuid();
 
             mat.Albedo = new Color4(
                 assimpMat.ColorDiffuse.R,

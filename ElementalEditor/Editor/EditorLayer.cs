@@ -223,6 +223,23 @@ namespace ElementalEditor.Editor
                 importScale = .01f,
             });
 
+            int i = 0;
+            Console.WriteLine(modelGraph.materials.Count);
+            foreach (Material material in modelGraph.materials)
+            {
+                i++;
+                Console.WriteLine(material.Id);
+                AssetLookup.RegisterFile(material.Id, Path.Combine("Materials", i + ".dmat"));
+                DiskUtilities.SaveMaterial(VirtualFileSystem.ResolvePath(Path.Combine("Materials", i + ".dmat")), (PBRMaterial)material);
+            }
+
+            Console.WriteLine("#######################");
+            foreach (var kv in AssetLookup.guidToPath)
+            {
+                Console.WriteLine($"{kv.Key} : {kv.Value}");
+            }
+            Console.WriteLine("#######################");
+
             foreach (MeshNode meshNode in modelGraph.meshNodes)
             {
                 AssetLookup.RegisterFile(meshNode.mesh.Id, Path.Combine("Meshes", meshNode.name + ".dmsh"));

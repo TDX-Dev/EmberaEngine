@@ -97,9 +97,9 @@ namespace EmberaEngine.Engine.Rendering
             Exposure = 1f,
             bloomIntensity = 1f,
             AmbientColor = new Color4(0.1f, 0.1f, 0.1f, 0.1f),
-            useSkybox = true,
+            useSkybox = false,
             AmbientFactor = 0.1f,
-            useIBL = true,
+            useIBL = false,
             useShadows = true,
             useAntialiasing = true,
             occlusionScale = AmbientOcclusionScale.Low,
@@ -168,6 +168,7 @@ namespace EmberaEngine.Engine.Rendering
             SkyboxManager.Initialize();
 
             Console.WriteLine("Clustered Renderer initialized.");
+            defaultMat = (PBRMaterial)GetDefaultMaterial();
         }
 
         public void BeginRender()
@@ -189,6 +190,8 @@ namespace EmberaEngine.Engine.Rendering
 
         }
 
+        PBRMaterial defaultMat;
+
         public void Render()
         {
             Camera camera = Renderer3D.GetRenderCamera();
@@ -208,10 +211,8 @@ namespace EmberaEngine.Engine.Rendering
 
             for (int i = 0; i < meshes.Count; i++)
             {
-                Console.WriteLine("Mesh");
-                Console.WriteLine(meshes[i].Name);
                 Mesh mesh = meshes[i];
-                PBRMaterial material = (PBRMaterial)GetDefaultMaterial();// (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialReference);
+                PBRMaterial material = (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialRenderHandle);// (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialReference);
 
                 //if (i == 0)
                 //{

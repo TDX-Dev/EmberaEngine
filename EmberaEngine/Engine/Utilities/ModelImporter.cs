@@ -1,5 +1,5 @@
 ﻿using Assimp;
-using EmberaEngine.Engine.AssetLoaders;
+using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;

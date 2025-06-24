@@ -27,7 +27,34 @@ namespace EmberaEngine.Engine.Core
             return false;
         }
 
+        public static bool TryGet<T>(string virtualPath, out T reference) where T : class
+        {
+            reference = null;
+
+            if (_cache.TryGetValue(typeof(T), out var typeDict))
+            {
+                if (typeDict.TryGetValue(virtualPath, out var obj) && obj is T typedRef)
+                {
+                    reference = typedRef;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void Add<T>(string virtualPath, IAssetReference<T> reference) where T : class
+        {
+            if (!_cache.TryGetValue(typeof(T), out var typeDict))
+            {
+                typeDict = new Dictionary<string, object>();
+                _cache[typeof(T)] = typeDict;
+            }
+
+            typeDict[virtualPath] = reference;
+        }
+
+        public static void Add<T>(string virtualPath, T reference) where T : class
         {
             if (!_cache.TryGetValue(typeof(T), out var typeDict))
             {

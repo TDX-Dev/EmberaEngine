@@ -53,7 +53,7 @@ namespace ElementalEditor.Editor.AssetHandling
                 {
                     await WaitUntilFileIsReady(path);
 
-                    Console.WriteLine($"Hot reloading asset at: {path}");
+                    //Console.WriteLine($"Hot reloading asset at: {path}");
 
                     AssetLookup.AssetChange(path, path); // Same path — no rename
                     AssetMetadataDatabase.SaveFile();
@@ -66,7 +66,7 @@ namespace ElementalEditor.Editor.AssetHandling
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Watcher] Error on change: {ex.Message}");
+                    //Console.WriteLine($"[Watcher] Error on change: {ex.Message}");
                 }
             });
         }
@@ -82,7 +82,7 @@ namespace ElementalEditor.Editor.AssetHandling
                 {
                     await WaitUntilFileIsReady(newPath);
 
-                    Console.WriteLine($"Asset moved or renamed: {oldPath} -> {newPath}");
+                    //Console.WriteLine($"Asset moved or renamed: {oldPath} -> {newPath}");
 
                     AssetLookup.AssetChange(oldPath, newPath);
                     AssetMetadataDatabase.SaveFile();
@@ -95,7 +95,7 @@ namespace ElementalEditor.Editor.AssetHandling
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Watcher] Error on rename: {ex.Message}");
+                    //Console.WriteLine($"[Watcher] Error on rename: {ex.Message}");
                 }
             });
         }

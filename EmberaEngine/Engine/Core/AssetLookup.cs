@@ -30,17 +30,25 @@ namespace EmberaEngine.Core
             return guidToPath.TryGetValue(guid, out var value) ? value : "";
         }
 
-        public static void RegisterFile(Guid guid, string path)
+        public static Guid GetFileGuidByPath(string path)
+        {
+            return pathToGuid.TryGetValue(path.Replace("/", "\\"), out var value) ? value : Guid.Empty;
+        }
+
+        public static Guid RegisterFile(Guid guid, string path)
         {
             if (pathToGuid.TryGetValue(path, out var existingGuid))
             {
+                Console.WriteLine("Already exists: " + path);
                 pathToGuid[path] = existingGuid;
                 guidToPath[existingGuid] = path;
+                return existingGuid;
             }
             else
             {
                 pathToGuid[path] = guid;
                 guidToPath[guid] = path;
+                return guid;
             }
         }
 

@@ -14,7 +14,7 @@ namespace EmberaEngine.Engine.Components
     {
         public override string Type => nameof(MeshRenderer);
 
-        private Mesh[] meshes;
+        public Mesh[] meshes;
 
         public MeshRenderer()
         {

@@ -1,4 +1,6 @@
-﻿using EmberaEngine.Engine.Components;
+﻿using EmberaEngine.Core;
+using EmberaEngine.Engine.AssetHandling;
+using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
 using MessagePack;
@@ -28,14 +30,13 @@ namespace EmberaEngine.Engine.Serializing
 
         private FormatterRegistryResolver()
         {
-            // Register manual formatters
             RegisterFormatter(new SceneFormatter());
             RegisterFormatter(new GameObjectFormatter());
+            RegisterFormatter(new SceneMeshFormatter());
             RegisterFormatter(new Vector2Formatter());
             RegisterFormatter(new Vector3Formatter());
             RegisterFormatter(new Vector4Formatter());
 
-            // Register auto-generated formatters
             foreach (var formatter in FormatterRegistry.Formatters)
             {
                 RegisterFormatter(formatter);
@@ -90,6 +91,7 @@ namespace EmberaEngine.Engine.Serializing
             var binary = MessagePackSerializer.Serialize(scene, options);
             // Convert to JSON
             var json = MessagePackSerializer.ConvertToJson(binary);
+            Console.WriteLine(json);
             return binary;
         }
 
@@ -115,8 +117,7 @@ namespace EmberaEngine.Engine.Serializing
     {
         public void Serialize(ref MessagePackWriter writer, Scene value, MessagePackSerializerOptions options)
         {
-            // We'll serialize GameObjects and IsPlaying
-            writer.WriteMapHeader(2);
+            writer.WriteMapHeader(3);
 
             writer.Write("GUID");
             writer.Write(value.Id.ToString());
@@ -160,10 +161,8 @@ namespace EmberaEngine.Engine.Serializing
             scene.GameObjects = gameObjects ?? new List<GameObject>();
             scene.Id = guid;
 
-            // Initialize fields that are ignored in serialization
             scene.Initialize();
 
-            // Fix parent references for GameObjects (if needed)
             foreach (var go in scene.GameObjects)
             {
                 go.Scene = scene;
@@ -192,7 +191,7 @@ namespace EmberaEngine.Engine.Serializing
         public void Serialize(ref MessagePackWriter writer, GameObject value, MessagePackSerializerOptions options)
         {
             var components = value.GetComponents()
-                .Where(comp => comp != value.transform) // Exclude transform from components
+                .Where(comp => comp != value.transform)
                 .ToList();
 
             writer.WriteMapHeader(6);
@@ -209,7 +208,6 @@ namespace EmberaEngine.Engine.Serializing
             writer.Write("CHILDREN");
             options.Resolver.GetFormatterWithVerify<List<GameObject>>().Serialize(ref writer, value.children, options);
 
-            // Serialize transform directly
             writer.Write("TRANSFORM");
             MessagePackSerializer.Serialize(ref writer, value.transform, options);
 
@@ -243,7 +241,7 @@ namespace EmberaEngine.Engine.Serializing
             Transform transform = null;
             List<(ushort, Component)> deserializedComponents = new();
 
-            var go = new GameObject(); // Don't call constructor
+            var go = new GameObject();
 
             for (int i = 0; i < count; i++)
             {
@@ -290,7 +288,7 @@ namespace EmberaEngine.Engine.Serializing
                                             compId = reader.ReadUInt16();
                                             break;
                                         case "TYPE":
-                                            reader.Skip(); // optional
+                                            reader.Skip();
                                             break;
                                         case "DATA":
                                             var formatter = ComponentRegistry.GetFormatter(compId);
@@ -309,8 +307,6 @@ namespace EmberaEngine.Engine.Serializing
                         }
                 }
             }
-
-            // Apply values
             go.Name = name;
             go.children = children ?? new List<GameObject>();
             if (transform != null)
@@ -318,7 +314,6 @@ namespace EmberaEngine.Engine.Serializing
                 transform.gameObject = go;
             }
 
-            // Add components
             go.Components = new List<Component>();
             if (transform != null)
                 go.Components.Add(transform);
@@ -355,7 +350,6 @@ namespace EmberaEngine.Engine.Serializing
         public void Serialize(ref MessagePackWriter writer, Mesh value, MessagePackSerializerOptions options)
         {
             writer.WriteMapHeader(1);
-            Console.WriteLine("Serializing");
             writer.Write("MESH_GUID");
             writer.Write(value.Id.ToString());
         }
@@ -363,10 +357,10 @@ namespace EmberaEngine.Engine.Serializing
         public Mesh Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
             reader.ReadMapHeader();
-            
+            reader.Skip();
             Guid meshGuid = Guid.Parse(reader.ReadString());
-
-            return new Mesh();
+            Mesh mesh = (Mesh)AssetLoader.LoadSync<Mesh>(meshGuid);
+            return mesh;
         }
     }
 
@@ -377,11 +371,14 @@ namespace EmberaEngine.Engine.Serializing
         {
             var resolver = options.Resolver;
 
-            writer.WriteMapHeader(3);
+            writer.WriteMapHeader(4);
 
             // GUID
             writer.Write("GUID");
             writer.Write(value.Id.ToString());
+
+            writer.Write("MATERIAL_GUID");
+            writer.Write(value.MaterialReference.ToString());
 
             // Vertices
             writer.Write("VERTICES");
@@ -424,6 +421,7 @@ namespace EmberaEngine.Engine.Serializing
             int mapCount = reader.ReadMapHeader();
 
             Guid guid = Guid.Empty;
+            Guid materialGuid = Guid.Empty;
             List<Vertex> vertices = new List<Vertex>();
             List<int> indices = new List<int>();
 
@@ -435,7 +433,9 @@ namespace EmberaEngine.Engine.Serializing
                     case "GUID":
                         guid = Guid.Parse(reader.ReadString());
                         break;
-
+                    case "MATERIAL_GUID":
+                        materialGuid = Guid.Parse(reader.ReadString());
+                        break;
                     case "VERTICES":
                         int vertexCount = reader.ReadArrayHeader();
                         for (int v = 0; v < vertexCount; v++)
@@ -469,7 +469,7 @@ namespace EmberaEngine.Engine.Serializing
                                         bitangent = resolver.GetFormatterWithVerify<Vector3>().Deserialize(ref reader, options);
                                         break;
                                     default:
-                                        reader.Skip(); // future-proof
+                                        reader.Skip();
                                         break;
                                 }
                             }
@@ -494,6 +494,7 @@ namespace EmberaEngine.Engine.Serializing
 
             Mesh mesh = new Mesh();
             mesh.Id = guid;
+            mesh.MaterialReference = materialGuid;
             mesh.SetVertices(vertices.ToArray());
             if (indices.Count > 0)
             {
@@ -507,6 +508,93 @@ namespace EmberaEngine.Engine.Serializing
 #pragma warning restore MsgPack009
 
 
+    public class TextureFormatter : IMessagePackFormatter<Texture>
+    {
+        public void Serialize(ref MessagePackWriter writer, Texture value, MessagePackSerializerOptions options)
+        {
+            writer.WriteMapHeader(1);
+            writer.Write("GUID");
+            Console.WriteLine(value.Id);
+            writer.Write(value.Id.ToString());
+        }
+        public Texture Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        {
+            reader.ReadMapHeader();
+
+            Guid textureGuid = Guid.Parse(reader.ReadString());
+            Texture texture = (Texture)AssetLoader.LoadSync<Texture>(textureGuid);
+            return texture;
+        }
+    }
+
+    public class PBRMaterialFormatter : IMessagePackFormatter<PBRMaterial>
+    {
+        public void Serialize(ref MessagePackWriter writer, PBRMaterial value, MessagePackSerializerOptions options)
+        {
+            var resolver = options.Resolver;
+
+            writer.WriteArrayHeader(14);
+
+            writer.Write(value.Id.ToString());
+
+            MessagePackSerializer.Serialize(ref writer, value.Albedo, options);
+            MessagePackSerializer.Serialize(ref writer, value.Emission, options);
+
+            writer.Write(value.EmissionStrength);
+            writer.Write(value.Metallic);
+            writer.Write(value.Roughness);
+
+            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.DiffuseTexture, options);
+            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.NormalTexture, options);
+            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.RoughnessTexture, options);
+            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.EmissionTexture, options);
+
+            writer.Write(value.DiffuseTexture != null);
+            writer.Write(value.NormalTexture != null);
+            writer.Write(value.RoughnessTexture != null);
+            writer.Write(value.EmissionTexture != null);
+        }
+
+        public PBRMaterial Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        {
+            var resolver = options.Resolver;
+
+            var count = reader.ReadArrayHeader();
+            if (count != 14)
+                throw new InvalidOperationException("Invalid PBRMaterial format");
+
+            var material = new PBRMaterial();
+            material.SetDefaults();
+
+            material.Id = Guid.Parse(reader.ReadString());
+            material.Albedo = MessagePackSerializer.Deserialize<OpenTK.Mathematics.Color4>(ref reader, options);
+            material.Emission = MessagePackSerializer.Deserialize<OpenTK.Mathematics.Color4>(ref reader, options);
+            material.EmissionStrength = reader.ReadSingle();
+            material.Metallic = reader.ReadSingle();
+            material.Roughness = reader.ReadSingle();
+
+            var diffuse = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+            var normal = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+            var roughness = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+            var emission = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+
+            var useDiffuse = reader.ReadBoolean();
+            var useNormal = reader.ReadBoolean();
+            var useRoughness = reader.ReadBoolean();
+            var useEmission = reader.ReadBoolean();
+
+            if (useDiffuse) material.DiffuseTexture = diffuse;
+            if (useNormal) material.NormalTexture = normal;
+            if (useRoughness) material.RoughnessTexture = roughness;
+            if (useEmission) material.EmissionTexture = emission;
+
+            material.OnChangeValue();
+            return material;
+        }
+
+    }
+
+
     public class Adapter<T> : IMessagePackFormatter<Component> where T : Component
     {
         private readonly IMessagePackFormatter<T> inner;
@@ -514,10 +602,36 @@ namespace EmberaEngine.Engine.Serializing
         public Adapter(IMessagePackFormatter<T> inner) => this.inner = inner;
 
         public void Serialize(ref MessagePackWriter writer, Component value, MessagePackSerializerOptions options)
-            => inner.Serialize(ref writer, (T)value, options); // ✅ Downcast works
+            => inner.Serialize(ref writer, (T)value, options);
 
         public Component Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
             => inner.Deserialize(ref reader, options);
+    }
+
+    public class Color4Formatter : IMessagePackFormatter<Color4>
+    {
+        public void Serialize(ref MessagePackWriter writer, Color4 value, MessagePackSerializerOptions options)
+        {
+            writer.WriteArrayHeader(4);
+            writer.Write(value.R);
+            writer.Write(value.G);
+            writer.Write(value.B);
+            writer.Write(value.A);
+        }
+
+        public Color4 Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        {
+            var count = reader.ReadArrayHeader();
+            if (count != 4)
+                throw new InvalidOperationException("Invalid Color4 format");
+
+            float r = reader.ReadSingle();
+            float g = reader.ReadSingle();
+            float b = reader.ReadSingle();
+            float a = reader.ReadSingle();
+
+            return new Color4(r, g, b, a);
+        }
     }
 
     public class Vector2Formatter : IMessagePackFormatter<Vector2>

@@ -11,6 +11,8 @@ namespace EmberaEngine.Engine.Core
 
         private bool _disposed = false;
 
+        public Guid Id = Guid.NewGuid();
+
         private int handle;
         private TextureTarget target;
         private TextureDimension textureDimension;

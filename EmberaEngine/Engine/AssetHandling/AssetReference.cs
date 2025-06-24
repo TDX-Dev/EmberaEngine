@@ -67,4 +67,27 @@ namespace EmberaEngine.Engine.AssetHandling
             throw new NotImplementedException();
         }
     }
+
+    public class MaterialReference : IAssetReference<Material>
+    {
+        public bool isLoaded => _loaded;
+        public Material value => _value;
+
+        bool _loaded;
+        Material _value;
+
+        public event Action<Material> OnLoad = (value) => { };
+
+        public void SetValue(Material value)
+        {
+            _value = value;
+            _loaded = true;
+            OnLoad.Invoke(_value);
+        }
+
+        public void Unload()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

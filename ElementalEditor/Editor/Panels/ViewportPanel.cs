@@ -1,5 +1,6 @@
 ﻿using ElementalEditor.Editor.AssetHandling;
 using ElementalEditor.Editor.Utils;
+using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
@@ -11,6 +12,7 @@ using OpenTK.Windowing.Desktop;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using YamlDotNet.Core.Tokens;
 using static EmberaEngine.Engine.Utilities.NewModelImporter;
 
 namespace ElementalEditor.Editor.Panels
@@ -253,8 +255,20 @@ namespace ElementalEditor.Editor.Panels
             {
                 GameObject go = editor.EditorCurrentScene.addGameObject("MeshObj");
                 MeshRenderer mr = go.AddComponent<MeshRenderer>();
-                Mesh mesh = DiskUtilities.LoadMesh(VirtualFileSystem.ResolvePath(data));
-                mr.SetMesh(mesh);
+                MeshReference meshReference = (MeshReference)AssetLoader.Load<Mesh>(data);
+                if (meshReference.isLoaded)
+                {
+                    mr.SetMesh(meshReference.value);
+                    Console.WriteLine("Material " + (meshReference.value).Id);
+                } else
+                {
+                    meshReference.OnLoad += (value) =>
+                    {
+
+                        mr.SetMesh(value);
+                        Console.WriteLine("Material " + value.MaterialReference);
+                    };
+                }
 
 
             }

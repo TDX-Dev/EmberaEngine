@@ -53,9 +53,9 @@ namespace ElementalEditor.Editor
             bool metadataCreated = CreateDirectoryIfNotExist(metadataDirectory);
             CreateDirectoryIfNotExist(gameFilesDirectory);
 
-            AssetMetadataDatabase.CreateDatabase(metadataDirectory);
-
             VirtualFileSystem.Mount(new DirectoryAssetSource(gameFilesDirectory));
+
+            AssetMetadataDatabase.CreateDatabase(projectPath);
 
             AssetWatcher.SetupWatcher(gameFilesDirectory);
 

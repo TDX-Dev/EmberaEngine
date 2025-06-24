@@ -22,14 +22,14 @@ namespace ElementalEditor.Editor.Panels
 
         public override void OnGUI()
         {
-            Dictionary<uint, Material> materials = MaterialManager.materials;
+            List<Material> materials = MaterialManager.GetMaterials();
             ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 6);
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new System.Numerics.Vector2(5, 5));
             if (ImGui.Begin("Material Editor"))
             {
                 for (int i = 0; i < materials.Count; i++)
                 {
-                    PBRMaterial material = (PBRMaterial)materials.Values.ElementAt(i);
+                    PBRMaterial material = (PBRMaterial)materials.ElementAt(i);
                     ImGui.PushID("material" + i);
                     if (ImGui.CollapsingHeader("Material " + i))
                     {

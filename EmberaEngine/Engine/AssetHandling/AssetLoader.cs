@@ -19,6 +19,7 @@ namespace EmberaEngine.Engine.AssetHandling
     public interface IAssetLoader<T> : IAssetLoader where T : class
     {
         public IAssetReference<T> Load(string virtualPath);
+        public T LoadSync(string virtualPath);
     }
 
 
@@ -30,6 +31,8 @@ namespace EmberaEngine.Engine.AssetHandling
         static AssetLoader()
         {
             Register(new TextureLoader());
+            Register(new MeshLoader());
+            Register(new MaterialLoader());
         }
 
         public static void Register<T>(IAssetLoader<T> loader) where T : class
@@ -39,7 +42,7 @@ namespace EmberaEngine.Engine.AssetHandling
 
         public static IAssetReference<T> Load<T>(string virtualPath) where T : class
         {
-            if (AssetCache.TryGet<T>(virtualPath, out var reference))
+            if (AssetCache.TryGet<T>(virtualPath, out IAssetReference<T> reference))
                 return reference;
 
             if (!_loaders.TryGetValue(typeof(T), out var loaderObj))
@@ -59,6 +62,29 @@ namespace EmberaEngine.Engine.AssetHandling
             string virtualPath = AssetLookup.GetFilePathByGuid(guid);
 
             return Load<T>(virtualPath);
+        }
+
+        public static T LoadSync<T>(string virtualPath) where T : class
+        {
+            if (AssetCache.TryGet<T>(virtualPath, out T reference))
+                return reference;
+
+            if (!_loaders.TryGetValue(typeof(T), out var loaderObj))
+                throw new Exception($"No loader registered for type {typeof(T)}");
+
+            var loader = (IAssetLoader<T>)loaderObj;
+            T newRef = (T)loader.LoadSync(virtualPath);
+
+            AssetCache.Add(virtualPath, newRef);
+
+            return newRef;
+        }
+
+        public static T LoadSync<T>(Guid guid) where T : class
+        {
+            string virtualPath = AssetLookup.GetFilePathByGuid(guid);
+
+            return LoadSync<T>(virtualPath);
         }
 
         public static IAssetLoader<T> GetLoader<T>() where T : class

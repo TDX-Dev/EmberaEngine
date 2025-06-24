@@ -1,4 +1,5 @@
-﻿using EmberaEngine.Engine.Core;
+﻿using EmberaEngine.Core;
+using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,25 @@ namespace EmberaEngine.Engine.AssetHandling
         ];
 
         IEnumerable<string> IAssetLoader.SupportedExtensions => SupportedExtensions;
+
+        public Texture LoadSync(string virtualPath)
+        {
+            byte[] file = VirtualFileSystem.Open(virtualPath);
+            var img = new Image();
+            img.Load(file);
+
+            var texture = new Texture(TextureTarget2d.Texture2D);
+            texture.TexImage2D(img.Width, img.Height, PixelInternalFormat.Rgba16f, PixelFormat.Rgba, PixelType.UnsignedByte, img.Pixels);
+            texture.SetFilter(TextureMinFilter.Linear, TextureMagFilter.Linear);
+            texture.SetWrapMode(TextureWrapMode.ClampToEdge, TextureWrapMode.ClampToEdge);
+            texture.GenerateMipmap();
+
+            texture.Id = AssetLookup.GetFileGuidByPath(virtualPath);
+
+            img.Pixels = [];
+
+            return texture;
+        }
 
         IAssetReference<Texture> IAssetLoader<Texture>.Load(string virtualPath)
         {
@@ -53,6 +73,9 @@ namespace EmberaEngine.Engine.AssetHandling
                         texture.SetFilter(TextureMinFilter.Linear, TextureMagFilter.Linear);
                         texture.SetWrapMode(TextureWrapMode.ClampToEdge, TextureWrapMode.ClampToEdge);
                         texture.GenerateMipmap();
+
+                        AssetLookup.RegisterFile(texture.Id, virtualPath);
+                        texture.Id = AssetLookup.GetFileGuidByPath(virtualPath);
 
                         textureReference.SetValue(texture); // calls OnLoad internally
 

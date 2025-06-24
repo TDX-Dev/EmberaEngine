@@ -134,7 +134,7 @@ namespace EmberaEngine.Engine.Rendering
         public static void Render()
         {
             frameCounter++;
-            if (convertHDRItoCubemap && frameCounter > -1)
+            if (convertHDRItoCubemap && frameCounter > 0)
             {
                 GraphicsState.SetCulling(false);
                 GraphicsState.SetDepthTest(false);
@@ -217,7 +217,7 @@ namespace EmberaEngine.Engine.Rendering
             brdfLUTShader.Use();
             GraphicsState.Clear(true);
 
-            //Graphics.DrawFullScreenTri();
+            Graphics.DrawFullScreenTri();
 
         }
 
@@ -292,7 +292,7 @@ namespace EmberaEngine.Engine.Rendering
                 }
 
                 Console.WriteLine("irradiance ABOVE");
-                //CubeMesh.Draw();
+                CubeMesh.Draw();
             }
 
             irradianceTexture.SetFilter(TextureMinFilter.Linear, TextureMagFilter.Linear);

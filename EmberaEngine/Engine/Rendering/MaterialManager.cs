@@ -21,6 +21,7 @@ namespace EmberaEngine.Engine.Rendering
             _nextHandle = 1;
 
             _nullMaterial = new PBRMaterial();
+            _nullMaterial.SetDefaults();
             _nullMaterial.DiffuseTexture = Helper.loadImageAsTex("Engine/Content/Textures/Placeholders/null.png");
 
             _materialsByHandle[NullHandle] = _nullMaterial;
@@ -32,6 +33,11 @@ namespace EmberaEngine.Engine.Rendering
         public static Material GetMaterial(uint handle)
         {
             return _materialsByHandle.TryGetValue(handle, out var mat) ? mat : _nullMaterial;
+        }
+
+        public static List<Material> GetMaterials()
+        {
+            return _materialsByHandle.Values.ToList();
         }
 
         /// <summary>
