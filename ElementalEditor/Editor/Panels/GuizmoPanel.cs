@@ -14,68 +14,48 @@ using System.Threading.Tasks;
 
 namespace ElementalEditor.Editor.Panels
 {
-    public abstract class GizmoObject
-    {
-        public abstract Type ComponentType { get; }
-
-        public abstract void Initialize();
-
-        public abstract void OnRender(Component component);
-    }
 
 
 
     class GuizmoPanel : Panel
     {
-        public List<GizmoObject> GizmoObjects;
-
         public override void OnAttach()
         {
-            GizmoObjects = new List<GizmoObject>();
-
-            GizmoObjects.Add(new LightGizmo());
-            GizmoObjects.Add(new ColliderGizmo());
-
-            for (int i = 0; i < GizmoObjects.Count; i++)
-            {
-                GizmoObjects[i].Initialize();
-            }
+            // Register gizmo types centrally.
+            GizmoRegistry.Register(new LightGizmo());
+            GizmoRegistry.Register(new ColliderGizmo());
         }
 
         public override void OnUpdate(float dt)
         {
             base.OnUpdate(dt);
+            // You can add interactive behavior here in future (like selection or hover)
         }
 
         public override void OnLateRender()
         {
             Renderer3D.GetOutputFrameBuffer().Bind();
 
-            Guizmo3D.Render();
+            // Prepare for rendering gizmos (set camera, states, etc.)
+            Guizmo3D.Render(editor.EditorCurrentScene);
 
-            List<Component> components = editor.EditorCurrentScene.GetComponents();
-
-            for (int j = 0; j < components.Count; j++)
-            {
-                for (int i = 0; i < GizmoObjects.Count; i++)
-                {
-                    if (GizmoObjects[i].ComponentType == components[j].GetType())
-                    {
-                        GizmoObjects[i].OnRender(components[j]);
-                    }
-                }
-            }
+            // Ask the registry to handle drawing all gizmos
+            GizmoRegistry.RenderAll(editor.EditorCurrentScene);
         }
 
         public override void OnGUI()
         {
-            if (ImGui.Begin("Guizmo Manager"))
+            if (ImGui.Begin("Gizmo Manager"))
             {
-
+                ImGui.Text("Registered Gizmos:");
+                foreach (var kvp in GizmoRegistry.GetRegisteredTypes())
+                {
+                    ImGui.Text($"- {kvp.Key.Name} ({kvp.Value.Count})");
+                }
 
                 ImGui.End();
             }
         }
-
     }
+
 }

@@ -31,6 +31,14 @@ namespace EmberaEngine.Engine.Rendering
         Ultra = 8 // 2
     }
 
+    public enum RenderMode
+    {
+        Solid,
+        Wireframe,
+        Unlit
+    }
+
+
     public struct RenderSetting
     {
         public float Exposure;
@@ -46,5 +54,6 @@ namespace EmberaEngine.Engine.Rendering
         public TonemapFunction tonemapFunction;
         public MSAA_Samples MSAA;
         public AmbientOcclusionScale occlusionScale;
+        public RenderMode renderMode;
     }
 }

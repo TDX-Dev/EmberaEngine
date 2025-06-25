@@ -72,16 +72,16 @@ namespace EmberaEngine.Engine.Rendering
             GeometryFB.Bind();
             Renderer3D.ApplyPerFrameSettings(frameData.Camera);
 
-            List<Mesh> meshes = frameData.Meshes;
+            List<MeshEntry> meshes = frameData.Meshes;
 
             gBufferShader.Use();
             gBufferShader.SetMatrix4("W_VIEW_MATRIX", frameData.Camera.GetViewMatrix());
             gBufferShader.SetMatrix4("W_PROJECTION_MATRIX", frameData.Camera.GetProjectionMatrix());
             for (int i = 0; i < meshes.Count; i++)
             {
-                Mesh mesh = meshes[i];
+                Mesh mesh = meshes[i].Mesh;
 
-                Matrix4 model = mesh.WorldMatrix;
+                Matrix4 model = meshes[i].Transform;
                 gBufferShader.SetMatrix4("W_MODEL_MATRIX", model);
                 gBufferShader.SetInt("HIGHLIGHT_BIT", mesh.IsHighlighted ? 1 : 0);
                 mesh.Draw();

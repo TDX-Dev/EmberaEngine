@@ -22,25 +22,37 @@ namespace EmberaEngine.Engine.AssetHandling
         public Mesh LoadSync(string virtualPath)
         {
             var resolver = CompositeResolver.Create(
-                    new IMessagePackFormatter[]
-                    {
-                                    new MeshFormatter(),
-                                    new EmberaEngine.Engine.Serializing.Vector2Formatter(),
-                                    new EmberaEngine.Engine.Serializing.Vector3Formatter(),
-                                    new EmberaEngine.Engine.Serializing.Vector4Formatter()
-                    },
-                    new IFormatterResolver[] { StandardResolver.Instance }
-                );
+                new IMessagePackFormatter[]
+                {
+            new MeshFormatter(),
+            new EmberaEngine.Engine.Serializing.Vector2Formatter(),
+            new EmberaEngine.Engine.Serializing.Vector3Formatter(),
+            new EmberaEngine.Engine.Serializing.Vector4Formatter()
+                },
+                new IFormatterResolver[] { StandardResolver.Instance }
+            );
 
             var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
 
             var binary = VirtualFileSystem.Open(virtualPath);
-
             Mesh mesh = MessagePackSerializer.Deserialize<Mesh>(binary, options);
-            mesh.Id = AssetLookup.GetFileGuidByPath(virtualPath);
 
+            // Load the material synchronously
+            try
+            {
+                var material = (PBRMaterial)AssetLoader.LoadSync<Material>(mesh.MaterialReference);
+                mesh.MaterialRenderHandle = MaterialManager.AddMaterial(material);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to load material");
+                mesh.MaterialRenderHandle = MaterialManager.GetFallbackHandle();
+            }
+
+            mesh.Id = AssetLookup.GetFileGuidByPath(virtualPath);
             return mesh;
         }
+
 
         IAssetReference<Mesh> IAssetLoader<Mesh>.Load(string virtualPath)
         {

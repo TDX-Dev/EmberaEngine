@@ -186,10 +186,10 @@ namespace EmberaEngine.Engine.Core
             isNormalSet = false;
             isRoughnessSet = false;
 
-            DiffuseTexture = Texture.White2DTex;
-            NormalTexture = Texture.White2DTex;
-            EmissionTexture = Texture.Black2DTex;
-            RoughnessTexture = Texture.White2DTex;
+            //DiffuseTexture = Texture.White2DTex;
+            //NormalTexture = Texture.White2DTex;
+            //EmissionTexture = Texture.Black2DTex;
+            //RoughnessTexture = Texture.White2DTex;
 
             textureUnitCount = 4;
 
@@ -211,29 +211,40 @@ namespace EmberaEngine.Engine.Core
             shader.Set("material.useRoughnessMap", isRoughnessSet ? 1 : 0);
             shader.Set("material.useEmissionMap", isEmissionSet ? 1 : 0);
 
+            GraphicsState.SetTextureActiveBinding(TextureUnit.Texture0);
             if (isDiffuseSet)
             {
-                GraphicsState.SetTextureActiveBinding(TextureUnit.Texture0);
                 diffuseTexture.Bind();
+            } else
+            {
+                Texture.White2DTex.Bind();
             }
 
+            GraphicsState.SetTextureActiveBinding(TextureUnit.Texture1);
             if (isNormalSet)
             {
-                GraphicsState.SetTextureActiveBinding(TextureUnit.Texture1);
                 normalTexture.Bind();
+            } else
+            {
+                Texture.White2DTex.Bind();
             }
 
+            GraphicsState.SetTextureActiveBinding(TextureUnit.Texture2);
             if (isRoughnessSet)
             {
-                GraphicsState.SetTextureActiveBinding(TextureUnit.Texture2);
                 roughnessTexture.Bind();
-
+            } else
+            {
+                Texture.White2DTex.Bind();
             }
 
+            GraphicsState.SetTextureActiveBinding(TextureUnit.Texture3);
             if (isEmissionSet)
             {
-                GraphicsState.SetTextureActiveBinding(TextureUnit.Texture3);
                 emissionTexture.Bind();
+            } else
+            {
+                Texture.White2DTex.Bind();
             }
         }
 

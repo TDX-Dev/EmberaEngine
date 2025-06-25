@@ -15,10 +15,14 @@ namespace EmberaEngine.Engine.Components
         public override string Type => nameof(MeshRenderer);
 
         public Mesh[] meshes;
+        
+        [IgnoreMember]
+        private List<MeshEntry> entries;
 
         public MeshRenderer()
         {
             meshes = new Mesh[0];
+            entries = new List<MeshEntry>();
         }
 
         public override void OnStart()
@@ -26,16 +30,16 @@ namespace EmberaEngine.Engine.Components
             for (int i = 0; i < meshes.Length; i++)
             {
                 Mesh mesh = meshes[i];
-                Renderer3D.RegisterMesh(mesh);
+                entries.Add(Renderer3D.RegisterMesh(mesh));
             }
         }
 
         public override void OnUpdate(float dt)
         {
-            for (int i = 0; i < meshes.Length; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                Mesh mesh = meshes[i];
-                mesh.WorldMatrix = gameObject.transform.GetWorldMatrix();
+                MeshEntry mesh = entries[i];
+                mesh.Transform = gameObject.transform.GetWorldMatrix();
             }
         }
 
@@ -43,7 +47,7 @@ namespace EmberaEngine.Engine.Components
         {
             this.meshes = new Mesh[] { mesh };
 
-            Renderer3D.RegisterMesh(mesh);
+            entries.Add(Renderer3D.RegisterMesh(mesh));
         }
 
         public void SetMeshes(Mesh[] meshes)
@@ -52,7 +56,7 @@ namespace EmberaEngine.Engine.Components
             for (int i = 0;i < meshes.Length;i++)
             {
                 Mesh mesh = meshes[i];
-                Renderer3D.RegisterMesh(mesh);
+                entries.Add(Renderer3D.RegisterMesh(mesh));
             }
         }
 
@@ -61,7 +65,7 @@ namespace EmberaEngine.Engine.Components
             for (int i = 0; i < meshes.Length; i++)
             {
                 Mesh mesh = meshes[i];
-                Renderer3D.RemoveMesh(mesh);
+                entries.Add(Renderer3D.RegisterMesh(mesh));
             }
         }
 
@@ -73,7 +77,7 @@ namespace EmberaEngine.Engine.Components
                 for (int i = 0; i < meshes.Length; i++)
                 {
                     Console.WriteLine("Removing!");
-                    Mesh mesh = meshes[i];
+                    MeshEntry mesh = entries[i];
                     Renderer3D.RemoveMesh(mesh);
                 }
             }

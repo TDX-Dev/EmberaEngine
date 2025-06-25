@@ -2,6 +2,7 @@
 using ElementalEditor.Editor.Utils;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
+using EmberaEngine.Engine.Rendering;
 using EmberaEngine.Engine.Utilities;
 using OpenTK.Mathematics;
 
@@ -9,7 +10,6 @@ namespace ElementalEditor.Editor.GizmoAddons
 {
     internal class LightGizmo : GizmoObject
     {
-
         public override Type ComponentType => typeof(LightComponent);
 
         private Texture pointLightTexture;
@@ -26,19 +26,25 @@ namespace ElementalEditor.Editor.GizmoAddons
         public override void OnRender(Component component)
         {
             LightComponent lComponent = (LightComponent)component;
-            if (!lComponent.Enabled) { return; }
-            if (lComponent.LightType == EmberaEngine.Engine.Rendering.LightType.PointLight)
-            {
-                Guizmo3D.RenderTexture(pointLightTexture, component.gameObject.transform.Position, Vector3.One);
-                Guizmo3D.RenderLightCircle(component.gameObject.transform.Position, Vector3.One * lComponent.Radius, Vector3.Zero);
-            } else if (lComponent.LightType == EmberaEngine.Engine.Rendering.LightType.SpotLight)
-            {
-                Guizmo3D.RenderTexture(spotLightTexture, component.gameObject.transform.Position, Vector3.One);
-            } else if (lComponent.LightType == EmberaEngine.Engine.Rendering.LightType.DirectionalLight)
-            {
-                Guizmo3D.RenderTexture(directionalLightTexture, component.gameObject.transform.Position, Vector3.One);
-            }
+            if (!lComponent.Enabled) return;
 
+            var pos = component.gameObject.transform.Position;
+
+            switch (lComponent.LightType)
+            {
+                case LightType.PointLight:
+                    Guizmo3D.RenderTexture(pointLightTexture, pos, Vector3.One);
+                    Guizmo3D.RenderLightCircle(pos, Vector3.One * lComponent.Radius, Vector3.Zero);
+                    break;
+
+                case LightType.SpotLight:
+                    Guizmo3D.RenderTexture(spotLightTexture, pos, Vector3.One);
+                    break;
+
+                case LightType.DirectionalLight:
+                    Guizmo3D.RenderTexture(directionalLightTexture, pos, Vector3.One);
+                    break;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using EmberaEngine.Engine.Components;
+using MessagePack;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace EmberaEngine.Engine.Core
@@ -10,6 +11,9 @@ namespace EmberaEngine.Engine.Core
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name;
+
+        [IgnoreMember]
+        public bool Enabled = true;
 
         public Transform transform { get; set; }
 
@@ -73,6 +77,17 @@ namespace EmberaEngine.Engine.Core
                 if (typeof(T) == Components[i].GetType())
                 {
                     return (T)Components[i];
+                }
+            }
+            return null;
+        }
+        public Component GetComponent(Type type)
+        {
+            foreach (var comp in Components)
+            {
+                if (type.IsAssignableFrom(comp.GetType()))
+                {
+                    return comp;
                 }
             }
             return null;

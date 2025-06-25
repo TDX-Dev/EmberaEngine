@@ -60,10 +60,8 @@ namespace ElementalEditor.Editor
         public override void OnAttach()
         {
 
-
-            SetEditorStyling();
-
             interBoldFont = ImGui.GetIO().Fonts.AddFontFromFileTTF("Editor/Assets/Fonts/InterExtraBold.ttf", 20);
+            EditorUI.DefaultFontLarge = ImGui.GetIO().Fonts.AddFontFromFileTTF("Editor/Assets/Fonts/JetBrainsMono-Bold.ttf", 32);
             app.ImGuiLayer.SetFont(ImGui.GetIO().Fonts.AddFontFromFileTTF("Editor/Assets/Fonts/JetBrainsMono-Bold.ttf", 20));
             
             app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/forkawesome-webfont.ttf", 25, (FontAwesome.ForkAwesome.IconMin, FontAwesome.ForkAwesome.IconMax16));
@@ -71,6 +69,7 @@ namespace ElementalEditor.Editor
             materialIcon24 = app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/MaterialIcons-Regular.ttf", 128, (MaterialDesign.IconMin, MaterialDesign.IconMax16));
             app.ImGuiLayer.RecreateFontDevice();
 
+            EditorUI.SetEditorStyling();
 
             LoadProject();
 
@@ -128,6 +127,7 @@ namespace ElementalEditor.Editor
 
         public override void OnGUIRender()
         {
+            //EditorUI.SetEditorStyling();
             for (int i = 0; i < Panels.Count; i++)
             {
                 Panels[i].OnGUI();
@@ -217,35 +217,6 @@ namespace ElementalEditor.Editor
             //lightObject.AddComponent<LightComponent>();
 
 
-            ModelGraphData modelGraph = NewModelImporter.Load(new ModelLoaderSpecification()
-            {
-                resourcePath = "AmbientShadowTesting/ambient_shadow_testing.fbx",
-                importScale = .01f,
-            });
-
-            int i = 0;
-            Console.WriteLine(modelGraph.materials.Count);
-            foreach (Material material in modelGraph.materials)
-            {
-                i++;
-                Console.WriteLine(material.Id);
-                AssetLookup.RegisterFile(material.Id, Path.Combine("Materials", i + ".dmat"));
-                DiskUtilities.SaveMaterial(VirtualFileSystem.ResolvePath(Path.Combine("Materials", i + ".dmat")), (PBRMaterial)material);
-            }
-
-            Console.WriteLine("#######################");
-            foreach (var kv in AssetLookup.guidToPath)
-            {
-                Console.WriteLine($"{kv.Key} : {kv.Value}");
-            }
-            Console.WriteLine("#######################");
-
-            foreach (MeshNode meshNode in modelGraph.meshNodes)
-            {
-                AssetLookup.RegisterFile(meshNode.mesh.Id, Path.Combine("Meshes", meshNode.name + ".dmsh"));
-                DiskUtilities.SaveMesh(VirtualFileSystem.ResolvePath(Path.Combine("Meshes", meshNode.name + ".dmsh")), meshNode.mesh);
-            }
-
 
 
             //app.window.Close();
@@ -269,54 +240,12 @@ namespace ElementalEditor.Editor
             //Mesh[] meshLoaderOutput = ModelImporter.LoadModel("Engine/Content/Models/Portal2-Elevator/scene.gltf");
 
             //EditorCurrentScene.addGameObject(meshLoaderOutput.rootObject);
-        
+
 
 
         }
 
         GameObject barrelObject;
-
-        public void SetEditorStyling()
-        {
-            ImGuiStylePtr style = ImGui.GetStyle();
-
-            style.Colors[(int)ImGuiCol.Button] = new System.Numerics.Vector4(0.11f, 0.10f, 0.08f, 1f);
-            style.Colors[(int)ImGuiCol.ButtonHovered] = new System.Numerics.Vector4(0.4f, 0.4f, 0.4f, 1f);
-            style.Colors[(int)ImGuiCol.ButtonActive] = new System.Numerics.Vector4(0.6f, 0.6f, 0.6f, 1f);
-            style.Colors[(int)ImGuiCol.Separator] = new System.Numerics.Vector4(0.2f, 0.2f, 0.2f, 1f);
-            style.Colors[(int)ImGuiCol.Separator] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 1f);
-            style.Colors[(int)ImGuiCol.TitleBgActive] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 1);
-            style.Colors[(int)ImGuiCol.TitleBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 1);
-            style.Colors[((int)ImGuiCol.WindowBg)] = new System.Numerics.Vector4(0.14f, 0.14f, 0.14f, 1);
-            style.Colors[((int)ImGuiCol.Header)] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.5f);
-            style.Colors[((int)ImGuiCol.HeaderHovered)] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.5f);
-            style.Colors[((int)ImGuiCol.HeaderActive)] = new System.Numerics.Vector4(0.2f, 0.2f, 0.2f, 0.5f);
-
-            style.Colors[(int)ImGuiCol.Tab] = new System.Numerics.Vector4(0.18f, 0.20f, 0.23f, 1f); // Default tab
-            style.Colors[(int)ImGuiCol.TabHovered] = new System.Numerics.Vector4(0.28f, 0.30f, 0.35f, 1f); // Hovered
-            style.Colors[(int)ImGuiCol.TabActive] = new System.Numerics.Vector4(0.22f, 0.24f, 0.27f, 1f); // Active tab
-            style.Colors[(int)ImGuiCol.TabUnfocused] = new System.Numerics.Vector4(0.12f, 0.12f, 0.13f, 1f); // Background/inactive
-            style.Colors[(int)ImGuiCol.TabUnfocusedActive] = new System.Numerics.Vector4(0.18f, 0.20f, 0.23f, 1f); // Active but unfocused
-
-
-
-            style.Colors[(int)ImGuiCol.FrameBg] = new System.Numerics.Vector4(0.11f, 0.10f, 0.08f, 1f);
-            style.Colors[(int)ImGuiCol.PopupBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.9f);
-            style.Colors[(int)ImGuiCol.ChildBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.7f);
-
-            //style.Colors[(int)ImGuiCol.PopupBg] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 1f);
-
-            style.Colors[(int)ImGuiCol.Text] = new System.Numerics.Vector4(0.74f, 0.71f, 0.71f, 1f);
-
-
-            style.WindowMenuButtonPosition = ImGuiDir.None;
-
-            style.FramePadding = new System.Numerics.Vector2(12, 12);
-
-            style.FrameRounding = 2f;
-            style.TabRounding = 2f;
-            style.PopupRounding = 3f;
-        }
 
 
     }

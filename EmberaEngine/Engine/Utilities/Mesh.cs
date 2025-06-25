@@ -31,9 +31,6 @@ namespace EmberaEngine.Engine.Utilities
         public bool IsHighlighted { get; set; } = false;
         public bool IsStatic { get; private set; } = true;
 
-        // Transform
-        internal Matrix4 WorldMatrix;
-
         private bool isDisposed = false;
 
         // Constructors

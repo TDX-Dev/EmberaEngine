@@ -1,4 +1,5 @@
-﻿using EmberaEngine.Engine.AssetHandling;
+﻿using EmberaEngine.Core;
+using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using OpenTK.Mathematics;
@@ -189,18 +190,36 @@ namespace EmberaEngine.Engine.Utilities
             }
             else if (node.MeshIndices.Count > 0)
             {
-                int meshIdx = node.MeshIndices[0];
-                var assimpMesh = scene.Meshes[meshIdx];
-                var mesh = ProcessMesh(assimpMesh, spec.importScale);
+                var emptyParent = new EmptyNode()
+                {
+                    name = node.Name,
+                    position = new Vector3(pos.X, pos.Y, pos.Z),
+                    rotation = new Vector3(rotation.X, rotation.Y, rotation.Z),
+                    nodeType = ModelNodeType.Empty
+                };
 
-                mesh.name = node.Name;
-                mesh.position = new Vector3(pos.X, pos.Y, pos.Z);
-                mesh.rotation = new Vector3(rotation.X, rotation.Y, rotation.Z);
-                mesh.nodeType = ModelNodeType.Mesh;
+                for (int meshIndex = 0; meshIndex < node.MeshIndices.Count; meshIndex++)
+                {
+                    int meshIdx = node.MeshIndices[meshIndex];
+                    var assimpMesh = scene.Meshes[meshIdx];
 
-                meshNodes.Add(mesh);
-                resultNode = mesh;
+                    Guid materialId = Guid.Empty;
+                    if (assimpMesh.MaterialIndex >= 0 && assimpMesh.MaterialIndex < materials.Count)
+                        materialId = materials[assimpMesh.MaterialIndex].Id;
+
+                    var mesh = ProcessMesh(assimpMesh, materialId, spec.importScale);
+                    mesh.name = node.Name;
+                    mesh.position = Vector3.Zero;
+                    mesh.rotation = Vector3.Zero;
+                    mesh.nodeType = ModelNodeType.Mesh;
+
+                    meshNodes.Add(mesh);
+                    emptyParent.children.Add(mesh);
+                }
+
+                resultNode = emptyParent;
             }
+
             else
             {
                 resultNode = new EmptyNode()
@@ -223,6 +242,7 @@ namespace EmberaEngine.Engine.Utilities
 
         static MeshNode ProcessMesh(
             Assimp.Mesh mesh,
+            Guid materialId,
             float importScale = 1.0f,
             bool generateLightMapUVs = false
         )
@@ -231,59 +251,45 @@ namespace EmberaEngine.Engine.Utilities
             int[] indices = mesh.GetIndices();
 
             Matrix4 scaleMatrix = Matrix4.CreateScale(importScale);
-
             Matrix3 normalMatrix = Matrix3.Transpose(Matrix3.Invert(new Matrix3(scaleMatrix)));
 
             for (int i = 0; i < mesh.VertexCount; i++)
             {
-                Vertex vertex;
+                Vector3 position = (new Vector4(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z, 1) * scaleMatrix).Xyz;
+                Vector3 normal = mesh.HasNormals
+                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z)))
+                    : Vector3.UnitY;
 
-                Vector3 vertexPosition = (new Vector4(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z, 1) * scaleMatrix).Xyz;
+                Vector3 tangent = (mesh.Tangents.Count > 0)
+                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z)))
+                    : Vector3.One;
 
-                Vector3 originalNormal = new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z);
-                Vector3 modifiedNormals = Vector3.Normalize(TransformNormal(normalMatrix, originalNormal));
+                Vector3 bitangent = (mesh.BiTangents.Count > 0)
+                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z)))
+                    : Vector3.One;
 
-                Vector3 modifiedTangents = Vector3.One;
-                Vector3 modifiedBiTangents = Vector3.One;
-
-                if (mesh.Tangents.Count > 0)
-                {
-                    // Transform tangent (w=0, same treatment as normal)
-                    Vector3 originalTangent = new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z);
-                    modifiedTangents = Vector3.Normalize(TransformNormal(normalMatrix, originalTangent));
-                }
-
-                if (mesh.BiTangents.Count > 0)
-                {
-                    // Copy bitangent directly, or recompute in shader if using handedness
-                    Vector3 originalBiTangent = new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z);
-                    modifiedBiTangents = Vector3.Normalize(TransformNormal(normalMatrix, originalBiTangent));
-                }
-
-                Vector2 textureCoordinates = Vector2.Zero;
-
+                Vector2 uv = Vector2.Zero;
                 if (mesh.TextureCoordinateChannels[0].Count > 0)
                 {
-                    textureCoordinates = new Vector2(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y);
+                    uv = new Vector2(mesh.TextureCoordinateChannels[0][i].X, mesh.TextureCoordinateChannels[0][i].Y);
                 }
 
-                vertex = new Vertex(vertexPosition, modifiedNormals, textureCoordinates, modifiedTangents, modifiedBiTangents);
-                vertices.Add(vertex);
+                vertices.Add(new Vertex(position, normal, uv, tangent, bitangent));
             }
 
-            Mesh devoidMesh = new Mesh();
+            Mesh devoidMesh = new Mesh
+            {
+                Name = mesh.Name,
+                Id = Guid.NewGuid(),
+                MaterialReference = materialId
+            };
             devoidMesh.SetVertices(vertices.ToArray());
-            devoidMesh.Name = mesh.Name;
-            devoidMesh.Id = Guid.NewGuid();
-            devoidMesh.MaterialReference = materials[mesh.MaterialIndex].Id;
-            if (indices.Length != 0)
+            if (indices.Length > 0)
                 devoidMesh.SetIndices(indices);
 
-            return new MeshNode()
-            {
-                mesh = devoidMesh
-            };
+            return new MeshNode() { mesh = devoidMesh };
         }
+
 
 
         static List<Material> ProcessMaterials(Assimp.Scene scene, string baseDir)
@@ -339,23 +345,33 @@ namespace EmberaEngine.Engine.Utilities
                 return;
 
             string fullPath = Path.Combine(baseDir, texSlot.FilePath);
+            string relativePath = Path.GetRelativePath(AppContext.BaseDirectory, fullPath);
+            Guid textureId = AssetLookup.GetFileGuidByPath(relativePath);
 
             var textureRef = (TextureReference)AssetLoader.Load<Texture>(fullPath);
             if (textureRef == null)
                 return;
 
+            Action<Texture> setupAndAssign = tex =>
+            {
+                tex.Id = textureId;
+                SetupTexture(tex, texSlot, setTexture);
+            };
+
             if (textureRef.isLoaded)
             {
-                SetupTexture(textureRef.value, texSlot, setTexture);
+                setupAndAssign(textureRef.value);
             }
             else
             {
-                textureRef.OnLoad += tex => SetupTexture(tex, texSlot, setTexture);
+                textureRef.OnLoad += setupAndAssign;
 
-                // Load null texture until texture loads.
-                SetupTexture(Helper.loadImageAsTex("Engine/Content/Textures/Placeholders/null.png"), texSlot, setTexture);
+                var nullTex = Helper.loadImageAsTex("Engine/Content/Textures/Placeholders/null.png");
+                nullTex.Id = textureId;
+                SetupTexture(nullTex, texSlot, setTexture);
             }
         }
+
 
         static void SetupTexture(Texture texture, Assimp.TextureSlot texSlot, Action<Texture> setTexture)
         {

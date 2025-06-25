@@ -1,13 +1,14 @@
 ﻿using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
+using SharpFont;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using OpenTK.Graphics.OpenGL;
 
 namespace EmberaEngine.Engine.Rendering
 {
@@ -103,6 +104,7 @@ namespace EmberaEngine.Engine.Rendering
             useShadows = true,
             useAntialiasing = true,
             occlusionScale = AmbientOcclusionScale.Low,
+            renderMode = RenderMode.Solid
         };
 
         private float oldFOV;
@@ -207,49 +209,66 @@ namespace EmberaEngine.Engine.Rendering
             if (renderSettings.useSkybox)
                 SkyboxManager.RenderCube();
 
-            List<Mesh> meshes = Renderer3D.GetMeshes();
+            List<MeshEntry> meshes = Renderer3D.GetMeshes();
 
             for (int i = 0; i < meshes.Count; i++)
             {
-                Mesh mesh = meshes[i];
+                Mesh mesh = meshes[i].Mesh;
                 PBRMaterial material = (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialRenderHandle);// (PBRMaterial)MaterialManager.GetMaterial(mesh.MaterialReference);
 
-                //if (i == 0)
-                //{
-                //    material.shader.Use();
-                //}
+                Matrix4 model = meshes[i].Transform;
 
-                material.Apply();
+                switch (renderSettings.renderMode)
+                {
+                    case RenderMode.Wireframe:
+                        GraphicsState.SetPolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+                        break;
 
-                int textureStartIndex = material.textureUnitCount;
+                    default:
+                        GraphicsState.SetPolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+                        break;
+                }
 
-                material.shader.SetInt("irradianceMap", textureStartIndex);
-                material.shader.SetInt("prefilterMap", textureStartIndex + 1);
-                material.shader.SetInt("brdfLUT", textureStartIndex + 2);
+                if (renderSettings.renderMode == RenderMode.Unlit)
+                {
+                    var unlitShader = ShaderRegistry.GetShader("UNLIT");
+                    unlitShader.Use();
+                    unlitShader.SetMatrix4("W_MODEL_MATRIX", model);
+                    unlitShader.SetMatrix4("W_VIEW_MATRIX", camera.GetViewMatrix());
+                    unlitShader.SetMatrix4("W_PROJECTION_MATRIX", camera.GetProjectionMatrix());
+                    unlitShader.SetVector3("color", new Vector3(1.0f)); // or material color
+                }
+                else
+                {
+                    material.Apply();
+                    int textureStartIndex = material.textureUnitCount;
 
-                GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex);
-                SkyboxManager.GetIrradianceMap().Bind();
+                    material.shader.SetInt("irradianceMap", textureStartIndex);
+                    material.shader.SetInt("prefilterMap", textureStartIndex + 1);
+                    material.shader.SetInt("brdfLUT", textureStartIndex + 2);
 
-                GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex + 1);
-                SkyboxManager.GetPreFilterMap().Bind();
+                    GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex);
+                    SkyboxManager.GetIrradianceMap().Bind();
 
-                GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex + 2);
-                SkyboxManager.GetBRDFLUT().Bind();
+                    GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex + 1);
+                    SkyboxManager.GetPreFilterMap().Bind();
 
-                Matrix4 model = mesh.WorldMatrix;
+                    GraphicsState.SetTextureActiveBinding(Core.TextureUnit.Texture0 + textureStartIndex + 2);
+                    SkyboxManager.GetBRDFLUT().Bind();
 
-
-                material.shader.SetVector3("ambientColor", new Vector3(renderSettings.AmbientColor.R, renderSettings.AmbientColor.G, renderSettings.AmbientColor.B));
-                material.shader.SetFloat("ambientFactor", renderSettings.AmbientFactor);
-                material.shader.SetBool("useIBL", renderSettings.useIBL);
-                material.shader.SetFloat("zFar", camera.farClip);
-                material.shader.SetFloat("zNear", camera.nearClip);
-                material.shader.SetVector3("C_VIEWPOS", camera.position);
-                material.shader.SetMatrix4("W_MODEL_MATRIX", model);
-                material.shader.SetMatrix4("W_VIEW_MATRIX", camera.GetViewMatrix());
-                material.shader.SetMatrix4("W_PROJECTION_MATRIX", camera.GetProjectionMatrix());
+                    material.shader.SetVector3("ambientColor", new Vector3(renderSettings.AmbientColor.R, renderSettings.AmbientColor.G, renderSettings.AmbientColor.B));
+                    material.shader.SetFloat("ambientFactor", renderSettings.AmbientFactor);
+                    material.shader.SetBool("useIBL", renderSettings.useIBL);
+                    material.shader.SetFloat("zFar", camera.farClip);
+                    material.shader.SetFloat("zNear", camera.nearClip);
+                    material.shader.SetVector3("C_VIEWPOS", camera.position);
+                    material.shader.SetMatrix4("W_MODEL_MATRIX", model);
+                    material.shader.SetMatrix4("W_VIEW_MATRIX", camera.GetViewMatrix());
+                    material.shader.SetMatrix4("W_PROJECTION_MATRIX", camera.GetProjectionMatrix());
+                }
 
                 mesh.Draw();
+
             }
 
             Renderer3D.ResolveCompositeMS();

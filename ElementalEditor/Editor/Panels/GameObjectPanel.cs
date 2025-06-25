@@ -58,7 +58,10 @@ namespace ElementalEditor.Editor.Panels
         {
             ImGui.PushID($"dropzone_{dropTarget.GetHashCode()}_{before}");
 
+            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, Vector4.Zero);
+            ImGui.PushStyleColor(ImGuiCol.HeaderActive, Vector4.Zero);
             ImGui.Selectable("##DropZone", false, ImGuiSelectableFlags.AllowDoubleClick, new Vector2(ImGui.GetContentRegionAvail().X, 4));
+            ImGui.PopStyleColor(2);
 
             // --- Allow clicking the drop zone to select the GameObject ---
             if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
@@ -109,49 +112,54 @@ namespace ElementalEditor.Editor.Panels
         {
             ImGui.PushID(gameObject.GetHashCode());
 
-            // --- DRAW ALTERNATING BACKGROUND ---
-            Vector2 min = ImGui.GetItemRectMin(); // Only valid *after* a widget is rendered
-            Vector2 max = ImGui.GetItemRectMax();
-
-            float lineHeight = ImGui.GetTextLineHeightWithSpacing();
+            float rowHeight = 30f;
             Vector2 cursorPos = ImGui.GetCursorScreenPos();
-            var bgColor = (rowIndex % 2 == 0)
+            Vector2 rowSize = new Vector2(ImGui.GetContentRegionAvail().X, rowHeight);
+
+            // Alternating background color
+            Vector4 bgColor = (rowIndex % 2 == 0)
                 ? new Vector4(0.16f, 0.16f, 0.16f, 1f)
                 : new Vector4(0.18f, 0.18f, 0.18f, 1f);
 
             ImGui.GetWindowDrawList().AddRectFilled(
-                new Vector2(cursorPos.X, cursorPos.Y),
-                new Vector2(cursorPos.X + ImGui.GetContentRegionAvail().X, cursorPos.Y + lineHeight),
+                cursorPos,
+                new Vector2(cursorPos.X + rowSize.X, cursorPos.Y + rowHeight),
                 ImGui.ColorConvertFloat4ToU32(bgColor)
             );
 
-            // --- CONTINUE WITH TREE NODE ---
+            // Reserve space and reset cursor to top of row
+            ImGui.Dummy(new Vector2(0, rowHeight)); // Reserve vertical space
+            ImGui.SetCursorScreenPos(cursorPos);    // Go back to top of row
+
             bool isSelected = (SelectedObject == gameObject);
             bool hasChildren = gameObject.children != null && gameObject.children.Count > 0;
 
-            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.SpanFullWidth;
-
+            ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.FramePadding;
             if (!hasChildren)
                 flags |= ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen;
-
             if (isSelected)
             {
                 flags |= ImGuiTreeNodeFlags.Selected;
-                ImGui.PushStyleColor(ImGuiCol.Header, new Vector4(0.26f, 0.45f, 0.78f, 0.8f));         // Selected
-                ImGui.PushStyleColor(ImGuiCol.HeaderHovered, new Vector4(0.3f, 0.5f, 0.85f, 1.0f));   // Selected + hovered
+                ImGui.PushStyleColor(ImGuiCol.Header, new Vector4(0.26f, 0.45f, 0.78f, 0.8f));      // Selected
+                ImGui.PushStyleColor(ImGuiCol.HeaderHovered, new Vector4(0.3f, 0.5f, 0.85f, 1.0f)); // Hovered + selected
             }
 
+            // Adjust vertical padding to match row height
+            float textHeight = ImGui.GetTextLineHeight();
+            float verticalPadding = MathF.Max(0f, (rowHeight - textHeight) / 2f);
+            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(4f, verticalPadding));
+
+            // Draw the tree node
             bool open = ImGui.TreeNodeEx(MaterialDesign.Crop_square + " " + gameObject.Name, flags);
 
-            if (isSelected)
-                ImGui.PopStyleColor(2);
+            ImGui.PopStyleVar(); // FramePadding
+            if (isSelected) ImGui.PopStyleColor(2); // Header + Hovered color
 
-
+            // Click to select
             if (ImGui.IsItemClicked())
-            {
                 SelectedObject = gameObject;
-            }
 
+            // Begin drag
             if (ImGui.BeginDragDropSource())
             {
                 ImGui.SetDragDropPayload("GAMEOBJECT", IntPtr.Zero, 0);
@@ -160,6 +168,7 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.EndDragDropSource();
             }
 
+            // Accept drop
             if (ImGui.BeginDragDropTarget())
             {
                 ImGuiPayloadPtr payload = ImGui.AcceptDragDropPayload("GAMEOBJECT");
@@ -185,6 +194,7 @@ namespace ElementalEditor.Editor.Panels
 
             rowIndex++;
 
+            // Recursively draw children if node is open
             if (open && hasChildren)
             {
                 var children = gameObject.children;
@@ -194,7 +204,6 @@ namespace ElementalEditor.Editor.Panels
                     DrawGameObjectRecursive(children[i], depth + 1, ref rowIndex);
                 }
                 DrawDropZone(children[^1], before: false);
-
                 ImGui.TreePop();
             }
 
@@ -208,37 +217,18 @@ namespace ElementalEditor.Editor.Panels
 
         public override void OnGUI()
         {
-
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
 
             if (ImGui.Begin(MaterialDesign.List + " GameObjects"))
             {
 
-                // Setup padding and background for search bar section
-                ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(5, 5));
-                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 5));
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.18f, 0.20f, 0.23f, 0f));
-
                 if (ImGui.BeginChild("gameobject_child_window", new Vector2(ImGui.GetContentRegionAvail().X, 50), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
                 {
-                    // Unified style
-                    ImGui.PushStyleColor(ImGuiCol.FrameBg, new Vector4(0.12f, 0.13f, 0.15f, 1f));
-                    ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.3f, 0.3f, 0.3f, 1f));
-                    ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 4f);
-                    ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 1f);
 
                     // Start a group so the icon and input share layout
                     ImGui.BeginGroup();
 
-                    // Icon with background matching input
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.12f, 0.13f, 0.15f, 1f));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.15f, 0.16f, 0.18f, 1f));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.12f, 0.13f, 0.15f, 1f));
-                    ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(6, 5));
-
                     ImGui.Button(MaterialDesign.Search); // Icon as a button (for spacing and consistency)
-                    ImGui.PopStyleVar();
-                    ImGui.PopStyleColor(3);
 
                     ImGui.SameLine();
 
@@ -248,13 +238,8 @@ namespace ElementalEditor.Editor.Panels
 
                     ImGui.EndGroup();
 
-                    ImGui.PopStyleVar(2);     // FrameRounding + FrameBorderSize
-                    ImGui.PopStyleColor(2);   // FrameBg + Border
                     ImGui.EndChild();
                 }
-
-                ImGui.PopStyleColor();  // ChildBg
-                ImGui.PopStyleVar(2);   // FramePadding + WindowPadding
 
 
                 ContextMenu.InspectorPanelPopup(this);
@@ -264,19 +249,10 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
                 ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
-                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.11f, 0.10f, 0.08f, 1f));
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0));
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(new Vector3(0.12f), 1f));
 
-                // Scrollable area for GameObject list
-                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 5));
-                if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
+                if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.ChildWindow))
                 {
-                    // Push styles for the object list rendering
-                    ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(5, 5));
-                    ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
-                    ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
-                    ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.11f, 0.10f, 0.08f, 1f));
 
                     // Game object hierarchy rendering
                     var roots = editor.EditorCurrentScene.GameObjects;
@@ -291,14 +267,8 @@ namespace ElementalEditor.Editor.Panels
                     if (roots.Count > 0)
                         DrawDropZone(roots[^1], before: false);
 
-                    // Pop the final style sets
-                    ImGui.PopStyleColor();     // Button color
-                    ImGui.PopStyleVar(4);      // FramePadding, ButtonTextAlign, FrameBorderSize, ItemSpacing
-
                     ImGui.EndChild();          // End scrollable child
                 }
-                ImGui.PopStyleVar();           // WindowPadding for scrollable area
-                ImGui.PopStyleColor();
             }
 
             ImGui.PopStyleVar();           // WindowPadding (from the very beginning)
@@ -368,7 +338,6 @@ namespace ElementalEditor.Editor.Panels
                         ImGui.EndPopup();
                     }
                     ImGui.PopStyleVar(2);
-                    ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 6);
                     List<Component> componentsToRemove = new();
 
                     for (int i = 0; i < SelectedObject.Components.Count; i++)
@@ -464,11 +433,12 @@ namespace ElementalEditor.Editor.Panels
 
 
 
-                    ImGui.PopStyleVar(1);
 
                 }
                 ImGui.End();
             }
+
+            ImGui.PopStyleVar(3);
         }
 
         Dictionary<Type, CustomEditorScript> customEditorMap = new();

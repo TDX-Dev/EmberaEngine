@@ -35,7 +35,7 @@ namespace ElementalEditor.Editor.Utils
     {
         public static void DrawViewportTools(float toolbarSize, List<ViewportControl> controls)
         {
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 1f));
+            ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0.5f, 0.5f));
             ImGui.BeginChild("##VIEWPORT_TOOLS", new Vector2(-1, toolbarSize), false,
                 ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysUseWindowPadding);
 
@@ -79,11 +79,21 @@ namespace ElementalEditor.Editor.Utils
             }
 
             ImGui.EndChild();
-            ImGui.PopStyleColor();
+            ImGui.PopStyleVar();
         }
 
 
-
+        public static void ToggleGizmo(string label, GizmoType type)
+        {
+            bool isEnabled = Guizmo3D.EnabledGizmos.HasFlag(type);
+            if (ImGui.Checkbox(label, ref isEnabled))
+            {
+                if (isEnabled)
+                    Guizmo3D.EnabledGizmos |= type;
+                else
+                    Guizmo3D.EnabledGizmos &= ~type;
+            }
+        }
 
 
 

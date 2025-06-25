@@ -521,7 +521,12 @@ namespace EmberaEngine.Engine.Serializing
         {
             reader.ReadMapHeader();
 
-            Guid textureGuid = Guid.Parse(reader.ReadString());
+            reader.Skip();
+
+            string guidStr = reader.ReadString();
+            Console.WriteLine(guidStr);
+
+            Guid textureGuid = Guid.Parse(guidStr);
             Texture texture = (Texture)AssetLoader.LoadSync<Texture>(textureGuid);
             return texture;
         }
@@ -544,15 +549,27 @@ namespace EmberaEngine.Engine.Serializing
             writer.Write(value.Metallic);
             writer.Write(value.Roughness);
 
-            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.DiffuseTexture, options);
-            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.NormalTexture, options);
-            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.RoughnessTexture, options);
-            resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.EmissionTexture, options);
+            writer.Write(value.isDiffuseSet);
+            writer.Write(value.isNormalSet);
+            writer.Write(value.isRoughnessSet);
+            writer.Write(value.isEmissionSet);
 
-            writer.Write(value.DiffuseTexture != null);
-            writer.Write(value.NormalTexture != null);
-            writer.Write(value.RoughnessTexture != null);
-            writer.Write(value.EmissionTexture != null);
+            if (value.isDiffuseSet)
+            {
+                resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.DiffuseTexture, options);
+            }
+            if (value.isNormalSet)
+            {
+                resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.NormalTexture, options);
+            }
+            if (value.isRoughnessSet)
+            {
+                resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.RoughnessTexture, options);
+            }
+            if (value.isEmissionSet)
+            {
+                resolver.GetFormatterWithVerify<Texture>().Serialize(ref writer, value.EmissionTexture, options);
+            }
         }
 
         public PBRMaterial Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
@@ -573,21 +590,34 @@ namespace EmberaEngine.Engine.Serializing
             material.Metallic = reader.ReadSingle();
             material.Roughness = reader.ReadSingle();
 
-            var diffuse = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
-            var normal = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
-            var roughness = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
-            var emission = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
-
             var useDiffuse = reader.ReadBoolean();
             var useNormal = reader.ReadBoolean();
             var useRoughness = reader.ReadBoolean();
             var useEmission = reader.ReadBoolean();
 
-            if (useDiffuse) material.DiffuseTexture = diffuse;
-            if (useNormal) material.NormalTexture = normal;
-            if (useRoughness) material.RoughnessTexture = roughness;
-            if (useEmission) material.EmissionTexture = emission;
+            Console.WriteLine(useDiffuse);
 
+            if (useDiffuse)
+            {
+                var diffuse = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+                material.DiffuseTexture = diffuse;
+            }
+            if (useNormal)
+            {
+                var normal = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+                material.NormalTexture = normal;
+            }
+            if (useRoughness)
+            {
+                var roughness = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+                material.RoughnessTexture = roughness;
+            }
+            if (useEmission)
+            {
+                var emission = resolver.GetFormatterWithVerify<Texture>().Deserialize(ref reader, options);
+                material.EmissionTexture = emission;
+            }
+            
             material.OnChangeValue();
             return material;
         }

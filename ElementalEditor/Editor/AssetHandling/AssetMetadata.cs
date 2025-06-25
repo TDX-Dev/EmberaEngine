@@ -13,6 +13,8 @@ namespace ElementalEditor.Editor.AssetHandling
     {
         static string filePath;
 
+        public static readonly object _assetMetadataLock = new object();
+
         public static void CreateDatabase(string projectRoot)
         {
             filePath = Path.Combine(projectRoot, Project.PROJECT_ENGINE_DIRECTORY_NAME, Project.PROJECT_METADATA_DIRECTORY,  Project.PROJECT_REGISTRY_FILE_NAME);

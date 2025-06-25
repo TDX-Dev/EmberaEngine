@@ -85,7 +85,10 @@ namespace ElementalEditor.Editor.AssetHandling
                     //Console.WriteLine($"Asset moved or renamed: {oldPath} -> {newPath}");
 
                     AssetLookup.AssetChange(oldPath, newPath);
-                    AssetMetadataDatabase.SaveFile();
+                    
+                    lock (AssetMetadataDatabase._assetMetadataLock) {
+                        AssetMetadataDatabase.SaveFile();
+                    }
 
                     MainThreadDispatcher.Queue(() =>
                     {

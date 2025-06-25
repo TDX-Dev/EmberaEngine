@@ -43,13 +43,19 @@ namespace EmberaEngine.Engine.Rendering
     public class FrameData
     {
         public Camera Camera;
-        public List<Mesh> Meshes;
+        public List<MeshEntry> Meshes;
         public Framebuffer GBuffer;
         public Framebuffer EffectFrameBuffer; // this is sort of confusing and must be changed to elsewhere or a better system
                                               // its just a way to send to the effect what framebuffer/texture you want as input.
                                               // i implemented this for bloom, as i had no other way to send a input texture.
         public Texture EffectTexture;
         public int selectedObjectCustombitflag;
+    }
+
+    public class MeshEntry
+    {
+        public Mesh Mesh;
+        public Matrix4 Transform;
     }
 
 
@@ -71,7 +77,7 @@ namespace EmberaEngine.Engine.Rendering
         static Framebuffer CompositeBuffer;
         static Framebuffer ResolvedBuffer;
 
-        static List<Mesh> meshes;
+        static List<MeshEntry> meshes;
 
         static FrameData frameData;
 
@@ -82,7 +88,7 @@ namespace EmberaEngine.Engine.Rendering
         {
             Console.WriteLine("INITIALIZE CALLED");
             //cameras = new List<Camera>();
-            meshes = new List<Mesh>();
+            meshes = new List<MeshEntry>();
 
             // Setting up composite buffer
             MSCompositeBufferTexture = new Texture(TextureTargetd.Texture2DMultisample);
@@ -143,12 +149,18 @@ namespace EmberaEngine.Engine.Rendering
         //    cameras.Remove(camera);
         //}
 
-        public static void RegisterMesh(Mesh mesh)
+        public static MeshEntry RegisterMesh(Mesh mesh)
         {
-            meshes.Add(mesh);
+            MeshEntry entry = new MeshEntry()
+            {
+                Mesh = mesh,
+                Transform = Matrix4.Identity
+            };
+            meshes.Add(entry);
+            return entry;
         }
 
-        public static void RemoveMesh(Mesh mesh)
+        public static void RemoveMesh(MeshEntry mesh)
         {
             meshes.Remove(mesh);
         }
@@ -158,7 +170,7 @@ namespace EmberaEngine.Engine.Rendering
             return frameData;
         }
 
-        public static List<Mesh> GetMeshes()
+        public static List<MeshEntry> GetMeshes()
         {
             return meshes;
         }

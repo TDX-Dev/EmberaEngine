@@ -1,5 +1,6 @@
 ﻿using ElementalEditor.Editor.AssetHandling;
 using ElementalEditor.Editor.Utils;
+using EmberaEngine.Core;
 using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
@@ -116,15 +117,74 @@ namespace ElementalEditor.Editor.Panels
 
                 new ViewportControl(ViewportAlignment.Right, () =>
                 {
-                    if (ImGui.Button("⋮", new Vector2(40f)))
+                    if (ImGui.Button(MaterialDesign.Settings, new Vector2(40f)))
                         ImGui.OpenPopup("OptionsPopup");
+
+                    ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 10));
 
                     if (ImGui.BeginPopup("OptionsPopup"))
                     {
-                        if (ImGui.MenuItem("Option A")) Console.WriteLine("Option A clicked");
-                        if (ImGui.MenuItem("Option B")) Console.WriteLine("Option B clicked");
-                        ImGui.EndPopup();
+                        if (ImGui.BeginMenu("Overlays"))
+                        {
+                            ImGui.TextDisabled("Scene Gizmos");
+
+                            ViewportUtil.ToggleGizmo("Colliders", GizmoType.PhysicsCollider);
+                            ViewportUtil.ToggleGizmo("Lights", GizmoType.Light);
+                            ViewportUtil.ToggleGizmo("Cubes", GizmoType.Cube);
+                            ViewportUtil.ToggleGizmo("Circles", GizmoType.Circle);
+
+                            ImGui.Separator();
+                            ImGui.TextDisabled("UI Gizmos");
+
+                            ViewportUtil.ToggleGizmo("Textures", GizmoType.Texture);
+
+                            ImGui.Separator();
+
+                            if (ImGui.Button("Enable All"))
+                                Guizmo3D.EnabledGizmos = GizmoType.All;
+                            if (ImGui.Button("Disable All"))
+                                Guizmo3D.EnabledGizmos = GizmoType.None;
+
+
+                            ImGui.EndMenu();
+                        }
+
+                        if (ImGui.BeginMenu("Render Mode"))
+                        {
+                            RenderSetting rs = Renderer3D.ActiveRenderingPipeline.GetRenderSettings();
+                            bool isSet = false;
+                            if (ImGui.MenuItem("Solid", "", rs.renderMode == RenderMode.Solid))
+                            {
+                                rs.renderMode = RenderMode.Solid;
+                                isSet = true;
+                            }
+
+                            if (ImGui.MenuItem("Wireframe", "", rs.renderMode == RenderMode.Wireframe))
+                            {
+                                rs.renderMode = RenderMode.Wireframe;
+                                isSet = true;
+
+                            }
+
+                            if (ImGui.MenuItem("Unlit", "", rs.renderMode == RenderMode.Unlit))
+                            {
+                                rs.renderMode = RenderMode.Unlit;
+                                isSet = true;
+                            }
+
+                            if (isSet)
+                            {
+                                Renderer3D.ActiveRenderingPipeline.SetRenderSettings(rs);
+                            }
+
+                            ImGui.EndMenu();
+                        }
+
+
+                       ImGui.EndPopup();
                     }
+
+                    ImGui.PopStyleVar();
                 })
             };
 
@@ -143,6 +203,8 @@ namespace ElementalEditor.Editor.Panels
 
             Guizmo3D.Initialize();
         }
+
+
 
         void InitViewportBuffer()
         {
@@ -185,7 +247,7 @@ namespace ElementalEditor.Editor.Panels
         public override void OnGUI()
         {
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
-            ImGui.Begin(MaterialDesign.Landscape + " Viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
+            EditorUI.BeginWindow(MaterialDesign.Landscape + " Viewport", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 
             isMouseOverWindow = ImGui.IsWindowHovered();
             editor.EditorCamera.LockCamera = !isMouseOverWindow;
@@ -220,7 +282,7 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.EndDragDropTarget();
             }
 
-            ImGui.End();
+            EditorUI.EndWindow();
             ImGui.PopStyleVar();
 
             DrawImportWindow();
@@ -322,9 +384,70 @@ namespace ElementalEditor.Editor.Panels
 
                     var modelData = NewModelImporter.Load(spec);
 
-                    foreach (MeshNode meshNode in modelData.meshNodes)
+                    ModelGraphData modelGraph = NewModelImporter.Load(new ModelLoaderSpecification()
                     {
-                        DiskUtilities.SaveMesh(Path.Combine(meshSavePath, meshNode.name + ".dmsh"), meshNode.mesh);
+                        resourcePath = "AmbientShadowTesting/ambient_shadow_testing.fbx",
+                        importScale = .01f,
+                    });
+
+                    // Map of old -> new material IDs
+                    var materialGuidMap = new Dictionary<Guid, Guid>();
+
+                    // Assign final IDs and register materials first
+                    for (int i = 0; i < modelGraph.materials.Count; i++)
+                    {
+                        var material = modelGraph.materials[i];
+                        Guid oldGuid = material.Id;
+
+                        string relPath = Path.Combine("Materials", (i + 1) + ".dmat");
+
+                        if (AssetLookup.pathToGuid.TryGetValue(relPath, out Guid existingGuid))
+                        {
+                            material.Id = existingGuid;
+                        }
+                        else
+                        {
+                            Guid newGuid = material.Id;
+                            if (AssetLookup.guidToPath.ContainsKey(newGuid))
+                            {
+                                newGuid = Guid.NewGuid();
+                            }
+
+                            material.Id = newGuid;
+                            AssetLookup.RegisterFile(newGuid, relPath);
+                        }
+
+                        materialGuidMap[oldGuid] = material.Id;
+
+                        DiskUtilities.SaveMaterial(VirtualFileSystem.ResolvePath(relPath), (PBRMaterial)material);
+                    }
+                    foreach (MeshNode meshNode in modelGraph.meshNodes)
+                    {
+                        // Fix material reference GUID
+                        if (materialGuidMap.TryGetValue(meshNode.mesh.MaterialReference, out Guid newMatGuid))
+                        {
+                            meshNode.mesh.MaterialReference = newMatGuid;
+                        }
+
+                        string relPath = Path.Combine("Meshes", meshNode.name + ".dmsh");
+
+                        if (AssetLookup.pathToGuid.TryGetValue(relPath, out Guid existingGuid))
+                        {
+                            meshNode.mesh.Id = existingGuid;
+                        }
+                        else
+                        {
+                            Guid newGuid = meshNode.mesh.Id;
+                            if (AssetLookup.guidToPath.ContainsKey(newGuid))
+                            {
+                                newGuid = Guid.NewGuid();
+                            }
+
+                            meshNode.mesh.Id = newGuid;
+                            AssetLookup.RegisterFile(newGuid, relPath);
+                        }
+
+                        DiskUtilities.SaveMesh(VirtualFileSystem.ResolvePath(relPath), meshNode.mesh);
                     }
 
                     DebugLogPanel.Log($"Loaded Model ({(DateTime.Now - time).Seconds} Seconds)", DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");

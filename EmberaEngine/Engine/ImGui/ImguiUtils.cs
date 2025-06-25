@@ -1,13 +1,13 @@
-﻿using System;
+﻿using ImGuiNET;
+using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
-using System.Drawing;
-
-using OpenTK.Graphics.OpenGL;
-using System.Drawing.Imaging;
 
 namespace EmberaEngine.Engine.Imgui
 {
@@ -58,6 +58,126 @@ namespace EmberaEngine.Engine.Imgui
             GL.BindVertexArray(0);
             //LabelObject(ObjectLabelIdentifier.VertexArray, VAO, $"VAO: {Name}");
         }
+
+        ImGuiKey ConvertToImGuiKey(OpenTK.Windowing.GraphicsLibraryFramework.Keys key)
+        {
+            return key switch
+            {
+                Keys.Tab => ImGuiKey.Tab,
+                Keys.Left => ImGuiKey.LeftArrow,
+                Keys.Right => ImGuiKey.RightArrow,
+                Keys.Up => ImGuiKey.UpArrow,
+                Keys.Down => ImGuiKey.DownArrow,
+                Keys.PageUp => ImGuiKey.PageUp,
+                Keys.PageDown => ImGuiKey.PageDown,
+                Keys.Home => ImGuiKey.Home,
+                Keys.End => ImGuiKey.End,
+                Keys.Insert => ImGuiKey.Insert,
+                Keys.Delete => ImGuiKey.Delete,
+                Keys.Backspace => ImGuiKey.Backspace,
+                Keys.Space => ImGuiKey.Space,
+                Keys.Enter => ImGuiKey.Enter,
+                Keys.Escape => ImGuiKey.Escape,
+
+                // Number keys
+                Keys.Number0 => ImGuiKey._0,
+                Keys.Number1 => ImGuiKey._1,
+                Keys.Number2 => ImGuiKey._2,
+                Keys.Number3 => ImGuiKey._3,
+                Keys.Number4 => ImGuiKey._4,
+                Keys.Number5 => ImGuiKey._5,
+                Keys.Number6 => ImGuiKey._6,
+                Keys.Number7 => ImGuiKey._7,
+                Keys.Number8 => ImGuiKey._8,
+                Keys.Number9 => ImGuiKey._9,
+
+                // Letters
+                Keys.A => ImGuiKey.A,
+                Keys.B => ImGuiKey.B,
+                Keys.C => ImGuiKey.C,
+                Keys.D => ImGuiKey.D,
+                Keys.E => ImGuiKey.E,
+                Keys.F => ImGuiKey.F,
+                Keys.G => ImGuiKey.G,
+                Keys.H => ImGuiKey.H,
+                Keys.I => ImGuiKey.I,
+                Keys.J => ImGuiKey.J,
+                Keys.K => ImGuiKey.K,
+                Keys.L => ImGuiKey.L,
+                Keys.M => ImGuiKey.M,
+                Keys.N => ImGuiKey.N,
+                Keys.O => ImGuiKey.O,
+                Keys.P => ImGuiKey.P,
+                Keys.Q => ImGuiKey.Q,
+                Keys.R => ImGuiKey.R,
+                Keys.S => ImGuiKey.S,
+                Keys.T => ImGuiKey.T,
+                Keys.U => ImGuiKey.U,
+                Keys.V => ImGuiKey.V,
+                Keys.W => ImGuiKey.W,
+                Keys.X => ImGuiKey.X,
+                Keys.Y => ImGuiKey.Y,
+                Keys.Z => ImGuiKey.Z,
+
+                // Function keys
+                Keys.F1 => ImGuiKey.F1,
+                Keys.F2 => ImGuiKey.F2,
+                Keys.F3 => ImGuiKey.F3,
+                Keys.F4 => ImGuiKey.F4,
+                Keys.F5 => ImGuiKey.F5,
+                Keys.F6 => ImGuiKey.F6,
+                Keys.F7 => ImGuiKey.F7,
+                Keys.F8 => ImGuiKey.F8,
+                Keys.F9 => ImGuiKey.F9,
+                Keys.F10 => ImGuiKey.F10,
+                Keys.F11 => ImGuiKey.F11,
+                Keys.F12 => ImGuiKey.F12,
+
+                // Modifier keys
+                Keys.LeftShift => ImGuiKey.LeftShift,
+                Keys.RightShift => ImGuiKey.RightShift,
+                Keys.LeftControl => ImGuiKey.LeftCtrl,
+                Keys.RightControl => ImGuiKey.RightCtrl,
+                Keys.LeftAlt => ImGuiKey.LeftAlt,
+                Keys.RightAlt => ImGuiKey.RightAlt,
+                Keys.LeftSuper => ImGuiKey.LeftSuper,
+                Keys.RightSuper => ImGuiKey.RightSuper,
+
+                // Punctuation/symbols
+                Keys.Comma => ImGuiKey.Comma,
+                Keys.Period => ImGuiKey.Period,
+                Keys.Slash => ImGuiKey.Slash,
+                Keys.Semicolon => ImGuiKey.Semicolon,
+                Keys.Equal => ImGuiKey.Equal,
+                Keys.Minus => ImGuiKey.Minus,
+                Keys.LeftBracket => ImGuiKey.LeftBracket,
+                Keys.RightBracket => ImGuiKey.RightBracket,
+                Keys.Backslash => ImGuiKey.Backslash,
+                Keys.Apostrophe => ImGuiKey.Apostrophe,
+                Keys.GraveAccent => ImGuiKey.GraveAccent,
+
+                // Numpad
+                Keys.Keypad0 => ImGuiKey.Keypad0,
+                Keys.Keypad1 => ImGuiKey.Keypad1,
+                Keys.Keypad2 => ImGuiKey.Keypad2,
+                Keys.Keypad3 => ImGuiKey.Keypad3,
+                Keys.Keypad4 => ImGuiKey.Keypad4,
+                Keys.Keypad5 => ImGuiKey.Keypad5,
+                Keys.Keypad6 => ImGuiKey.Keypad6,
+                Keys.Keypad7 => ImGuiKey.Keypad7,
+                Keys.Keypad8 => ImGuiKey.Keypad8,
+                Keys.Keypad9 => ImGuiKey.Keypad9,
+                Keys.KeypadAdd => ImGuiKey.KeypadAdd,
+                Keys.KeypadSubtract => ImGuiKey.KeypadSubtract,
+                Keys.KeypadMultiply => ImGuiKey.KeypadMultiply,
+                Keys.KeypadDivide => ImGuiKey.KeypadDivide,
+                Keys.KeypadDecimal => ImGuiKey.KeypadDecimal,
+                Keys.KeypadEnter => ImGuiKey.KeypadEnter,
+
+                _ => ImGuiKey.None
+            };
+        }
+
 
     }
 

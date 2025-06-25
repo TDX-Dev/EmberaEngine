@@ -102,6 +102,23 @@ namespace EmberaEngine.Engine.Core
             return components;
         }
 
+        public List<Component> GetAllComponentsOfType(Type componentType)
+        {
+            List<Component> components = new();
+
+            foreach (var go in GameObjects)
+            {
+                var component = go.GetComponent(componentType);
+                if (component != null)
+                {
+                    components.Add(component);
+                }
+            }
+
+            return components;
+        }
+
+
         public void removeGameObject(GameObject gameObject)
         {
             gameObject.OnDestroy();
