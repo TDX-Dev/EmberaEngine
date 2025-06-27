@@ -14,6 +14,20 @@ namespace ElementalEditor.Editor.Utils
 {
     public static class UI
     {
+        public struct ComponentPropertyDrawInfo
+        {
+            public float sizeY;
+            public bool hasChanged;
+        }
+        public struct ComponentFieldDrawInfo
+        {
+            public float sizeY;
+            public bool hasChanged;
+        }
+
+
+
+
         public static bool Button(string label, Vector2 size)
         {
             return ImGui.Button(label, new System.Numerics.Vector2(size.X, size.Y));
@@ -24,6 +38,9 @@ namespace ElementalEditor.Editor.Utils
         static string propertyLabel;
         static uint warnColDefault = ToUIntA(new Vector4(0.5f, 0.5f, 0.7f, 0.5f));
         static bool hasBegun = false;
+        static bool disableDrawSeperator = false;
+        static bool tableSuspended = false;
+
 
         public static void BeginPropertyGrid(string id)
         {
@@ -33,7 +50,7 @@ namespace ElementalEditor.Editor.Utils
 
             if (!hasBegun) return;
 
-            ImGui.TableSetupColumn("Prop", 0);
+            ImGui.TableSetupColumn("Prop", ImGuiTableColumnFlags.WidthFixed, ImGui.GetContentRegionAvail().X * 0.3f);
             ImGui.TableSetupColumn("Val", ImGuiTableColumnFlags.WidthStretch);
             ImGui.TableNextColumn();
         }
@@ -43,6 +60,25 @@ namespace ElementalEditor.Editor.Utils
             if (!hasBegun) return;
             ImGui.EndTable();
             hasBegun = false;
+        }
+
+        public static void SuspendPropertyGrid()
+        {
+            if (hasBegun)
+            {
+                ImGui.EndTable();
+                hasBegun = false;
+                tableSuspended = true;
+            }
+        }
+
+        public static void ResumePropertyGrid(string id)
+        {
+            if (!hasBegun && tableSuspended)
+            {
+                BeginPropertyGrid(id);
+                tableSuspended = false;
+            }
         }
 
         public static void BeginProperty(string fieldname)
@@ -56,17 +92,22 @@ namespace ElementalEditor.Editor.Utils
             if (propertyCount > 1)
             {
                 ImGui.TableNextRow();
+                ImGui.TableSetColumnIndex(0);
+                if (!disableDrawSeperator)
+                {
+                    ImGui.Separator();
+                }
+            }
+            else
+            {
+                //ImGui.TableSetupColumn("Prop", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize(fieldname).X);
+                ImGui.TableSetColumnIndex(0);
             }
 
-            ImGui.TableSetColumnIndex(0);
-
-            ImGui.Separator();
-
             ImGui.TextWrapped(fieldname);
-
-
-
         }
+
+
 
         public static void EndProperty()
         {
@@ -78,19 +119,27 @@ namespace ElementalEditor.Editor.Utils
         public static void NextField()
         {
             if (!hasBegun) return;
+
             if (firstField_)
             {
                 ImGui.TableSetColumnIndex(1);
-
-                ImGui.Separator();
+                if (propertyCount > 1)
+                {
+                    if (!disableDrawSeperator)
+                    {
+                        ImGui.Separator();
+                    } else
+                    {
+                        disableDrawSeperator = false;
+                    }
+                }
                 firstField_ = false;
                 return;
             }
+
             ImGui.TableNextRow();
             ImGui.TableSetColumnIndex(1);
-
             ImGui.Separator();
-
         }
 
         public static bool PropertyInt(ref int value, int min = int.MinValue, int max = int.MaxValue, int step = 1, int stepfast = 2)
@@ -200,6 +249,7 @@ namespace ElementalEditor.Editor.Utils
 
         public static void PropertyType(Type fieldType)
         {
+
             NextField();
 
             ImGui.SetNextItemWidth(-1);
@@ -219,10 +269,11 @@ namespace ElementalEditor.Editor.Utils
             ImGui.PopStyleVar();
         }
 
-        public static float DrawComponentProperty(PropertyInfo[] propertyInfo, object component)
+        public static ComponentPropertyDrawInfo DrawComponentProperty(PropertyInfo[] propertyInfo, object component)
         {
             float sizeY = 0;
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new System.Numerics.Vector2(5, 5));
+            bool hasChanged = false;
             for (int i = 0; i < propertyInfo.Length; i++)
             {
 
@@ -233,37 +284,37 @@ namespace ElementalEditor.Editor.Utils
 
                 if (property.PropertyType == typeof(int))
                 {
-                    DrawIntProperty(property, component);
+                    hasChanged |= DrawIntProperty(property, component);
                 }
                 else if (property.PropertyType == typeof(float))
                 {
-                    DrawFloatProperty(property, component);
+                    hasChanged |= DrawFloatProperty(property, component);
                 }
                 else if (property.PropertyType == typeof(string))
                 {
-                    DrawStringProperty(property, component);
+                    hasChanged |= DrawStringProperty(property, component);
                 }
                 else if (property.PropertyType == typeof(Vector2))
                 {
 
-                    DrawVec2Property(property, component);
+                    hasChanged |= DrawVec2Property(property, component);
                 }
                 else if (property.PropertyType == typeof(Vector3))
                 {
 
-                    DrawVec3Property(property, component);
+                    hasChanged |= DrawVec3Property(property, component);
                 }
                 else if (property.PropertyType == typeof(bool))
                 {
-                    DrawBoolProperty(property, component);
+                    hasChanged |= DrawBoolProperty(property, component);
                 }
                 else if (property.PropertyType == typeof(Color4))
                 {
-                    DrawColor4Property(property, component);
+                    hasChanged |= DrawColor4Property(property, component);
                 }
                 else if (property.PropertyType.IsEnum)
                 {
-                    DrawEnumProperty(property, component);
+                    hasChanged |= DrawEnumProperty(property, component);
                 }
                 else if (property.PropertyType == typeof(Texture))
                 {
@@ -273,10 +324,62 @@ namespace ElementalEditor.Editor.Utils
                 {
                     DrawListProperty(property, component);
                 }
+                else if (property.PropertyType.IsValueType)
+                {
+
+                    object subComponent = property.GetValue(component);
+                    if (subComponent != null)
+                    {
+                        disableDrawSeperator = true;
+                        bool shouldUpdate = false;
+
+                        var fields = subComponent.GetType().GetFields();
+                        var props = subComponent.GetType().GetProperties();
+
+                        object original = subComponent; // keep original to compare later (optional)
+
+                        // Copy the struct to a temp variable we can mutate
+                        object editable = subComponent;
+
+                        NextField();
+                        SuspendPropertyGrid();
+
+                        ImGui.Dummy(new System.Numerics.Vector2(0, 5)); // Add space
+
+                        ImGui.PushStyleColor(ImGuiCol.ChildBg, EditorUI.HeaderColor * 0.6f);
+                        ImGui.BeginChild($"##{property.Name}_Child", System.Numerics.Vector2.Zero, ImGuiChildFlags.AutoResizeY | ImGuiChildFlags.AlwaysUseWindowPadding);
+
+                        ImGui.TreePush($"{component.GetHashCode()}_{property.Name}_{i}_tree");
+                        ImGui.PushID($"{component.GetHashCode()}_{property.Name}_{i}");
+
+                        BeginPropertyGrid($"{component.GetHashCode()}_{property.Name}_{i}_grid");
+                        shouldUpdate |= DrawComponentField(fields, editable).hasChanged;
+                        shouldUpdate |= DrawComponentProperty(props, editable).hasChanged;
+                        EndPropertyGrid();
+
+                        ImGui.PopID();
+                        ImGui.TreePop();
+
+                        ImGui.EndChild();
+                        ImGui.PopStyleColor();
+
+                        ResumePropertyGrid(subComponent.GetHashCode().ToString());
+
+                        // Optionally: only set if any field changed
+                        // if (!Equals(original, editable)) // too shallow usually
+                        if (shouldUpdate)
+                        {
+                            Console.WriteLine("Updating");
+                            property.SetValue(component, editable); // ← still required if fields were modified
+                        }
+                    }
+
+                }
                 else
                 {
                     DrawTypeProperty(property, component);
                 }
+
 
 
                 sizeY += ImGui.GetItemRectSize().Y;
@@ -285,14 +388,179 @@ namespace ElementalEditor.Editor.Utils
             }
 
             ImGui.PopStyleVar();
-            return sizeY;
+            return new ComponentPropertyDrawInfo()
+            {
+                sizeY = sizeY,
+                hasChanged = hasChanged
+            };
+        }
+
+        public static bool DrawValueTypeRecursively(PropertyInfo property, object parent)
+        {
+            object value = property.GetValue(parent);
+            if (value == null)
+                return false;
+
+            // Copy the struct to a mutable local
+            object editable = value;
+            bool hasChanged = false;
+
+            var fields = editable.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+            var props = editable.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            SuspendPropertyGrid();
+            ImGui.Dummy(new System.Numerics.Vector2(0, 5));
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, EditorUI.HeaderColor * 0.6f);
+
+            if (ImGui.BeginChild($"##{property.Name}_Child", System.Numerics.Vector2.Zero, ImGuiChildFlags.AutoResizeY | ImGuiChildFlags.AlwaysUseWindowPadding))
+            {
+                ImGui.TreePush($"{parent.GetHashCode()}_{property.Name}");
+                ImGui.PushID($"{parent.GetHashCode()}_{property.Name}");
+
+                BeginPropertyGrid($"{parent.GetHashCode()}_{property.Name}_grid");
+
+                foreach (var field in fields)
+                {
+                    if (field.FieldType.IsValueType && !field.FieldType.IsPrimitive && !field.FieldType.IsEnum && field.FieldType != typeof(Vector2) && field.FieldType != typeof(Vector3) && field.FieldType != typeof(Vector4))
+                    {
+                        hasChanged |= DrawValueTypeField(field, ref editable);
+                    }
+                    else
+                    {
+                        BeginProperty(field.Name);
+                        DrawTypeField(field, editable);
+                        EndProperty();
+                    }
+                }
+
+                foreach (var prop in props)
+                {
+                    if (!prop.CanWrite || prop.GetIndexParameters().Length > 0)
+                        continue;
+
+                    if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive && !prop.PropertyType.IsEnum && prop.PropertyType != typeof(Vector2) && prop.PropertyType != typeof(Vector3) && prop.PropertyType != typeof(Vector4))
+                    {
+                        hasChanged |= DrawValueTypeProperty(prop, ref editable);
+                    }
+                    else
+                    {
+                        BeginProperty(prop.Name);
+                        hasChanged |= DrawGenericProperty(prop, editable);
+                        EndProperty();
+                    }
+                }
+
+                EndPropertyGrid();
+
+                ImGui.PopID();
+                ImGui.TreePop();
+            }
+
+            ImGui.EndChild();
+            ImGui.PopStyleColor();
+            ResumePropertyGrid(parent.GetHashCode().ToString());
+
+            // Only set the value if something changed
+            if (hasChanged)
+            {
+                property.SetValue(parent, editable);
+            }
+
+            return hasChanged;
+        }
+
+        public static bool DrawGenericField(FieldInfo field, object target)
+        {
+            // Add more types as needed
+            if (field.FieldType == typeof(Vector3))
+                return DrawVec3Field(field, target);
+            if (field.FieldType == typeof(float))
+                return DrawFloatField(field, target);
+            if (field.FieldType == typeof(int))
+                return DrawIntField(field, target);
+            if (field.FieldType == typeof(bool))
+                return DrawBoolField(field, target);
+
+            return false;
+        }
+
+        public static bool DrawGenericProperty(PropertyInfo prop, object target)
+        {
+            if (!prop.CanRead || !prop.CanWrite) return false;
+
+            if (prop.PropertyType == typeof(Vector3))
+                return DrawVec3Property(prop, target);
+            if (prop.PropertyType == typeof(float))
+                return DrawFloatProperty(prop, target);
+            if (prop.PropertyType == typeof(int))
+                return DrawIntProperty(prop, target);
+            if (prop.PropertyType == typeof(bool))
+                return DrawBoolProperty(prop, target);
+
+            return false;
         }
 
 
-        public static float DrawComponentField(FieldInfo[] fieldInfo, object component)
+        public static bool DrawValueTypeField(FieldInfo field, ref object parentStruct)
+        {
+            object fieldValue = field.GetValue(parentStruct);
+            object editable = fieldValue;
+
+            bool changed = false;
+
+            var props = editable.GetType().GetProperties();
+            var fields = editable.GetType().GetFields();
+
+            BeginProperty(field.Name);
+
+            changed |= DrawComponentField(fields, editable).hasChanged;
+            changed |= DrawComponentProperty(props, editable).hasChanged;
+
+            EndProperty();
+
+            if (changed)
+                field.SetValueDirect(__makeref(parentStruct), editable);
+
+            return changed;
+        }
+
+        public static bool DrawValueTypeProperty(PropertyInfo prop, ref object parentStruct)
+        {
+            if (!prop.CanRead || !prop.CanWrite || prop.GetIndexParameters().Length > 0)
+                return false;
+
+            object propValue = prop.GetValue(parentStruct);
+            if (propValue == null)
+                return false;
+
+            object editable = propValue;
+            bool changed = false;
+
+            var props = editable.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var fields = editable.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            BeginProperty(prop.Name);
+
+            changed |= DrawComponentField(fields, editable).hasChanged;
+            changed |= DrawComponentProperty(props, editable).hasChanged;
+
+            EndProperty();
+
+            if (changed)
+            {
+                prop.SetValue(parentStruct, editable);
+            }
+
+            return changed;
+        }
+
+
+
+        public static ComponentFieldDrawInfo DrawComponentField(FieldInfo[] fieldInfo, object component)
         {
             float sizeY = 0;
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new System.Numerics.Vector2(5, 5));
+            bool hasChanged = false;
             for (int i = 0; i < fieldInfo.Length; i++)
             {
 
@@ -303,38 +571,38 @@ namespace ElementalEditor.Editor.Utils
 
                 if (field.FieldType == typeof(int))
                 {
-                    DrawIntField(field, component);
+                    hasChanged |= DrawIntField(field, component);
                 }
                 else if (field.FieldType == typeof(float))
                 {
 
-                    DrawFloatField(field, component);
+                    hasChanged |= DrawFloatField(field, component);
                 }
                 else if (field.FieldType == typeof(string))
                 {
-                    DrawStringField(field, component);
+                    hasChanged |= DrawStringField(field, component);
                 }
                 else if (field.FieldType == typeof(Vector2))
                 {
 
-                    DrawVec2Field(field, component);
+                    hasChanged |= DrawVec2Field(field, component);
                 }
                 else if (field.FieldType == typeof(Vector3))
                 {
 
-                    DrawVec3Field(field, component);
+                    hasChanged |= DrawVec3Field(field, component);
                 }
                 else if (field.FieldType == typeof(bool))
                 {
-                    DrawBoolField(field, component);
+                    hasChanged |= DrawBoolField(field, component);
                 }
                 else if (field.FieldType == typeof(Color4))
                 {
-                    DrawColor4Field(field, component);
+                    hasChanged |= DrawColor4Field(field, component);
                 }
                 else if (field.FieldType.IsEnum)
                 {
-                    DrawEnumField(field, component);
+                    hasChanged |= DrawEnumField(field, component);
                 }
                 else if (field.FieldType == typeof(Texture))
                 {
@@ -355,21 +623,33 @@ namespace ElementalEditor.Editor.Utils
             }
 
             ImGui.PopStyleVar();
-            return sizeY;
+            return new ComponentFieldDrawInfo()
+            {
+                sizeY = sizeY,
+                hasChanged = hasChanged
+            };
         }
 
-        public static void DrawIntField(FieldInfo field, object component)
+        public static bool DrawIntField(FieldInfo field, object component)
         {
             int val = (int)field.GetValue(component);
-            if (PropertyInt(ref val));
+            if (PropertyInt(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawFloatField(FieldInfo field, object component)
+        public static bool DrawFloatField(FieldInfo field, object component)
         {
             float val = (float)field.GetValue(component);
-            PropertyFloat(ref val);
-            field.SetValue(component, val);
+            if (PropertyFloat(ref val))
+            {
+                field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
         //public static void DrawTextureField(FieldInfo field, object component)
@@ -381,11 +661,15 @@ namespace ElementalEditor.Editor.Utils
         //    field.SetValue(component, val);
         //}
 
-        public static void DrawStringField(FieldInfo field, object component)
+        public static bool DrawStringField(FieldInfo field, object component)
         {
             string val = (string)field.GetValue(component);
             if (PropertyString(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
         public static void DrawTypeField(FieldInfo field, object component)
@@ -393,41 +677,61 @@ namespace ElementalEditor.Editor.Utils
             PropertyType(field.FieldType);
         }
 
-        public static void DrawVec2Field(FieldInfo field, object component)
+        public static bool DrawVec2Field(FieldInfo field, object component)
         {
             Vector2 val = (Vector2)field.GetValue(component);
             if (PropertyVector2(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawVec3Field(FieldInfo field, object component)
+        public static bool DrawVec3Field(FieldInfo field, object component)
         {
             Vector3 val = (Vector3)field.GetValue(component);
             if (PropertyVector3(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawColor4Field(FieldInfo field, object component)
+        public static bool DrawColor4Field(FieldInfo field, object component)
         {
             Color4 val = (Color4)field.GetValue(component);
             if (PropertyColor4(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
-        public static void DrawBoolField(FieldInfo field, object component)
+        public static bool DrawBoolField(FieldInfo field, object component)
         {
             bool val = (bool)field.GetValue(component);
             if (PropertyBool(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawEnumField(FieldInfo field, object component)
+        public static bool DrawEnumField(FieldInfo field, object component)
         {
             string[] vs = field.GetType().GetEnumNames();
 
             int index = Array.IndexOf(Enum.GetValues(field.FieldType), field.GetValue(component));
 
             if (PropertyEnum(ref index, vs.ToArray(), vs.Length))
+            {
                 field.SetValue(component, field.FieldType.GetEnumValues().GetValue(index));
+                return true;
+            }
+            return false;
         }
 
         public static void DrawListField(FieldInfo field, object component)
@@ -439,20 +743,27 @@ namespace ElementalEditor.Editor.Utils
             //}
         }
 
-        public static void DrawIntProperty(PropertyInfo field, object component)
+        public static bool DrawIntProperty(PropertyInfo field, object component)
         {
             int val = (int)field.GetValue(component);
             if (PropertyInt(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+
+            return false;
         }
 
-        public static void DrawFloatProperty(PropertyInfo field, object component)
+        public static bool DrawFloatProperty(PropertyInfo field, object component)
         {
             float val = (float)field.GetValue(component);
             if (PropertyFloat(ref val))
             {
                 field.SetValue(component, val);
+                return true;
             }
+            return false;
         }
 
         public static void DrawTextureProperty(PropertyInfo field, object component)
@@ -464,11 +775,15 @@ namespace ElementalEditor.Editor.Utils
             //field.SetValue(component, val);
         }
 
-        public static void DrawStringProperty(PropertyInfo field, object component)
+        public static bool DrawStringProperty(PropertyInfo field, object component)
         {
             string val = (string)field.GetValue(component);
             if (PropertyString(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
         public static void DrawTypeProperty(PropertyInfo field, object component)
@@ -476,34 +791,50 @@ namespace ElementalEditor.Editor.Utils
             PropertyType(field.PropertyType);
         }
 
-        public static void DrawVec2Property(PropertyInfo field, object component)
+        public static bool DrawVec2Property(PropertyInfo field, object component)
         {
             Vector2 val = (Vector2)field.GetValue(component);
             if (PropertyVector2(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawVec3Property(PropertyInfo field, object component)
+        public static bool DrawVec3Property(PropertyInfo field, object component)
         {
             Vector3 val = (Vector3)field.GetValue(component);
             if (PropertyVector3(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawColor4Property(PropertyInfo field, object component)
+        public static bool DrawColor4Property(PropertyInfo field, object component)
         {
             Color4 val = (Color4)field.GetValue(component);
             if (PropertyColor4(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
-        public static void DrawBoolProperty(PropertyInfo field, object component)
+        public static bool DrawBoolProperty(PropertyInfo field, object component)
         {
             bool val = (bool)field.GetValue(component);
             if (PropertyBool(ref val))
+            {
                 field.SetValue(component, val);
+                return true;
+            }
+            return false;
         }
 
-        public static void DrawEnumProperty(PropertyInfo field, object component)
+        public static bool DrawEnumProperty(PropertyInfo field, object component)
         {
             List<string> vs = new List<string>();
             foreach (var v in field.PropertyType.GetEnumValues())
@@ -514,7 +845,11 @@ namespace ElementalEditor.Editor.Utils
             int index = Array.IndexOf(Enum.GetValues(field.PropertyType), field.GetValue(component));
 
             if (PropertyEnum(ref index, vs.ToArray(), vs.Count))
+            {
                 field.SetValue(component, field.PropertyType.GetEnumValues().GetValue(index));
+                return true;
+            }
+            return false;
         }
 
         public static void DrawListProperty(PropertyInfo field, object component)

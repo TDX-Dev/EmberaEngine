@@ -14,74 +14,65 @@ namespace EmberaEngine.Engine.Components
     {
         public override string Type => nameof(MeshRenderer);
 
-        public Mesh[] meshes;
-        
+        public Mesh mesh;
+
         [IgnoreMember]
-        private List<MeshEntry> entries;
+        private MeshEntry entry;
 
         public MeshRenderer()
         {
-            meshes = new Mesh[0];
-            entries = new List<MeshEntry>();
+            mesh = null;
+            entry = null;
         }
 
         public override void OnStart()
         {
-            for (int i = 0; i < meshes.Length; i++)
+            if (mesh != null && entry == null)
             {
-                Mesh mesh = meshes[i];
-                entries.Add(Renderer3D.RegisterMesh(mesh));
+                entry = Renderer3D.RegisterMesh(mesh);
             }
         }
 
         public override void OnUpdate(float dt)
         {
-            for (int i = 0; i < entries.Count; i++)
+            if (entry != null)
             {
-                MeshEntry mesh = entries[i];
-                mesh.Transform = gameObject.transform.GetWorldMatrix();
+                entry.Transform = gameObject.transform.GetWorldMatrix();
             }
         }
 
         public void SetMesh(Mesh mesh)
         {
-            this.meshes = new Mesh[] { mesh };
+            this.mesh = mesh;
 
-            entries.Add(Renderer3D.RegisterMesh(mesh));
+            // Re-register the mesh if already added
+            if (entry != null)
+            {
+                Renderer3D.RemoveMesh(entry);
+            }
+
+            entry = Renderer3D.RegisterMesh(mesh);
         }
 
-        public void SetMeshes(Mesh[] meshes)
+        public void RemoveMesh()
         {
-            this.meshes = meshes;
-            for (int i = 0;i < meshes.Length;i++)
+            if (entry != null)
             {
-                Mesh mesh = meshes[i];
-                entries.Add(Renderer3D.RegisterMesh(mesh));
+                Renderer3D.RemoveMesh(entry);
+                entry = null;
             }
-        }
 
-        public void RemoveMeshes()
-        {
-            for (int i = 0; i < meshes.Length; i++)
-            {
-                Mesh mesh = meshes[i];
-                entries.Add(Renderer3D.RegisterMesh(mesh));
-            }
+            mesh = null;
         }
 
         public override void OnDestroy()
         {
-            Console.WriteLine("Help!");
-            if (meshes.Length != 0)
+            if (entry != null)
             {
-                for (int i = 0; i < meshes.Length; i++)
-                {
-                    Console.WriteLine("Removing!");
-                    MeshEntry mesh = entries[i];
-                    Renderer3D.RemoveMesh(mesh);
-                }
+                Renderer3D.RemoveMesh(entry);
+                entry = null;
             }
         }
-
     }
+
 }

@@ -26,6 +26,8 @@ namespace ElementalEditor.Editor.Panels
         {
             CacheCustomEditors();
             GetComponents();
+
+            SelectedObject = editor.EditorCurrentScene?.GameObjects[0];
         }
 
         private bool IsChildOf(GameObject child, GameObject potentialParent)
@@ -221,8 +223,8 @@ namespace ElementalEditor.Editor.Panels
 
             if (ImGui.Begin(MaterialDesign.List + " GameObjects"))
             {
-
-                if (ImGui.BeginChild("gameobject_child_window", new Vector2(ImGui.GetContentRegionAvail().X, 50), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
+                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(5));
+                if (ImGui.BeginChild("gameobject_child_window", new Vector2(ImGui.GetContentRegionAvail().X, 50), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
 
                     // Start a group so the icon and input share layout
@@ -237,10 +239,9 @@ namespace ElementalEditor.Editor.Panels
                     ImGui.InputTextWithHint("##goSearch", "Search...", ref searchBuffer, 100);
 
                     ImGui.EndGroup();
-
-                    ImGui.EndChild();
                 }
-
+                ImGui.EndChild();
+                ImGui.PopStyleVar();
 
                 ContextMenu.InspectorPanelPopup(this);
 
@@ -251,7 +252,7 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, Vector2.Zero);
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(new Vector3(0.12f), 1f));
 
-                if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.ChildWindow))
+                if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.ChildWindow))
                 {
 
                     // Game object hierarchy rendering
@@ -266,10 +267,14 @@ namespace ElementalEditor.Editor.Panels
                     // Drop zone after the last item
                     if (roots.Count > 0)
                         DrawDropZone(roots[^1], before: false);
-
-                    ImGui.EndChild();          // End scrollable child
                 }
+                ImGui.EndChild();          // End scrollable child
+
+                ImGui.PopStyleColor();
+                ImGui.PopStyleVar(4);
             }
+
+            ImGui.End();
 
             ImGui.PopStyleVar();           // WindowPadding (from the very beginning)
 
@@ -305,6 +310,9 @@ namespace ElementalEditor.Editor.Panels
                         openPopupTemp = false;
                         
                     }
+
+
+
                     ImGui.PushStyleVar(ImGuiStyleVar.PopupRounding, 30);
                     ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
                     if (ImGui.BeginPopupModal("Component Menu", ref a, ImGuiWindowFlags.AlwaysAutoResize))
@@ -338,6 +346,9 @@ namespace ElementalEditor.Editor.Panels
                         ImGui.EndPopup();
                     }
                     ImGui.PopStyleVar(2);
+
+
+
                     List<Component> componentsToRemove = new();
 
                     for (int i = 0; i < SelectedObject.Components.Count; i++)
@@ -354,7 +365,7 @@ namespace ElementalEditor.Editor.Panels
                             : component.Type;
 
                         // Collapsing header
-                        bool open = ImGui.CollapsingHeader(headerLabel, ImGuiTreeNodeFlags.DefaultOpen);
+                        bool open = EditorUI.DrawCollapsingHeaderStart(headerLabel, ImGuiTreeNodeFlags.DefaultOpen);
 
                         // === Context Menu ===
                         if (!isTransform && ImGui.BeginPopupContextItem("ComponentContext"))
@@ -402,22 +413,28 @@ namespace ElementalEditor.Editor.Panels
                         // === Component UI ===
                         if (open)
                         {
-                            UI.BeginPropertyGrid("##" + i);
-                            ImGui.TreePush();
-
-                            if (customEditorMap.TryGetValue(componentType, out var editorType))
+                            EditorUI.DrawCollapsingHeaderContent(headerLabel, () =>
                             {
-                                editorType.component = component;
-                                editorType.OnGUI();
-                            }
-                            else
-                            {
-                                UI.DrawComponentProperty(componentType.GetProperties(), component);
-                                UI.DrawComponentField(componentType.GetFields(), component);
-                            }
+                                UI.BeginPropertyGrid("##" + i);
 
-                            ImGui.TreePop();
-                            UI.EndPropertyGrid();
+                                if (customEditorMap.TryGetValue(componentType, out var editorType))
+                                {
+                                    editorType.component = component;
+                                    editorType.OnGUI();
+                                }
+                                else
+                                {
+                                    UI.DrawComponentProperty(componentType.GetProperties(), component);
+                                    UI.DrawComponentField(componentType.GetFields(), component);
+                                }
+
+                                UI.EndPropertyGrid();
+                            });
+                        }
+                        else
+                        {
+                            ImGui.EndChild(); // Close outer header window if content wasn't opened
+                            ImGui.PopStyleColor();
                         }
 
                         ImGui.PopID();
@@ -435,10 +452,8 @@ namespace ElementalEditor.Editor.Panels
 
 
                 }
-                ImGui.End();
             }
-
-            ImGui.PopStyleVar(3);
+            ImGui.End();
         }
 
         Dictionary<Type, CustomEditorScript> customEditorMap = new();

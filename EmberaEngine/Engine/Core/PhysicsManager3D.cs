@@ -30,16 +30,16 @@ namespace EmberaEngine.Engine.Core
     public struct PhysicsMaterial
     {
         public float Friction;
-        public float Restitution;
         public float MaxRecoveryVelocity;
-        public SpringSettings SpringSettings;
+        public float SpringFrequency;
+        public float SpringDampingRatio;
 
         public static readonly PhysicsMaterial Default = new PhysicsMaterial
         {
             Friction = 0.1f,
-            Restitution = 0f,
             MaxRecoveryVelocity = 2f,
-            SpringSettings = new SpringSettings(30, 1)
+            SpringFrequency = 30,
+            SpringDampingRatio = 1
         };
     }
 
@@ -49,6 +49,7 @@ namespace EmberaEngine.Engine.Core
         public static readonly System.Numerics.Vector3 GlobalGravity = new(0, -9.81f, 0);
         private readonly Dictionary<string, TypedIndex> shapeCache = new();
         private readonly Dictionary<BodyHandle, Transform> dynamicBodies = new();
+        
 
         private BufferPool bufferPool;
         private PhysicsPoseIntegratorCallback integratorCallback;
@@ -57,13 +58,15 @@ namespace EmberaEngine.Engine.Core
         private ThreadDispatcher threadDispatcher;
         private SolveDescription solveDescription;
         private const float TimeStep = 1f / 60f;
+        internal static Dictionary<BodyHandle, PhysicsMaterial> dynamicPhysicsMaterials = new Dictionary<BodyHandle, PhysicsMaterial>();
+        internal static Dictionary<StaticHandle, PhysicsMaterial> staticPhysicsMaterials = new Dictionary<StaticHandle, PhysicsMaterial>();
 
         public void Initialize()
         {
             bufferPool = new BufferPool();
             integratorCallback = new PhysicsPoseIntegratorCallback(GlobalGravity);
             narrowCallback = new PhysicsNarrowPhaseCallback();
-            solveDescription = new(8, 1);
+            solveDescription = new(8, 10);
             threadDispatcher = new(Environment.ProcessorCount);
             simulation = Simulation.Create(bufferPool, narrowCallback, integratorCallback, solveDescription);
         }
@@ -71,7 +74,6 @@ namespace EmberaEngine.Engine.Core
         public void Update(float dt)
         {
             simulation?.Timestep(TimeStep, threadDispatcher);
-
             foreach (var kv in dynamicBodies)
             {
                 var handle = kv.Key;
@@ -80,7 +82,7 @@ namespace EmberaEngine.Engine.Core
                 if (body.Exists)
                 {
                     var pose = body.Pose;
-                    transform.GlobalPosition = new OpenTK.Mathematics.Vector3(pose.Position.X, pose.Position.Y, pose.Position.Z);
+                    transform.Position = new OpenTK.Mathematics.Vector3(pose.Position.X, pose.Position.Y, pose.Position.Z);
                     transform.Rotation = Helper.ToDegrees(Helper.ToEulerAngles(pose.Orientation)); // Still local!
                 }
             }
@@ -139,8 +141,74 @@ namespace EmberaEngine.Engine.Core
         public bool StaticExists(StaticHandle h) => simulation.Statics.StaticExists(h);
         public bool DynamicExists(BodyHandle h) => simulation.Bodies.BodyExists(h);
 
+        public void SetPhysicsMaterial(BodyHandle handle, PhysicsMaterial material)
+        {
+            if (!simulation.Bodies.BodyExists(handle)) return;
+            dynamicPhysicsMaterials[handle] = material;
+        }
+
+        public void SetPhysicsMaterial(StaticHandle handle, PhysicsMaterial material)
+        {
+            if (!simulation.Statics.StaticExists(handle)) return;
+            staticPhysicsMaterials[handle] = material;
+        }
+
+        public void SetPhysicsMaterial(PhysicsObjectHandle handle, PhysicsMaterial material)
+        {
+            if (handle.IsStatic)
+            {
+                SetPhysicsMaterial(handle.StaticHandle, material);
+            } else
+            {
+                SetPhysicsMaterial(handle.BodyHandle, material);
+            }
+        }
+        public static PhysicsMaterial GetPhysicsMaterial(BodyHandle handle)
+        {
+            if (dynamicPhysicsMaterials.TryGetValue(handle, out var mat))
+                return mat;
+            return PhysicsMaterial.Default;
+        }
+        public static PhysicsMaterial GetPhysicsMaterial(StaticHandle handle)
+        {
+            if (staticPhysicsMaterials.TryGetValue(handle, out var mat))
+                return mat;
+            return PhysicsMaterial.Default;
+        }
+
+        public static PhysicsMaterial GetPhysicsMaterial(PhysicsObjectHandle handle)
+        {
+            if (handle.IsStatic) return GetPhysicsMaterial(handle.StaticHandle);
+
+            return GetPhysicsMaterial(handle.BodyHandle);
+        }
+
+        public static PhysicsMaterial GetMaterial(CollidableReference collidable)
+        {
+            return collidable.Mobility switch
+            {
+                CollidableMobility.Static => staticPhysicsMaterials.TryGetValue(collidable.StaticHandle, out var staticMat)
+                    ? staticMat
+                    : PhysicsMaterial.Default,
+
+                CollidableMobility.Dynamic => dynamicPhysicsMaterials.TryGetValue(collidable.BodyHandle, out var dynMat)
+                    ? dynMat
+                    : PhysicsMaterial.Default,
+
+                CollidableMobility.Kinematic => dynamicPhysicsMaterials.TryGetValue(collidable.BodyHandle, out var kinMat)
+                    ? kinMat
+                    : PhysicsMaterial.Default,
+
+                _ => PhysicsMaterial.Default
+            };
+        }
+
+
+
         public PhysicsObjectHandle AddPhysicsObject(Transform tf, RigidBody3D rb, ColliderComponent3D col)
         {
+            //Console.WriteLine($"Adding dynamic object: {rb.gameObject.Name}, Transform Hash: {tf.GetHashCode()}");
+
             var shapeInfo = CreateShape(rb, col);
             var pos = Helper.ToNumerics3(tf.Position);
             var rot = Helper.ToQuaternion(Helper.ToNumerics3(Helper.ToRadians(tf.Rotation)));
@@ -160,17 +228,30 @@ namespace EmberaEngine.Engine.Core
                         bHandle = simulation.Bodies.Add(dynamicDesc);
 
                         var bodyRef = simulation.Bodies.GetBodyReference(bHandle);
-                        bodyRef.Pose.Orientation = rot; // Apply rotation
+                        bodyRef.Pose.Orientation = rot;
 
                         dynamicBodies[bHandle] = tf;
+                        //Console.WriteLine("Added Dynamic");
+
+                        // Assign material (if Rigidbody3D has it, otherwise default)
+                        var material = rb.PhysicsMaterial;
+                        SetPhysicsMaterial(bHandle, material);
+
                         break;
                     }
 
                 case Rigidbody3DType.Kinematic:
-                    var kinDesc = BodyDescription.CreateKinematic(pos, shapeInfo.Shape, 0.01f);
-                    //.WithMaterial(rb.Friction, rb.Restitution);
-                    bHandle = simulation.Bodies.Add(kinDesc);
-                    break;
+                    {
+                        var kinDesc = BodyDescription.CreateKinematic(pos, shapeInfo.Shape, 0.01f);
+                        bHandle = simulation.Bodies.Add(kinDesc);
+
+                        // Assign material (kinematics can still use friction/restitution for contacts)
+                        var material = rb.PhysicsMaterial;
+                        SetPhysicsMaterial(bHandle, material);
+
+                        break;
+                    }
+
             }
 
             return new PhysicsObjectHandle
@@ -187,12 +268,21 @@ namespace EmberaEngine.Engine.Core
         public void RemovePhysicsObject(PhysicsObjectHandle handle)
         {
             if (handle.IsStatic)
+            {
+                if (!StaticExists(handle.StaticHandle)) { return; }
                 simulation.Statics.Remove(handle.StaticHandle);
+                staticPhysicsMaterials.Remove(handle.StaticHandle);
+            }
             else
             {
+                if (!DynamicExists(handle.BodyHandle)) { return; }
                 simulation.Bodies.Remove(handle.BodyHandle);
                 dynamicBodies.Remove(handle.BodyHandle);
+                dynamicPhysicsMaterials.Remove(handle.BodyHandle); // <== REMOVE MATERIAL
             }
+
+            Console.WriteLine("Remove Physics Object");
+
         }
 
         private PhysicsShapeInfo CreateShape(RigidBody3D rb, ColliderComponent3D col)
@@ -292,24 +382,33 @@ namespace EmberaEngine.Engine.Core
 
         public bool AllowContactGeneration(int workerIndex, CollidablePair pair, int childIndexA, int childIndexB) => true;
 
-        public bool ConfigureContactManifold<TManifold>(
-    int workerIndex,
-    CollidablePair pair,
-    ref TManifold manifold,
-    out PairMaterialProperties pairMaterial)
-    where TManifold : unmanaged, IContactManifold<TManifold>
+        public bool ConfigureContactManifold<TManifold>(int workerIndex, CollidablePair pair, ref TManifold manifold, out PairMaterialProperties material) where TManifold : unmanaged, IContactManifold<TManifold>
         {
-            pairMaterial.FrictionCoefficient = 0.1f; // default or from user-defined data
-            pairMaterial.MaximumRecoveryVelocity = 2f;
-            pairMaterial.SpringSettings = new SpringSettings(30, 1);
+            var matA = PhysicsManager3D.GetMaterial(pair.A);
+            var matB = PhysicsManager3D.GetMaterial(pair.B);
+
+            material.FrictionCoefficient = 0.5f * (matA.Friction + matB.Friction);
+            material.MaximumRecoveryVelocity = MathF.Max(matA.MaxRecoveryVelocity, matB.MaxRecoveryVelocity);
+            material.SpringSettings = BlendSpringSettings(new SpringSettings(matA.SpringFrequency, matA.SpringDampingRatio), new SpringSettings(matB.SpringFrequency, matB.SpringDampingRatio));
+
             return true;
         }
 
 
-        public bool ConfigureContactManifold(int wi, CollidablePair pair, int idxA, int idxB, ref ConvexContactManifold manifold)
-            => true;
+        SpringSettings BlendSpringSettings(SpringSettings a, SpringSettings b)
+        {
+            return new SpringSettings(
+                0.5f * (a.Frequency + b.Frequency),
+                0.5f * (a.DampingRatio + b.DampingRatio)
+            );
+        }
 
         public void Dispose() { }
 
+        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, int childIndexA, int childIndexB, ref ConvexContactManifold manifold)
+        {
+            Console.WriteLine("ConfigureContactManifold");
+            return true;
+        }
     }
 }

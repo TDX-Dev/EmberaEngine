@@ -86,7 +86,6 @@ namespace ElementalEditor.Editor
 
 
             EditorCurrentScene.Initialize();
-            EditorCurrentScene.Play();
             Renderer3D.SetRenderCamera(EditorCamera.Camera);
         }
 
@@ -201,10 +200,15 @@ namespace ElementalEditor.Editor
         {
             SkyboxManager.LoadHDRI(Helper.loadHDRIAsTex("Engine/Content/Textures/Skyboxes/autumn.hdr"));
 
-            EditorCurrentScene = SceneSerializer.DeSerialize(File.ReadAllBytes(Path.Combine(projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene2.dscn")));
+            //EditorCurrentScene = SceneSerializer.DeSerialize(File.ReadAllBytes(Path.Combine(projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene2.dscn")));
+            //EditorCurrentScene.Name = "Example Scene";
 
-
-
+            EditorCurrentScene.addGameObject("A");
+            EditorCurrentScene.addGameObject("A");
+            EditorCurrentScene.addGameObject("A");
+            EditorCurrentScene.addGameObject("A");
+            EditorCurrentScene.addGameObject("A");
+            EditorCurrentScene.addGameObject("A");
 
             //GameObject cameraObject = EditorCurrentScene.addGameObject("Camera Boiii");
             //CameraComponent3D camComp = cameraObject.AddComponent<CameraComponent3D>();

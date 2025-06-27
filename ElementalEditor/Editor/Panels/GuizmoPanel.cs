@@ -52,9 +52,8 @@ namespace ElementalEditor.Editor.Panels
                 {
                     ImGui.Text($"- {kvp.Key.Name} ({kvp.Value.Count})");
                 }
-
-                ImGui.End();
             }
+            ImGui.End();
         }
     }
 

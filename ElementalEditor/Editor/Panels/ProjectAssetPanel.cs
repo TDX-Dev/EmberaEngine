@@ -1,4 +1,5 @@
 ﻿using ElementalEditor.Editor.AssetHandling;
+using ElementalEditor.Editor.Utils;
 using EmberaEngine.Engine.AssetHandling;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
@@ -35,8 +36,8 @@ namespace ElementalEditor.Editor.Panels
 
         int directoryButtonHeight = 40;
 
-        int folderTabWidth = 400;
-        int directoryTabHeight = 50;
+        int folderTabWidth = 300;
+        int directoryTabHeight = 55;
         int assetTilePadding = 10;
 
         string rootPath;
@@ -91,6 +92,7 @@ namespace ElementalEditor.Editor.Panels
         {
             ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0f));
 
             if (ImGui.Begin("Project Assets"))
             {
@@ -98,7 +100,9 @@ namespace ElementalEditor.Editor.Panels
 
                 Vector2 cursorPos = ImGui.GetCursorPos();
 
-                if (ImGui.BeginChild("foldersTab", new Vector2(folderTabWidth, -1), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.247f));
+                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0));
+                if (ImGui.BeginChild("foldersTab", new Vector2(folderTabWidth, -1), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
                     if (currentPath != rootPath)
                     {
@@ -117,20 +121,43 @@ namespace ElementalEditor.Editor.Panels
                             UpdatePaths();
                         }
                     }
-
-                    ImGui.EndChild();
                 }
+                ImGui.EndChild();
+                ImGui.PopStyleColor(2);
+
                 ImGui.PopStyleVar();
 
                 ImGui.SetCursorPos(new Vector2(cursorPos.X + folderTabWidth, cursorPos.Y));
-                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 15));
+                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 10));
 
-                if (ImGui.BeginChild("directory_ind", new Vector2(-1, directoryTabHeight), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.118f, 0.118f, 0.118f, 1f));
+                if (ImGui.BeginChild("directory_ind", new Vector2(-1, directoryTabHeight), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
-                    ImGui.Text(Path.GetRelativePath(editor.projectPath, currentPath));
+                    var btnGroup = new ButtonGroup("DirectoryControls", ButtonGroup.RenderMode.CustomDraw);
+                    btnGroup.Add(MaterialDesign.Arrow_back, () => { Console.WriteLine("Clicked!"); });
 
-                    ImGui.EndChild();
+                    btnGroup.Add(MaterialDesign.Arrow_forward, () => { });
+                    btnGroup.Add(MaterialDesign.Arrow_upward, () => { });
+                    btnGroup.Add(MaterialDesign.Create_new_folder, () => { });
+
+                    btnGroup.Render();
+
+                    ImGui.SameLine();
+
+                    ImGui.Button(MaterialDesign.Folder_special);
+
+                    ImGui.SameLine();
+                    string path = Path.GetRelativePath(editor.projectPath, currentPath);
+                    ImGui.SetNextItemWidth(700);
+                    EditorUI.DrawTextInput("##directory_path_input", ref path);
+
+                    ImGui.SameLine();
+                    string search = MaterialDesign.Search + "Search";
+                    ImGui.SetNextItemWidth(400);
+                    EditorUI.DrawTextInput("##directory_search_input", ref search);
                 }
+                ImGui.EndChild();
+                ImGui.PopStyleColor();
 
                 ImGui.PopStyleVar();
 
@@ -139,18 +166,16 @@ namespace ElementalEditor.Editor.Panels
                 // Set the size of the grid area (height - directoryTabHeight)
                 Vector2 gridAreaSize = new Vector2(-1, ImGui.GetContentRegionAvail().Y); // fills remaining vertical space
 
-                if (ImGui.BeginChild("assetGrid", gridAreaSize, false, ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.HorizontalScrollbar))
+                if (ImGui.BeginChild("assetGrid", gridAreaSize, ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.HorizontalScrollbar))
                 {
                     DrawAssetGrid(currentPathAssets);
-                    ImGui.EndChild();
                 }
-
-
-
-                ImGui.End();
+                ImGui.EndChild();
             }
+            ImGui.End();
 
             ImGui.PopStyleVar(2);
+            ImGui.PopStyleColor();
         }
 
         public bool DirectoryButton(string name)
@@ -229,94 +254,97 @@ namespace ElementalEditor.Editor.Panels
             bool isActive = false;
 
 
-            ImGui.BeginChild(assetInfo.name, new Vector2(assetCardWidth, assetCardHeight), true, ImGuiWindowFlags.AlwaysUseWindowPadding);
-
-            //ImGui.InvisibleButton(fileName + "_dragRegion", ImGui.GetContentRegionAvail());
-            isHovered = ImGui.IsItemHovered();
-            isActive = ImGui.IsItemActive();
-
-
-            float windowWidth = ImGui.GetContentRegionAvail().X;
-            float windowHeight = ImGui.GetContentRegionAvail().Y;
-
-            Vector2 checkerPatternSize = new Vector2(windowWidth, assetCardThumbnailSize + (windowWidth - assetCardThumbnailSize) / 2);
-
-            ImGui.Image(checkerTexture.GetRendererID(), checkerPatternSize, new Vector2(0, 0), new Vector2(1, 0.8f));
-
-            ImGui.SetCursorPosX((windowWidth - assetCardThumbnailSize) / 2);
-            ImGui.SetCursorPosY((windowWidth - assetCardThumbnailSize) / 2);
-
-
-            ImGui.Image(thumbnailTexture.GetRendererID(), new Vector2(assetCardThumbnailSize, assetCardThumbnailSize));
-
-            if (currentSelectedFile == assetInfo)
+            if (ImGui.BeginChild(assetInfo.name, new Vector2(assetCardWidth, assetCardHeight), ImGuiChildFlags.AlwaysUseWindowPadding | ImGuiChildFlags.Borders))
             {
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.3f, 1f));
+                //ImGui.InvisibleButton(fileName + "_dragRegion", ImGui.GetContentRegionAvail());
+                isHovered = ImGui.IsItemHovered();
+                isActive = ImGui.IsItemActive();
+
+
+                float windowWidth = ImGui.GetContentRegionAvail().X;
+                float windowHeight = ImGui.GetContentRegionAvail().Y;
+
+                Vector2 checkerPatternSize = new Vector2(windowWidth, assetCardThumbnailSize + (windowWidth - assetCardThumbnailSize) / 2);
+
+                ImGui.Image(checkerTexture.GetRendererID(), checkerPatternSize, new Vector2(0, 0), new Vector2(1, 0.8f));
+
+                ImGui.SetCursorPosX((windowWidth - assetCardThumbnailSize) / 2);
+                ImGui.SetCursorPosY((windowWidth - assetCardThumbnailSize) / 2);
+
+
+                ImGui.Image(thumbnailTexture.GetRendererID(), new Vector2(assetCardThumbnailSize, assetCardThumbnailSize));
+
+                if (currentSelectedFile == assetInfo)
+                {
+                    ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.3f, 1f));
+                }
+                else
+                {
+                    ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.3f, 0.3f, 0.3f, 1f));
+                }
+                ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0f);
+                ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(5, 5));
+                //ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.1f, 0.1f, 0.1f, 1f));
+
+                if (ImGui.BeginChild(assetInfo.name + "desc", Vector2.One * -1, ImGuiChildFlags.AlwaysUseWindowPadding))
+                {
+                    ImGui.Text(assetInfo.name);
+                }
+                ImGui.EndChild();
+
+                ImGui.PopStyleColor();
+                ImGui.PopStyleVar(2);
+
+
+                // Place this right before checking for drag
+                ImGui.SetCursorPos(Vector2.Zero);
+                if (ImGui.InvisibleButton(assetInfo.name + "_dragRegion", new Vector2(assetCardWidth, assetCardHeight)))
+                {
+                    currentSelectedFile = assetInfo;
+                }
+
+                isHovered = ImGui.IsItemHovered();
+                isActive = ImGui.IsItemActive();
+
+                if (isActive && ImGui.BeginDragDropSource(ImGuiDragDropFlags.SourceNoHoldToOpenOthers))
+                {
+                    string payload = assetInfo.file;
+                    IntPtr payloadPtr = Marshal.StringToHGlobalAnsi(payload);
+                    ImGui.SetDragDropPayload("ASSET_DRAG", payloadPtr, (uint)payload.Length + 1);
+
+                    // Custom drag preview (without using BeginChild!)
+                    ImGui.BeginGroup();
+
+                    ImGui.Image(thumbnailTexture.GetRendererID(), new Vector2(40, 40)); // Small preview
+                    ImGui.SameLine();
+                    ImGui.BeginGroup();
+                    ImGui.Text(assetInfo.name);
+                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1f), assetInfo.type);
+                    ImGui.EndGroup();
+
+                    ImGui.EndGroup();
+
+                    ImGui.EndDragDropSource();
+                    Marshal.FreeHGlobal(payloadPtr);
+                }
+
+
+                // Draw "Heya" as overlay text
+                var drawList = ImGui.GetWindowDrawList();
+
+                // Absolute screen position of the window
+                Vector2 windowPos = ImGui.GetWindowPos();
+
+                // Offset within the window (tweak as needed)
+                Vector2 overlayPos = new Vector2(windowPos.X + 5, windowPos.Y + 5);
+
+                ImGui.PushFont(editor.interBoldFont);
+
+                // Draw overlay text
+                drawList.AddText(overlayPos, ImGui.GetColorU32(new Vector4(0.5f, 0.5f, 0.5f, 1)), assetInfo.type);
+
+                ImGui.PopFont();
             }
-            else
-            {
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.3f, 0.3f, 0.3f, 1f));
-            }
-            ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0f);
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(5, 5));
-            //ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.1f, 0.1f, 0.1f, 1f));
-
-            ImGui.BeginChild(assetInfo.name + "desc", Vector2.One * -1, false, ImGuiWindowFlags.AlwaysUseWindowPadding);
-
-            ImGui.Text(assetInfo.name);
-
-            ImGui.EndChild();
-
-
-            ImGui.PopStyleColor();
-            ImGui.PopStyleVar(2);
-
-
-            // Place this right before checking for drag
-            ImGui.SetCursorPos(Vector2.Zero);
-            if (ImGui.InvisibleButton(assetInfo.name + "_dragRegion", new Vector2(assetCardWidth, assetCardHeight)))
-            {
-                currentSelectedFile = assetInfo;
-            }
-
-            isHovered = ImGui.IsItemHovered();
-            isActive = ImGui.IsItemActive();
-
-            if (isActive && ImGui.BeginDragDropSource(ImGuiDragDropFlags.SourceNoHoldToOpenOthers))
-            {
-                string payload = assetInfo.file;
-                IntPtr payloadPtr = Marshal.StringToHGlobalAnsi(payload);
-                ImGui.SetDragDropPayload("ASSET_DRAG", payloadPtr, (uint)payload.Length + 1);
-
-                // Custom drag widget (thumbnail + name)
-                ImGui.BeginGroup();
-                ImGui.Image(thumbnailTexture.GetRendererID(), new Vector2(40, 40)); // Small preview
-                ImGui.SameLine();
-                ImGui.Text(assetInfo.name);
-                ImGui.TextColored(new Vector4(0.2f, 0.2f, 0.2f, 1f), assetInfo.type);
-                ImGui.EndGroup();
-
-                ImGui.EndDragDropSource();
-
-                Marshal.FreeHGlobal(payloadPtr);
-            }
-
-            // Draw "Heya" as overlay text
-            var drawList = ImGui.GetWindowDrawList();
-
-            // Absolute screen position of the window
-            Vector2 windowPos = ImGui.GetWindowPos();
-
-            // Offset within the window (tweak as needed)
-            Vector2 overlayPos = new Vector2(windowPos.X + 5, windowPos.Y + 5);
-
-            ImGui.PushFont(editor.interBoldFont);
-
-            // Draw overlay text
-            drawList.AddText(overlayPos, ImGui.GetColorU32(new Vector4(0.5f, 0.5f, 0.5f, 1)), assetInfo.type);
-
-            ImGui.PopFont();
-
             ImGui.EndChild();
 
             ImGui.PopStyleVar(3);

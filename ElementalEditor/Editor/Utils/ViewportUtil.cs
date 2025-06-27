@@ -36,8 +36,7 @@ namespace ElementalEditor.Editor.Utils
         public static void DrawViewportTools(float toolbarSize, List<ViewportControl> controls)
         {
             ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0.5f, 0.5f));
-            ImGui.BeginChild("##VIEWPORT_TOOLS", new Vector2(-1, toolbarSize), false,
-                ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysUseWindowPadding);
+            ImGui.BeginChild("##VIEWPORT_TOOLS", new Vector2(-1, toolbarSize), ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.NoScrollbar);
 
             float yCenter = toolbarSize / 2f - 20f;
             float windowWidth = ImGui.GetWindowSize().X;

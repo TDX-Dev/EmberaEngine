@@ -79,7 +79,7 @@ namespace EmberaEngine.Engine.Imgui
         
         public void End()
         {
-            ImGui.End();
+            //ImGui.End();
 
             imguiAPI.Render();
         }

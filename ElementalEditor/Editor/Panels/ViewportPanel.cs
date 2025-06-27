@@ -47,6 +47,7 @@ namespace ElementalEditor.Editor.Panels
         bool isFirstFrame;
         bool freeAspectRatio = false;
 
+        Scene sceneRestore;
 
         List<ViewportControl> controls;
 
@@ -92,37 +93,61 @@ namespace ElementalEditor.Editor.Panels
                 }, new Vector2(200f)),
                 new ViewportControl(ViewportAlignment.Center, () =>
                 {
-                    if (ImGui.Button(MaterialDesign.Play_arrow, new Vector2(40f)))
-                        Console.WriteLine("Play clicked");
+                    if (ImGui.Button(editor.EditorCurrentScene.IsPlaying ? MaterialDesign.Pause : MaterialDesign.Play_arrow, new Vector2(40f)))
+                    {
+                        if (editor.EditorCurrentScene.IsPlaying)
+                        {
+                            int priorGOIndex = editor.EditorCurrentScene.GameObjects.IndexOf(GameObjectPanel.SelectedObject);
+                            editor.EditorCurrentScene.Dispose();
+                            editor.EditorCurrentScene = sceneRestore;
+                            editor.EditorCurrentScene.Initialize();
+                            GameObjectPanel.SelectedObject = (priorGOIndex != -1 && priorGOIndex < editor.EditorCurrentScene.GameObjects.Count) ? editor.EditorCurrentScene.GameObjects[priorGOIndex] : null;
+                            
+
+                        } else
+                        {
+                            sceneRestore = SceneSerializer.DeSerialize(SceneSerializer.Serialize(editor.EditorCurrentScene));
+                            editor.EditorCurrentScene.Play();
+                        }
+                    }
                 }),
 
                 new ViewportControl(
-                    ViewportAlignment.Right,
-                    () =>
-                    {
-                        if (ImGui.Button("Save Scene"))
-                        {
-                            byte[] json = SceneSerializer.Serialize(editor.EditorCurrentScene);
+                ViewportAlignment.Right,
+                () =>
+                {
+                    var btnGroup = new ButtonGroup("TestGroup 1", ButtonGroup.RenderMode.CustomDraw);
+                    //btnGroup.padding = new Vector2(12, 12);
+                    btnGroup.Add(MaterialDesign.Arrow_back, () => {Console.WriteLine("Clicked!"); });
 
-                            using (FileStream fs = File.Create(Path.Join(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene1.dscn")))
-                            {
-                                fs.Write(json);
-                            }
-
-                            DebugLogPanel.Log("Saved Scene: " + editor.EditorCurrentScene.Name, DebugLogPanel.DebugMessageSeverity.Information, "Editor");
-                        }
-                    },
-                    new Vector2(100, 40)
+                    btnGroup.Add(MaterialDesign.Arrow_upward, () => {});
+                    btnGroup.Add(MaterialDesign.Arrow_downward, () => {});
+                    btnGroup.Add(MaterialDesign.Arrow_forward, () => {});
+                    btnGroup.Render();
+                },
+                new (400, 40)
                 ),
 
                 new ViewportControl(ViewportAlignment.Right, () =>
                 {
-                    if (ImGui.Button(MaterialDesign.Settings, new Vector2(40f)))
+                    var btnGroup = new ButtonGroup("Test Group 2", ButtonGroup.RenderMode.CustomDraw);
+                    btnGroup.Add("Save Scene", () =>
+                    {
+                        byte[] json = SceneSerializer.Serialize(editor.EditorCurrentScene);
+
+                        using (FileStream fs = File.Create(Path.Join(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene1.dscn")))
+                        {
+                            fs.Write(json);
+                        }
+
+                        DebugLogPanel.Log("Saved Scene: " + editor.EditorCurrentScene.Name, DebugLogPanel.DebugMessageSeverity.Information, "Editor");
+                    });
+
+                    btnGroup.Add(MaterialDesign.Settings, () =>
+                    {
                         ImGui.OpenPopup("OptionsPopup");
 
-                    ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 10));
-
-                    if (ImGui.BeginPopup("OptionsPopup"))
+                        if (ImGui.BeginPopup("OptionsPopup"))
                     {
                         if (ImGui.BeginMenu("Overlays"))
                         {
@@ -183,9 +208,18 @@ namespace ElementalEditor.Editor.Panels
 
                        ImGui.EndPopup();
                     }
+                    });
+
+                    btnGroup.Render();
+
+                    ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 10));
+
+                    
 
                     ImGui.PopStyleVar();
-                })
+                },
+                    new Vector2(200, 40)
+                )
             };
 
 
@@ -256,8 +290,9 @@ namespace ElementalEditor.Editor.Panels
             DrawToolbar(); // This will now occupy vertical space in layout
 
             viewportPos = ImGui.GetCursorScreenPos();
-            viewportHeight = (int)ImGui.GetContentRegionAvail().Y;
-            viewportWidth = (int)ImGui.GetContentRegionMax().X;
+            Vector2 avail = ImGui.GetContentRegionAvail();
+            viewportWidth = (int)avail.X;
+            viewportHeight = (int)avail.Y;
 
             HandleViewportResize();
 
@@ -281,6 +316,32 @@ namespace ElementalEditor.Editor.Panels
 
                 ImGui.EndDragDropTarget();
             }
+
+
+            ImGui.SetCursorPos(new Vector2(scaledViewport.Left + 20, scaledViewport.Top + ToolbarHeight * 2));
+            ImGui.SetNextItemWidth(100);
+
+            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, EditorUI.FramePadding);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, EditorUI.FramePadding);
+            EditorUI.DrawCollapsingHeader("Info", () =>
+            {
+                UI.BeginPropertyGrid("##scene_info_grid");
+
+                UI.BeginProperty("Scene:");
+                UI.PropertyText(editor.EditorCurrentScene.Name ?? "No Name Set");
+                UI.EndProperty();
+
+                UI.BeginProperty("GameObjects:");
+                UI.PropertyText(editor.EditorCurrentScene.GameObjects.Count.ToString());
+                UI.EndProperty();
+
+                UI.BeginProperty("Meshes:");
+                UI.PropertyText(Renderer3D.GetMeshes().Count.ToString());
+                UI.EndProperty();
+
+                UI.EndPropertyGrid();
+            }, 400);
+            ImGui.PopStyleVar(2);
 
             EditorUI.EndWindow();
             ImGui.PopStyleVar();
@@ -307,7 +368,6 @@ namespace ElementalEditor.Editor.Panels
                 editor.EditorCurrentScene = scene;
                 GameObjectPanel.SelectedObject = null;
                 scene.Initialize();
-                scene.Play();
 
                 Renderer3D.SetRenderCamera(editor.EditorCamera.Camera);
             } else if (resolvedAssetType == AssetType.MODEL_FILE)
@@ -451,6 +511,8 @@ namespace ElementalEditor.Editor.Panels
                     }
 
                     DebugLogPanel.Log($"Loaded Model ({(DateTime.Now - time).Seconds} Seconds)", DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");
+
+                    editor.EditorCurrentScene.addGameObject(ImporterUtils.ConvertToGameObjectTree(modelGraph));
 
                     // TODO: Save meshes and materials to asset DB here
 

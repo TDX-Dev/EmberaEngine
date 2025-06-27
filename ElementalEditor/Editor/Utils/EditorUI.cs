@@ -19,7 +19,9 @@ namespace ElementalEditor.Editor.Utils
         public static ImFontPtr DefaultFontMedium;
         public static ImFontPtr DefaultFontSmall;
 
-        public static Vector4 HeaderColor = new Vector4(new Vector3(0.327f), 0.5f);
+        public static Vector4 HeaderColor = new Vector4(new Vector3(0.247f), 0.5f);
+
+        public static Vector2 FramePadding = new Vector2(7.5f);
 
         public static void SetEditorStyling()
         {
@@ -34,15 +36,15 @@ namespace ElementalEditor.Editor.Utils
             style.Colors[(int)ImGuiCol.TitleBgActive] = new Vector4(new Vector3(0.117f), 1f);
             style.Colors[(int)ImGuiCol.TitleBg] = new Vector4(new Vector3(0.117f), 1f);
             style.Colors[((int)ImGuiCol.WindowBg)] = new Vector4(new Vector3(0.165f), 1);
-            style.Colors[((int)ImGuiCol.Header)] = new Vector4(new Vector3(0.327f), 0.5f);
+            style.Colors[((int)ImGuiCol.Header)] = HeaderColor;
             //style.Colors[((int)ImGuiCol.HeaderHovered)] = new System.Numerics.Vector4(0.1f, 0.1f, 0.1f, 0.5f);
-            //style.Colors[((int)ImGuiCol.HeaderActive)] = new System.Numerics.Vector4(0.2f, 0.2f, 0.2f, 0.5f);
+            style.Colors[((int)ImGuiCol.HeaderActive)] = HeaderColor;
 
             style.Colors[(int)ImGuiCol.Tab] = new Vector4(new Vector3(0.117f) * 1.3f, 1f);
             style.Colors[(int)ImGuiCol.TabHovered] = new Vector4(new Vector3(0.207f), 1f); // Hovered
-            style.Colors[(int)ImGuiCol.TabActive] = new Vector4(new Vector3(0.207f), 1f);
-            style.Colors[(int)ImGuiCol.TabUnfocused] = new Vector4(new Vector3(0.117f) * 1.3f, 1f);
-            style.Colors[(int)ImGuiCol.TabUnfocusedActive] = new Vector4(new Vector3(0.207f), 1);
+            style.Colors[(int)ImGuiCol.TabSelected] = new Vector4(new Vector3(0.207f), 1f);
+            style.Colors[(int)ImGuiCol.TabDimmed] = new Vector4(new Vector3(0.117f) * 1.3f, 1f);
+            style.Colors[(int)ImGuiCol.TabDimmedSelected] = new Vector4(new Vector3(0.207f), 1);
 
             style.Colors[(int)ImGuiCol.FrameBgHovered] = new Vector4(0.4f, 0.4f, 0.4f, 1f);
 
@@ -57,7 +59,7 @@ namespace ElementalEditor.Editor.Utils
 
             style.WindowMenuButtonPosition = ImGuiDir.None;
 
-            style.FramePadding = new Vector2(10, 10);
+            style.FramePadding = FramePadding;
             style.WindowPadding = new Vector2(20);
 
             style.FrameRounding = 2f;
@@ -69,7 +71,7 @@ namespace ElementalEditor.Editor.Utils
 
         public static bool BeginWindow(string value, ImGuiWindowFlags flags)
         {
-            bool isOpen =  ImGui.Begin(value, flags);
+            bool isOpen = ImGui.Begin(value, flags);
             return isOpen;
         }
 
@@ -78,29 +80,66 @@ namespace ElementalEditor.Editor.Utils
             ImGui.End();
         }
 
-        public static void DrawCollapsingHeader(string value, Action action)
+
+
+        public static void DrawCollapsingHeader(string value, Action action, float width = 0)
         {
-            if (ImGui.CollapsingHeader(value, ImGuiTreeNodeFlags.FramePadding))
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, HeaderColor);
+
+            float childWidth = width == 0 ? ImGui.GetContentRegionAvail().X : width;
+
+            if (ImGui.BeginChild(value + " childwindow", new Vector2(childWidth, 0), ImGuiChildFlags.AutoResizeY))
             {
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, HeaderColor);
-
-                // Remove any active indentation before drawing the child
-                float indent = 4;
-                ImGui.Unindent(indent);
-
-                // Match width and position
-                float childWidth = ImGui.GetContentRegionMax().X;
-                if (ImGui.BeginChild(value + "#", new Vector2(childWidth, 0), false, ImGuiWindowFlags.AlwaysUseWindowPadding))
+                if (ImGui.CollapsingHeader(value))
                 {
-                    ImGui.TreePush();
-                    action();
-                    ImGui.TreePop();
+                    // ✅ Ensure inner window gets the full width
+                    float innerWidth = ImGui.GetContentRegionAvail().X;
+                    if (ImGui.BeginChild("innerwindow", new Vector2(innerWidth, 0), ImGuiChildFlags.AlwaysUseWindowPadding | ImGuiChildFlags.AutoResizeY))
+                    {
+                        action();
+                    }
                     ImGui.EndChild();
                 }
+            }
+            ImGui.EndChild();
 
-                ImGui.Indent(indent);   
+            ImGui.PopStyleColor();
+        }
 
-                ImGui.PopStyleColor();
+        public static bool DrawCollapsingHeaderStart(string value, ImGuiTreeNodeFlags flags)
+        {
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, HeaderColor);
+
+            float childWidth = ImGui.GetContentRegionAvail().X;
+            if (ImGui.BeginChild(value + "_child", new Vector2(childWidth, 0), ImGuiChildFlags.AutoResizeY))
+            {
+                bool open = ImGui.CollapsingHeader(value, flags);
+                return open;
+            }
+
+            return false;
+        }
+
+        public static void DrawCollapsingHeaderContent(string value, Action content)
+        {
+            float innerWidth = ImGui.GetContentRegionAvail().X;
+            if (ImGui.BeginChild(value + "_inner", new Vector2(innerWidth, 0), ImGuiChildFlags.AlwaysUseWindowPadding | ImGuiChildFlags.AutoResizeY))
+            {
+                content?.Invoke();
+            }
+            ImGui.EndChild();
+            ImGui.EndChild();
+            ImGui.PopStyleColor();
+        }
+
+        public static void DrawTextInput(string value, ref string text, bool multiline = false)
+        {
+            if (multiline)
+            {
+
+            } else
+            {
+                ImGui.InputText(value, ref text, 100);
             }
         }
 

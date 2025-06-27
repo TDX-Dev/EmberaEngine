@@ -379,10 +379,11 @@ namespace EmberaEngine.Engine.Imgui
 
             foreach (var key in Enum.GetValues<OpenTK.Windowing.GraphicsLibraryFramework.Keys>())
             {
-                if (key == OpenTK.Windowing.GraphicsLibraryFramework.Keys.Unknown)
-                    continue;
-
-                io.KeysDown[(int)key] = KeyboardState.IsKeyDown(key);
+                var imguiKey = ImguiUtils.ConvertToImGuiKey(key);
+                if (imguiKey != ImGuiKey.None)
+                {
+                    ImGui.GetIO().AddKeyEvent(imguiKey, KeyboardState.IsKeyDown(key));
+                }
             }
 
 
@@ -391,12 +392,18 @@ namespace EmberaEngine.Engine.Imgui
                 io.AddInputCharacter(pressedChars[i]);
             }
 
+            io.AddKeyEvent(ImGuiKey.ModCtrl, KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftControl) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightControl));
+            io.AddKeyEvent(ImGuiKey.ModShift, KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightShift));
+            io.AddKeyEvent(ImGuiKey.ModAlt, KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftAlt) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightAlt));
+            io.AddKeyEvent(ImGuiKey.ModSuper, KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftSuper) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightSuper));
+
+
             pressedChars.Clear();
 
-            io.KeyCtrl = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftControl) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightControl);
-            io.KeyAlt = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftAlt) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightAlt);
-            io.KeyShift = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightShift);
-            io.KeySuper = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftSuper) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightSuper);
+            //io.KeyCtrl = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftControl) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightControl);
+            //io.KeyAlt = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftAlt) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightAlt);
+            //io.KeyShift = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightShift);
+            //io.KeySuper = KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftSuper) || KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.RightSuper);
         }
 
 
@@ -456,26 +463,6 @@ namespace EmberaEngine.Engine.Imgui
 
         private static void SetKeyMappings()
         {
-            ImGuiIOPtr io = ImGui.GetIO();
-            io.KeyMap[(int)ImGuiKey.Tab] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Tab;
-            io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Left;
-            io.KeyMap[(int)ImGuiKey.RightArrow] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Right;
-            io.KeyMap[(int)ImGuiKey.UpArrow] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Up;
-            io.KeyMap[(int)ImGuiKey.DownArrow] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Down;
-            io.KeyMap[(int)ImGuiKey.PageUp] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageUp;
-            io.KeyMap[(int)ImGuiKey.PageDown] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.PageDown;
-            io.KeyMap[(int)ImGuiKey.Home] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Home;
-            io.KeyMap[(int)ImGuiKey.End] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.End;
-            io.KeyMap[(int)ImGuiKey.Delete] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Delete;
-            io.KeyMap[(int)ImGuiKey.Backspace] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Backspace;
-            io.KeyMap[(int)ImGuiKey.Enter] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Enter | (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.KeyPadEnter;
-            io.KeyMap[(int)ImGuiKey.Escape] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape;
-            io.KeyMap[(int)ImGuiKey.A] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.A;
-            io.KeyMap[(int)ImGuiKey.C] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.C;
-            io.KeyMap[(int)ImGuiKey.V] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.V;
-            io.KeyMap[(int)ImGuiKey.X] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.X;
-            io.KeyMap[(int)ImGuiKey.Y] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Y;
-            io.KeyMap[(int)ImGuiKey.Z] = (int)OpenTK.Windowing.GraphicsLibraryFramework.Keys.Z;
         }
 
         private void RenderImDrawData(ImDrawDataPtr draw_data)
@@ -530,7 +517,7 @@ namespace EmberaEngine.Engine.Imgui
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBuffer);
             for (int i = 0; i < draw_data.CmdListsCount; i++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[i];
+                ImDrawListPtr cmd_list = draw_data.CmdLists[i];
 
                 int vertexSize = cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
                 if (vertexSize > _vertexBufferSize)
@@ -583,7 +570,7 @@ namespace EmberaEngine.Engine.Imgui
             // Render command lists
             for (int n = 0; n < draw_data.CmdListsCount; n++)
             {
-                ImDrawListPtr cmd_list = draw_data.CmdListsRange[n];
+                ImDrawListPtr cmd_list = draw_data.CmdLists[n];
 
                 GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, cmd_list.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd_list.VtxBuffer.Data);
                 
@@ -648,34 +635,37 @@ namespace EmberaEngine.Engine.Imgui
 
         public void SetUpDockspace(bool customTitlebar = false, Core.Texture titlebarLogo = null)
         {
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new System.Numerics.Vector2(0, 0));
-            ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(_GameWindow.Size.X, _GameWindow.Size.Y));
-            ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar |
-                                            ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
-                                            ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
-                                            ImGuiWindowFlags.NoNavFocus | ImGuiWindowFlags.NoBackground |
-                                            ImGuiWindowFlags.DockNodeHost;
+            var viewport = ImGui.GetMainViewport();
+            ImGui.SetNextWindowPos(viewport.Pos);
+            ImGui.SetNextWindowSize(viewport.Size);
+            ImGui.SetNextWindowViewport(viewport.ID);
+
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, System.Numerics.Vector2.Zero);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+
+            ImGuiWindowFlags windowFlags =
+                ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar |
+                ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize |
+                ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
+                ImGuiWindowFlags.NoNavFocus;
+
             ImGui.Begin("Dockspace", windowFlags);
 
             float titlebarHeight = 90.0f;
 
             if (customTitlebar)
             {
-                // Titlebar area
-                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(0, 0));
-                ImGui.BeginChild("Titlebar", new System.Numerics.Vector2(_GameWindow.Size.X, titlebarHeight),
-                    false, ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoMove |
-                    ImGuiWindowFlags.NoDecoration | ImGuiWindowFlags.AlwaysAutoResize);
+                ImGui.SetCursorScreenPos(viewport.Pos);
+                ImGui.BeginChild("Titlebar", new System.Numerics.Vector2(viewport.Size.X, titlebarHeight),
+                    ImGuiChildFlags.AlwaysAutoResize,
+                    ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoScrollbar |
+                    ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration);
 
-                var windowPos = ImGui.GetWindowPos(); // top-left of current window
-                var min = System.Numerics.Vector2.Zero;
-                var max = new System.Numerics.Vector2(_GameWindow.Size.X, titlebarHeight);
+                var min = viewport.Pos;
+                var max = new System.Numerics.Vector2(viewport.Size.X, titlebarHeight);
+                var mouse = _GameWindow.MouseState.Position;
 
                 bool titlebarHovered = ImGui.IsMouseHoveringRect(min, max);
-
-                var region = ImGui.GetContentRegionAvail();
-                var mouse = _GameWindow.MouseState.Position;
 
                 if ((titlebarHovered && ImGui.IsMouseDown(ImGuiMouseButton.Left)) || _dragging)
                 {
@@ -707,23 +697,27 @@ namespace EmberaEngine.Engine.Imgui
                     _dragging = false;
                 }
 
-                // Draw your logo (optional)
+                // Logo
                 ImGui.SetCursorPos(new System.Numerics.Vector2(10, 10));
                 ImGui.Image(titlebarLogo.GetRendererID(), new System.Numerics.Vector2(160, 61));
 
-                // Draw buttons
+                // Window control buttons
+                var region = ImGui.GetContentRegionAvail();
                 ImGui.SetCursorPos(new System.Numerics.Vector2(region.X - 130, 10));
                 if (ImGui.Button(MaterialDesign.Minimize))
                 {
                     _GameWindow.WindowState = OpenTK.Windowing.Common.WindowState.Minimized;
                 }
+
                 ImGui.SameLine();
-                if (ImGui.Button(_GameWindow.WindowState == WindowState.Maximized ? MaterialDesign.Fullscreen_exit : MaterialDesign.Fullscreen))
+                if (ImGui.Button(_GameWindow.WindowState == OpenTK.Windowing.Common.WindowState.Maximized
+                    ? MaterialDesign.Fullscreen_exit : MaterialDesign.Fullscreen))
                 {
                     _GameWindow.WindowState = _GameWindow.WindowState == OpenTK.Windowing.Common.WindowState.Maximized
                         ? OpenTK.Windowing.Common.WindowState.Normal
                         : OpenTK.Windowing.Common.WindowState.Maximized;
                 }
+
                 ImGui.SameLine();
                 if (ImGui.Button(MaterialDesign.Close))
                 {
@@ -732,19 +726,22 @@ namespace EmberaEngine.Engine.Imgui
 
                 ImGui.EndChild();
 
-                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(0, titlebarHeight));
+                // Push cursor below the titlebar
+                ImGui.SetCursorScreenPos(new System.Numerics.Vector2(viewport.Pos.X, viewport.Pos.Y + titlebarHeight));
             }
 
+            // Initialize dockspace ID only once
             if (firstFrame)
             {
-                DockspaceID = ImGui.GetID("Dockspace");
+                DockspaceID = ImGui.GetID("MainDockspace");
                 firstFrame = false;
             }
 
+            // The actual dockspace
+            ImGui.DockSpace(DockspaceID, System.Numerics.Vector2.Zero);
 
-            ImGui.DockSpace(DockspaceID);
             ImGui.End();
-            ImGui.PopStyleVar();
+            ImGui.PopStyleVar(2); // Padding + Rounding
         }
 
         // internal state

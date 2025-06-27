@@ -60,9 +60,8 @@ namespace ElementalEditor.Editor.Panels
 
                     ImGui.EndTable();
                 }
-
-                ImGui.End();
             }
+            ImGui.End();
         }
 
         public static void Log(string message, DebugMessageSeverity severity = DebugMessageSeverity.Information, string causingFactor = "")

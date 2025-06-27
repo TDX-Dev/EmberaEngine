@@ -52,9 +52,8 @@ namespace ElementalEditor.Editor.Panels
             //}
 
 
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new System.Numerics.Vector2(10, 10));
+            
             ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 2);
-            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new System.Numerics.Vector2(10, 10));
             List<Material> materials = MaterialManager.GetMaterials();
             if (ImGui.Begin("Material Editor"))
             {
@@ -71,12 +70,10 @@ namespace ElementalEditor.Editor.Panels
 
                     //ImGui.PopID();
                 }
-
-
-                ImGui.End();
             }
+            ImGui.End();
 
-            ImGui.PopStyleVar(3);
+            ImGui.PopStyleVar();
         }
 
     }

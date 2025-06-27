@@ -40,79 +40,76 @@ namespace ElementalEditor.Editor.Panels
 
         public override void OnGUI()
         {
-            if (!ImGui.Begin("Timeline")) return;
-
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.2f, 0.2f, 0.2f, 0f));
-            ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0);
-
-            if (ImGui.BeginChild("TIMELINE_TOOLBAR_HEADER", new Vector2(-1, TIMELINE_TOOLBAR_HEADER_HEIGHT), false))
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
+            if (ImGui.Begin("Timeline"))
             {
-                if (ImGui.Button(MaterialDesign.Pause_circle_outline, buttonSizing))
+
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.2f, 0.2f, 0.2f, 0f));
+                ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0);
+
+                if (ImGui.BeginChild("TIMELINE_TOOLBAR_HEADER", new Vector2(-1, TIMELINE_TOOLBAR_HEADER_HEIGHT)))
                 {
+                    if (ImGui.Button(MaterialDesign.Pause_circle_outline, buttonSizing))
+                    {
 
+                    }
+
+                    ImGui.PushItemWidth(100);
+
+                    ImGui.SameLine();
+                    ImGui.Text("Frame:");
+
+                    ImGui.SameLine();
+                    ImGui.DragInt("##currentFrame", ref currentFrame, 1, 5);
+
+                    ImGui.SameLine();
+                    ImGui.Text("Start: ");
+                    ImGui.SameLine();
+                    ImGui.DragInt("##startFrame", ref startFrame, 1, 0);
+                    startFrame = Math.Clamp(startFrame, 0, int.MaxValue);
+
+                    ImGui.SameLine();
+                    ImGui.Text("End: ");
+                    ImGui.SameLine();
+                    ImGui.DragInt("##endFrame", ref endFrame, 1, 5);
+
+                    ImGui.PopItemWidth();
                 }
-
-                ImGui.PushItemWidth(100);
-
-                ImGui.SameLine();
-                ImGui.Text("Frame:");
-
-                ImGui.SameLine();
-                ImGui.DragInt("##currentFrame", ref currentFrame, 1, 5);
-
-                ImGui.SameLine();
-                ImGui.Text("Start: ");
-                ImGui.SameLine();
-                ImGui.DragInt("##startFrame", ref startFrame, 1, 0);
-                startFrame = Math.Clamp(startFrame, 0, int.MaxValue);
-
-                ImGui.SameLine();
-                ImGui.Text("End: ");
-                ImGui.SameLine();
-                ImGui.DragInt("##endFrame", ref endFrame, 1, 5);
-
-                ImGui.PopItemWidth();
-
                 ImGui.EndChild();
 
-            }
+                ImGui.PopStyleColor();
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.2f, 0.2f, 0.2f, 1f));
 
-            ImGui.PopStyleColor();
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.2f, 0.2f, 0.2f, 1f));
-
-            ImGui.SetCursorPosX(TIMELINE_PROPERTY_TAB_WIDTH);
-            if (ImGui.BeginChild("TIMELINE_TIME_HEADER", new Vector2(-1, TIMELINE_TIME_HEADER_HEIGHT)))
-            {
-                DrawTimeHeader();
-                HandleUserInput();
-
-
-
+                ImGui.SetCursorPosX(TIMELINE_PROPERTY_TAB_WIDTH);
+                if (ImGui.BeginChild("TIMELINE_TIME_HEADER", new Vector2(-1, TIMELINE_TIME_HEADER_HEIGHT)))
+                {
+                    DrawTimeHeader();
+                    HandleUserInput();
+                }
                 ImGui.EndChild();
-            }
 
-            ImGui.SetCursorPosX(TIMELINE_PROPERTY_TAB_WIDTH);
-            if (ImGui.BeginChild("TIMELINE_EDITOR", new Vector2(-1, -1)))
-            {
-                HandleUserInput();
-                DrawTimeLine();
-
-
-
+                ImGui.SetCursorPosX(TIMELINE_PROPERTY_TAB_WIDTH);
+                if (ImGui.BeginChild("TIMELINE_EDITOR", new Vector2(-1, -1)))
+                {
+                    HandleUserInput();
+                    DrawTimeLine();
+                }
                 ImGui.EndChild();
+
+                ImGui.PopStyleColor();
+                ImGui.PopStyleVar();
             }
-
-            ImGui.PopStyleColor();
-            ImGui.PopStyleVar();
-
             ImGui.End();
+
+            ImGui.PopStyleVar();
         }
 
         void DrawTimeLine()
         {
             Vector2 windowPos = ImGui.GetWindowPos();
-            Vector2 clipMin = windowPos + ImGui.GetWindowContentRegionMin();
-            Vector2 clipMax = windowPos + ImGui.GetWindowContentRegionMax();
+
+            Vector2 clipMin = ImGui.GetCursorScreenPos();
+            Vector2 clipMax = ImGui.GetCursorScreenPos() + ImGui.GetContentRegionAvail();
             float scrollX = ImGui.GetScrollX();
 
             Vector2 basePosition = windowPos;
@@ -204,8 +201,9 @@ namespace ElementalEditor.Editor.Panels
         void DrawTimeHeader()
         {
             Vector2 windowPos = ImGui.GetWindowPos();
-            Vector2 clipMin = windowPos + ImGui.GetWindowContentRegionMin();
-            Vector2 clipMax = windowPos + ImGui.GetWindowContentRegionMax();
+            Vector2 clipMin = ImGui.GetCursorScreenPos();
+            Vector2 clipMax = ImGui.GetCursorScreenPos() + ImGui.GetContentRegionAvail();
+
 
             float scrollX = ImGui.GetScrollX();
 
@@ -315,7 +313,7 @@ namespace ElementalEditor.Editor.Panels
             if (ImGui.IsMouseClicked(ImGuiMouseButton.Left) && isHoveringFrameLabel)
             {
                 ImGui.SetMouseCursor(ImGuiMouseCursor.ResizeEW);
-                ImGui.CaptureMouseFromApp(true); // Optional, for full capture
+                ImGui.SetNextFrameWantCaptureMouse(true); // Optional, for full capture
                 isDraggingFrame = true;
             }
 

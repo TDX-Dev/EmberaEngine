@@ -44,29 +44,9 @@ namespace ElementalEditor.Editor.Panels
                     thread.SetApartmentState(ApartmentState.STA); // optional, sometimes helps with Win32/GLFW quirks
                     thread.Start();
                 }
-
-
-
-                ImGui.End();
             }
 
-
-
-            if (ImGui.BeginMenuBar())
-            {
-                if (ImGui.BeginMenu("Devoid"))
-                {
-                    if (ImGui.MenuItem("About Devoid"))
-                    {
-
-                    }
-
-
-                    ImGui.EndMenu();
-                }
-
-                ImGui.EndMenuBar();
-            }
+            ImGui.End();
         }
 
     }

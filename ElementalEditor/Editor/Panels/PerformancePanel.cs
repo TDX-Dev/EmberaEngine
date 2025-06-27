@@ -40,9 +40,8 @@ namespace ElementalEditor.Editor.Panels
 
                     ImGui.EndTable();
                 }
-
-                ImGui.End();
             }
+            ImGui.End();
 
         }
 

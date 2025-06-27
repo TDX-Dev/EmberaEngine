@@ -160,19 +160,24 @@ namespace EmberaEngine.Engine.Core
         public void Play()
         {
             IsPlaying = true;
-            foreach (GameObject gameObject in GameObjects)
+            for (int i = 0; i < GameObjects.Count; i++)
             {
-                gameObject.OnStart();
+                GameObjects[i].OnStart();
             }
+        }
+
+        public void Pause()
+        {
+            IsPlaying = false;
         }
 
         public void OnUpdate(float dt)
         {
+            if (!IsPlaying) { return; }
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 GameObjects[i].OnUpdate(dt);
             }
-
             PhysicsManager2D.Update(dt);
             PhysicsManager3D.Update(dt);
         }
@@ -212,6 +217,7 @@ namespace EmberaEngine.Engine.Core
                     }
 
                     PhysicsManager3D.Dispose();
+                    GameObjects.Clear();
                 }
                 // set the bool value to true
                 _disposed = true;

@@ -29,7 +29,7 @@ namespace EmberaEngine.Engine.Components
         private void UpdateChunk()
         {
             MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
-            mr?.RemoveMeshes();
+            mr?.RemoveMesh();
 
             heightMap = new int[xGrid, zGrid];
             List<Vertex> vertices = new List<Vertex>();

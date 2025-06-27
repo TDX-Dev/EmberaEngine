@@ -2,7 +2,7 @@
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Utilities;
-
+using MessagePack;
 using OpenTK.Mathematics;
 using System.Reflection.Metadata;
 
@@ -21,8 +21,8 @@ namespace EmberaEngine.Engine.Components
 
         private Rigidbody3DType type = Rigidbody3DType.Dynamic;
         private float mass = 1f;
-        private float friction = 0.5f;
-        private float restitution = 0.1f;
+        [IgnoreMember]
+        private PhysicsMaterial physicsMaterial = PhysicsMaterial.Default;
 
         private ColliderComponent3D collider;
         private PhysicsObjectHandle handle;
@@ -47,23 +47,13 @@ namespace EmberaEngine.Engine.Components
             }
         }
 
-        public float Friction
-        {
-            get => friction;
-            set
-            {
-                friction = value;
-                RecreateHandle();
-            }
-        }
 
-        public float Restitution
+        public PhysicsMaterial PhysicsMaterial
         {
-            get => restitution;
-            set
-            {
-                restitution = value;
-                RecreateHandle();
+            get => physicsMaterial;
+            set {
+                physicsMaterial = value;
+                SetPhysicsMaterialProperties();
             }
         }
 
@@ -77,6 +67,7 @@ namespace EmberaEngine.Engine.Components
             gameObject.Scene.OnComponentRemoved += OnComponentRemovedCallback;
 
             RecreateHandle();
+
         }
 
         public override void OnUpdate(float dt)
@@ -121,19 +112,38 @@ namespace EmberaEngine.Engine.Components
             return Helper.ToVector3(this.gameObject.Scene.PhysicsManager3D.GetVelocity(handle.BodyHandle));
         }
 
-        private void RecreateHandle()
+        private void SetPhysicsMaterialProperties()
         {
             var pm = gameObject.Scene?.PhysicsManager3D;
             if (pm == null || collider == null)
                 return;
 
-            if ((handle.IsStatic && pm.StaticExists(handle.StaticHandle))
-                || (!handle.IsStatic && pm.DynamicExists(handle.BodyHandle)))
+            pm.SetPhysicsMaterial(handle, physicsMaterial);
+        }
+
+        private void RecreateHandle()
+        {
+            //Console.WriteLine($"Recreating for: {gameObject.Name}, OldHandle: {handle.BodyHandle}");
+            var pm = gameObject.Scene?.PhysicsManager3D;
+            if (pm == null || collider == null)
+                return;
+
+            //Console.WriteLine("Physics Manager Set");
+
+            bool isValidHandle = handle.IsStatic
+                ? handle.StaticHandle.Value != 0 && pm.StaticExists(handle.StaticHandle)
+                : handle.BodyHandle.Value != 0 && pm.DynamicExists(handle.BodyHandle);
+
+            if (isValidHandle)
             {
                 pm.RemovePhysicsObject(handle);
+                //Console.WriteLine($"[RecreateHandle] Removed {(handle.IsStatic ? "Static" : "Dynamic")} object: {gameObject.Name}");
+                handle = default;
             }
 
+
             handle = pm.AddPhysicsObject(gameObject.transform, this, collider);
+            //Console.WriteLine("Added Physics Object: " + gameObject.Name);
         }
 
         private void OnComponentAddedCallback(Component comp)
@@ -158,6 +168,11 @@ namespace EmberaEngine.Engine.Components
                 collider = null;
                 gameObject.Scene?.PhysicsManager3D.RemovePhysicsObject(handle);
             }
+        }
+
+        public override void OnDestroy()
+        {
+            gameObject.Scene.PhysicsManager3D.RemovePhysicsObject(handle);
         }
     }
 }

@@ -167,6 +167,14 @@ namespace EmberaEngine.Engine.Core
             {
                 Components[i].OnStart();
             }
+
+            if (children.Count > 0)
+            {
+                for (int i = 0; i < children.Count; i++)
+                {
+                    children[i].OnStart();
+                }
+            }
         }
 
         public void OnUpdate(float dt)

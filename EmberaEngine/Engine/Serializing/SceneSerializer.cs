@@ -86,12 +86,7 @@ namespace EmberaEngine.Engine.Serializing
             );
 
             var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);//.WithCompression(MessagePackCompression.Lz4BlockArray);
-
-            // Serialize scene
             var binary = MessagePackSerializer.Serialize(scene, options);
-            // Convert to JSON
-            var json = MessagePackSerializer.ConvertToJson(binary);
-            Console.WriteLine(json);
             return binary;
         }
 
@@ -232,6 +227,7 @@ namespace EmberaEngine.Engine.Serializing
 
         public GameObject Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
+            //Console.WriteLine(reader.ReadSingle());
             var count = reader.ReadMapHeader();
 
             string name = null;

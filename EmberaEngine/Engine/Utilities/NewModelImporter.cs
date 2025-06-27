@@ -123,7 +123,7 @@ namespace EmberaEngine.Engine.Utilities
             EmptyNode RootNode = new EmptyNode() { nodeType = ModelNodeType.Empty };
             foreach (var child in scene.RootNode.Children)
             {
-                var node = ProcessNode(child, scene, spec, ref meshNodes, ref cameraNodes, ref lightNodes);
+                var node = ProcessNode(child, scene, spec, ref meshNodes, ref cameraNodes, ref lightNodes, scene.RootNode.Transform);
                 RootNode.children.Add(node);
             }
 
@@ -143,8 +143,15 @@ namespace EmberaEngine.Engine.Utilities
             };
         }
 
-        static ModelNode ProcessNode(Assimp.Node node, Assimp.Scene scene, ModelLoaderSpecification spec,
-                                  ref List<MeshNode> meshNodes, ref List<CameraNode> cameras, ref List<LightNode> lights)
+        static ModelNode ProcessNode(
+            Assimp.Node node,
+            Assimp.Scene scene,
+            ModelLoaderSpecification spec,
+            ref List<MeshNode> meshNodes,
+            ref List<CameraNode> cameras,
+            ref List<LightNode> lights,
+            Assimp.Matrix4x4 parentTransform // ⬅️ pass accumulated transform
+        )
         {
             node.Transform.Decompose(out var scale, out var rot, out var pos);
             var rotation = ToEulerAngles(rot);
@@ -190,35 +197,25 @@ namespace EmberaEngine.Engine.Utilities
             }
             else if (node.MeshIndices.Count > 0)
             {
-                var emptyParent = new EmptyNode()
-                {
-                    name = node.Name,
-                    position = new Vector3(pos.X, pos.Y, pos.Z),
-                    rotation = new Vector3(rotation.X, rotation.Y, rotation.Z),
-                    nodeType = ModelNodeType.Empty
-                };
+                // Currently, only support one mesh per node (or create multiple MeshNodes if needed)
+                int meshIdx = node.MeshIndices[0];
+                var assimpMesh = scene.Meshes[meshIdx];
 
-                for (int meshIndex = 0; meshIndex < node.MeshIndices.Count; meshIndex++)
-                {
-                    int meshIdx = node.MeshIndices[meshIndex];
-                    var assimpMesh = scene.Meshes[meshIdx];
+                Guid materialId = Guid.Empty;
+                if (assimpMesh.MaterialIndex >= 0 && assimpMesh.MaterialIndex < materials.Count)
+                    materialId = materials[assimpMesh.MaterialIndex].Id;
 
-                    Guid materialId = Guid.Empty;
-                    if (assimpMesh.MaterialIndex >= 0 && assimpMesh.MaterialIndex < materials.Count)
-                        materialId = materials[assimpMesh.MaterialIndex].Id;
+                var mesh = ProcessMesh(assimpMesh, materialId, spec.importScale);
+                mesh.name = node.Name;
+                mesh.position = new Vector3(pos.X, pos.Y, pos.Z) / 100;
+                mesh.rotation = new Vector3(rotation.X, rotation.Y, rotation.Z);
+                mesh.nodeType = ModelNodeType.Mesh;
+                mesh.materialIndex = assimpMesh.MaterialIndex;
 
-                    var mesh = ProcessMesh(assimpMesh, materialId, spec.importScale);
-                    mesh.name = node.Name;
-                    mesh.position = Vector3.Zero;
-                    mesh.rotation = Vector3.Zero;
-                    mesh.nodeType = ModelNodeType.Mesh;
-
-                    meshNodes.Add(mesh);
-                    emptyParent.children.Add(mesh);
-                }
-
-                resultNode = emptyParent;
+                meshNodes.Add(mesh);
+                resultNode = mesh;
             }
+
 
             else
             {
