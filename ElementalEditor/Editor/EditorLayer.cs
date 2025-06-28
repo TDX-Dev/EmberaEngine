@@ -2,6 +2,7 @@
 using ElementalEditor.Editor.Panels;
 using ElementalEditor.Editor.Utils;
 using EmberaEngine.Core;
+using EmberaEngine.Engine.Attributes;
 using EmberaEngine.Engine.Components;
 using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
@@ -21,7 +22,10 @@ namespace ElementalEditor.Editor
     public class EditorLayer : Layer
     {
         public Application app;
+
         public Scene EditorCurrentScene;
+        
+        
         public EditorCamera EditorCamera;
 
         public ImFontPtr interBoldFont;
@@ -107,6 +111,7 @@ namespace ElementalEditor.Editor
 
         public override void OnUpdate(float deltaTime)
         {
+            UpdateEditorComponents(deltaTime);
             EditorCurrentScene.OnUpdate(deltaTime);
             EditorCamera.Update(deltaTime);
 
@@ -118,6 +123,47 @@ namespace ElementalEditor.Editor
             //t.Content = "FPS: " + Math.Round((1 / deltaTime));
             //barrelObject.transform.Rotation.Y += 100 * deltaTime;
         }
+
+        private void ProcessEditorComponents(GameObject entity, Action<Component> action)
+        {
+            foreach (var comp in entity.Components)
+            {
+                var type = comp.GetType();
+                if (Attribute.IsDefined(type, typeof(ExecuteInPauseMode)))
+                {
+                    action(comp);
+                }
+            }
+
+            // Recursively process children
+            foreach (var child in entity.children)
+            {
+                ProcessEditorComponents(child, action);
+            }
+        }
+
+
+        public void UpdateEditorComponents(float dt)
+        {
+            if (EditorCurrentScene.IsPlaying) return;
+
+            foreach (var entity in EditorCurrentScene.GameObjects)
+            {
+                ProcessEditorComponents(entity, comp => comp.OnUpdate(dt));
+            }
+        }
+
+
+        public void StartEditorComponents()
+        {
+            if (EditorCurrentScene.IsPlaying) return;
+
+            foreach (var entity in EditorCurrentScene.GameObjects)
+            {
+                ProcessEditorComponents(entity, comp => comp.OnStart());
+            }
+        }
+
 
         public override void OnResize(int width, int height)
         {

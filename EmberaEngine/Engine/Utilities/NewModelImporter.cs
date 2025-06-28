@@ -45,6 +45,7 @@ namespace EmberaEngine.Engine.Utilities
             public string name;
             public Vector3 position;
             public Vector3 rotation;
+            public Vector3 scale;
             public ModelNodeType nodeType;
             public List<ModelNode> children = new();
         }
@@ -100,6 +101,7 @@ namespace EmberaEngine.Engine.Utilities
                     Assimp.PostProcessSteps.Triangulate |
                     Assimp.PostProcessSteps.GenerateNormals |
                     Assimp.PostProcessSteps.CalculateTangentSpace |
+                    Assimp.PostProcessSteps.GenerateSmoothNormals |
                     Assimp.PostProcessSteps.FlipUVs |
                     Assimp.PostProcessSteps.GenerateUVCoords |
                     Assimp.PostProcessSteps.OptimizeMeshes
@@ -150,14 +152,17 @@ namespace EmberaEngine.Engine.Utilities
             ref List<MeshNode> meshNodes,
             ref List<CameraNode> cameras,
             ref List<LightNode> lights,
-            Assimp.Matrix4x4 parentTransform // ⬅️ pass accumulated transform
+            Assimp.Matrix4x4 parentTransform // Accumulated from root
         )
         {
-            node.Transform.Decompose(out var scale, out var rot, out var pos);
+            // Accumulate transformation
+            Assimp.Matrix4x4 worldTransform = node.Transform * parentTransform;
+            worldTransform.Decompose(out var scale, out var rot, out var pos);
             var rotation = ToEulerAngles(rot);
 
             ModelNode resultNode;
 
+            // LIGHT NODE
             if (scene.Lights.FirstOrDefault(l => l.Name == node.Name) is Assimp.Light light)
             {
                 var lightNode = new LightNode()
@@ -177,9 +182,12 @@ namespace EmberaEngine.Engine.Utilities
                         _ => LightType.PointLight
                     }
                 };
+
                 lights.Add(lightNode);
                 resultNode = lightNode;
             }
+
+            // CAMERA NODE
             else if (scene.Cameras.FirstOrDefault(c => c.Name == node.Name) is Assimp.Camera camera)
             {
                 var camNode = new CameraNode()
@@ -192,12 +200,15 @@ namespace EmberaEngine.Engine.Utilities
                     near = camera.ClipPlaneNear,
                     far = camera.ClipPlaneFar
                 };
+
                 cameras.Add(camNode);
                 resultNode = camNode;
             }
+
+            // MESH NODE
             else if (node.MeshIndices.Count > 0)
             {
-                // Currently, only support one mesh per node (or create multiple MeshNodes if needed)
+                // Only use first mesh per node for now — extendable if needed
                 int meshIdx = node.MeshIndices[0];
                 var assimpMesh = scene.Meshes[meshIdx];
 
@@ -205,18 +216,19 @@ namespace EmberaEngine.Engine.Utilities
                 if (assimpMesh.MaterialIndex >= 0 && assimpMesh.MaterialIndex < materials.Count)
                     materialId = materials[assimpMesh.MaterialIndex].Id;
 
-                var mesh = ProcessMesh(assimpMesh, materialId, spec.importScale);
-                mesh.name = node.Name;
-                mesh.position = new Vector3(pos.X, pos.Y, pos.Z) / 100;
-                mesh.rotation = new Vector3(rotation.X, rotation.Y, rotation.Z);
-                mesh.nodeType = ModelNodeType.Mesh;
-                mesh.materialIndex = assimpMesh.MaterialIndex;
+                var meshNode = ProcessMesh(assimpMesh, materialId, spec.importScale);
+                meshNode.name = node.Name;
+                meshNode.position = new Vector3(pos.X, pos.Y, pos.Z) / 100;
+                meshNode.rotation = new Vector3(rotation.X, rotation.Y, rotation.Z);
+                meshNode.scale = new Vector3(scale.X, scale.Y, scale.Z);
+                meshNode.nodeType = ModelNodeType.Mesh;
+                meshNode.materialIndex = assimpMesh.MaterialIndex;
 
-                meshNodes.Add(mesh);
-                resultNode = mesh;
+                meshNodes.Add(meshNode);
+                resultNode = meshNode;
             }
 
-
+            // EMPTY NODE
             else
             {
                 resultNode = new EmptyNode()
@@ -228,9 +240,11 @@ namespace EmberaEngine.Engine.Utilities
                 };
             }
 
+            // Recurse into children
             foreach (var child in node.Children)
             {
-                resultNode.children.Add(ProcessNode(child, scene, spec, ref meshNodes, ref cameras, ref lights));
+                var childNode = ProcessNode(child, scene, spec, ref meshNodes, ref cameras, ref lights, worldTransform);
+                resultNode.children.Add(childNode);
             }
 
             return resultNode;
@@ -252,18 +266,12 @@ namespace EmberaEngine.Engine.Utilities
 
             for (int i = 0; i < mesh.VertexCount; i++)
             {
-                Vector3 position = (new Vector4(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z, 1) * scaleMatrix).Xyz;
-                Vector3 normal = mesh.HasNormals
-                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z)))
-                    : Vector3.UnitY;
+                Vector3 position = Vector3.TransformPosition(new Vector3(mesh.Vertices[i].X, mesh.Vertices[i].Y, mesh.Vertices[i].Z), scaleMatrix);
+                Vector3 normal = Vector3.Normalize(Vector3.TransformNormal(new Vector3(mesh.Normals[i].X, mesh.Normals[i].Y, mesh.Normals[i].Z), Matrix4.Transpose(Matrix4.Invert(scaleMatrix))));
 
-                Vector3 tangent = (mesh.Tangents.Count > 0)
-                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z)))
-                    : Vector3.One;
+                Vector3 tangent = Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z)));
 
-                Vector3 bitangent = (mesh.BiTangents.Count > 0)
-                    ? Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z)))
-                    : Vector3.One;
+                Vector3 bitangent = Vector3.Normalize(TransformNormal(normalMatrix, new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z)));
 
                 Vector2 uv = Vector2.Zero;
                 if (mesh.TextureCoordinateChannels[0].Count > 0)

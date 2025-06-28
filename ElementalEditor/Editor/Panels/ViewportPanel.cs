@@ -101,6 +101,7 @@ namespace ElementalEditor.Editor.Panels
                             editor.EditorCurrentScene.Dispose();
                             editor.EditorCurrentScene = sceneRestore;
                             editor.EditorCurrentScene.Initialize();
+                            editor.StartEditorComponents();
                             GameObjectPanel.SelectedObject = (priorGOIndex != -1 && priorGOIndex < editor.EditorCurrentScene.GameObjects.Count) ? editor.EditorCurrentScene.GameObjects[priorGOIndex] : null;
                             
 
@@ -368,6 +369,7 @@ namespace ElementalEditor.Editor.Panels
                 editor.EditorCurrentScene = scene;
                 GameObjectPanel.SelectedObject = null;
                 scene.Initialize();
+                editor.StartEditorComponents();
 
                 Renderer3D.SetRenderCamera(editor.EditorCamera.Camera);
             } else if (resolvedAssetType == AssetType.MODEL_FILE)

@@ -22,6 +22,11 @@ namespace EmberaEngine.Engine.Core
         public int Width { get; private set; } = 1;
         public int Depth { get; private set; } = 1;
 
+        public TextureWrapMode WrapS = TextureWrapMode.ClampToEdge;
+        public TextureWrapMode WrapT = TextureWrapMode.ClampToEdge;
+        public TextureWrapMode WrapR = TextureWrapMode.ClampToEdge;
+
+
         public static Texture White2DTex;
         public static Texture Black2DTex;
 
@@ -132,12 +137,18 @@ namespace EmberaEngine.Engine.Core
 
         public void SetWrapMode(TextureWrapMode wrapS, TextureWrapMode wrapT)
         {
+            this.WrapS = wrapS;
+            this.WrapT = wrapT;
             GL.TextureParameter(handle, TextureParameterName.TextureWrapS, (int)wrapS);
             GL.TextureParameter(handle, TextureParameterName.TextureWrapT, (int)wrapT);
         }
 
         public void SetWrapMode(TextureWrapMode wrapS, TextureWrapMode wrapT, TextureWrapMode wrapR)
         {
+            this.WrapS = wrapS;
+            this.WrapT = wrapT;
+            this.WrapR = wrapR;
+
             GL.TextureParameter(handle, TextureParameterName.TextureWrapS, (int)wrapS);
             GL.TextureParameter(handle, TextureParameterName.TextureWrapT, (int)wrapT);
             GL.TextureParameter(handle, TextureParameterName.TextureWrapR, (int)wrapR);

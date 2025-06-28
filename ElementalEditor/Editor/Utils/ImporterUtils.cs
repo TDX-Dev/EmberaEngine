@@ -35,6 +35,7 @@ namespace ElementalEditor.Editor.Utils
             obj.Name = node.name;
             obj.transform.Position = node.position;
             obj.transform.Rotation = node.rotation;
+            obj.transform.Scale = node.scale;
 
             switch (node.nodeType)
             {

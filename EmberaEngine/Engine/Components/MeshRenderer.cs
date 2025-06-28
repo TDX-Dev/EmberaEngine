@@ -1,4 +1,5 @@
-﻿using EmberaEngine.Engine.Core;
+﻿using EmberaEngine.Engine.Attributes;
+using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using EmberaEngine.Engine.Utilities;
 using MessagePack;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Components
 {
+    [ExecuteInPauseMode]
     public class MeshRenderer : Component
     {
         public override string Type => nameof(MeshRenderer);
@@ -35,6 +37,7 @@ namespace EmberaEngine.Engine.Components
 
         public override void OnUpdate(float dt)
         {
+            Console.WriteLine("MR");
             if (entry != null)
             {
                 entry.Transform = gameObject.transform.GetWorldMatrix();

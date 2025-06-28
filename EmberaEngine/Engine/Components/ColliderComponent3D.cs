@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using EmberaEngine.Engine.Attributes;
+using OpenTK.Mathematics;
 
 namespace EmberaEngine.Engine.Components
 {
@@ -11,6 +12,7 @@ namespace EmberaEngine.Engine.Components
         Mesh
     }
 
+    [ExecuteInPauseMode]
     public class ColliderComponent3D : Component
     {
         public override string Type => nameof(ColliderComponent3D);

@@ -508,10 +508,16 @@ namespace EmberaEngine.Engine.Serializing
     {
         public void Serialize(ref MessagePackWriter writer, Texture value, MessagePackSerializerOptions options)
         {
-            writer.WriteMapHeader(1);
+            writer.WriteMapHeader(4);
             writer.Write("GUID");
-            Console.WriteLine(value.Id);
             writer.Write(value.Id.ToString());
+
+            writer.Write("WRAP_MODE_S");
+            writer.WriteInt32((int)value.WrapS);
+            writer.Write("WRAP_MODE_T");
+            writer.WriteInt32((int)value.WrapT);
+            writer.Write("WRAP_MODE_R");
+            writer.WriteInt32((int)value.WrapR);
         }
         public Texture Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
@@ -520,10 +526,22 @@ namespace EmberaEngine.Engine.Serializing
             reader.Skip();
 
             string guidStr = reader.ReadString();
-            Console.WriteLine(guidStr);
+
+            reader.Skip();
+
+            TextureWrapMode wrapS = (TextureWrapMode)reader.ReadUInt32();
+
+            reader.Skip();
+
+            TextureWrapMode wrapT = (TextureWrapMode)reader.ReadUInt32();
+
+            reader.Skip();
+
+            TextureWrapMode wrapR = (TextureWrapMode)reader.ReadUInt32();
 
             Guid textureGuid = Guid.Parse(guidStr);
             Texture texture = (Texture)AssetLoader.LoadSync<Texture>(textureGuid);
+            texture.SetWrapMode(wrapS, wrapT, wrapR);
             return texture;
         }
     }
