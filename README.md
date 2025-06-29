@@ -36,16 +36,16 @@ Currently, to work with the editor you will **require** a editor project to laun
 ### Creating a GameObject
 
 ```
-    GameObject gameObject = this.gameObject.scene.addGameObject(); // Optionally specify a name or set gameObject.Name
+GameObject gameObject = this.gameObject.scene.addGameObject(); // Optionally specify a name or set gameObject.Name
 ```
 
 ### Adding components
 
 ```
-    gameObject.AddComponent<MeshRenderer>();
-    // or
-    MeshRenderer meshRenderer = new MeshRenderer();
-    gameObject.AddComponent(meshRenderer);
+gameObject.AddComponent<MeshRenderer>();
+// or
+MeshRenderer meshRenderer = new MeshRenderer();
+gameObject.AddComponent(meshRenderer);
 ```
 
 
