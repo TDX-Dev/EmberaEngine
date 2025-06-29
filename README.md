@@ -9,6 +9,7 @@ Devoid Engine is a custom-built game engine designed as a personal learning proj
 - [x] 2D Animations
 - [ ] 3D Skeletal Animations 
 - [x] Parent-Child Transforms
+- [x] BEPU Physics Integration
 - [x] Component System
 - [x] Asset Management
 - [x] Type Serialization
@@ -26,6 +27,12 @@ Devoid Engine is a custom-built game engine designed as a personal learning proj
 - [x] Image based lighting
 - [x] Skybox rendering with HDRI support
 - [x] Tonemapping
+
+## Screenshots
+
+![Preview 1](https://github.com/TDX-Dev/EmberaEngine/blob/main/Previews/PREVIEW_2.png)
+
+![Preview 2](https://github.com/TDX-Dev/EmberaEngine/blob/main/Previews/PREVIEW_1.png)
 
 ## Installation
 You need .NET 8.0 to run this project.
@@ -52,3 +59,6 @@ gameObject.AddComponent(meshRenderer);
 ## Contributing
 👋 Thanks for your interest! However, this project isn't accepting outside contributions. Feel free to fork it or open issues for feedback.
 
+## License
+
+GPL-3.0 License. See [LICENSE](LICENSE) for more info.
