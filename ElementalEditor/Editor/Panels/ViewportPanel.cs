@@ -435,22 +435,17 @@ namespace ElementalEditor.Editor.Panels
                 {
                     // Actually load the model using your importer
                     string fullPath = Path.Combine(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, importFilePath);
+                    Console.WriteLine(importFilePath);
                     var spec = new ModelLoaderSpecification()
                     {
-                        resourcePath = fullPath,
+                        resourcePath = importFilePath,
                         importScale = importScale
                     };
 
                     DebugLogPanel.Log("Loading model at: " + importFilePath, DebugLogPanel.DebugMessageSeverity.Information, "Model Importer");
                     DateTime time = DateTime.Now;
 
-                    var modelData = NewModelImporter.Load(spec);
-
-                    ModelGraphData modelGraph = NewModelImporter.Load(new ModelLoaderSpecification()
-                    {
-                        resourcePath = "AmbientShadowTesting/ambient_shadow_testing.fbx",
-                        importScale = .01f,
-                    });
+                    ModelGraphData modelGraph = NewModelImporter.Load(spec);
 
                     // Map of old -> new material IDs
                     var materialGuidMap = new Dictionary<Guid, Guid>();
@@ -461,7 +456,7 @@ namespace ElementalEditor.Editor.Panels
                         var material = modelGraph.materials[i];
                         Guid oldGuid = material.Id;
 
-                        string relPath = Path.Combine("Materials", (i + 1) + ".dmat");
+                        string relPath = Path.Combine("Materials", material.GetHashCode() + ".dmat");
 
                         if (AssetLookup.pathToGuid.TryGetValue(relPath, out Guid existingGuid))
                         {
@@ -483,8 +478,9 @@ namespace ElementalEditor.Editor.Panels
 
                         DiskUtilities.SaveMaterial(VirtualFileSystem.ResolvePath(relPath), (PBRMaterial)material);
                     }
-                    foreach (MeshNode meshNode in modelGraph.meshNodes)
+                    for (int i = 0; i < modelGraph.meshNodes.Count; i++)
                     {
+                        MeshNode meshNode = modelGraph.meshNodes[i];
                         // Fix material reference GUID
                         if (materialGuidMap.TryGetValue(meshNode.mesh.MaterialReference, out Guid newMatGuid))
                         {

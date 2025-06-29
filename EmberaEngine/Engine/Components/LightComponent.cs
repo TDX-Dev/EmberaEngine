@@ -1,22 +1,20 @@
-﻿using EmberaEngine.Engine.Rendering;
+﻿using EmberaEngine.Engine.Attributes;
+using EmberaEngine.Engine.Rendering;
 using EmberaEngine.Engine.Serializing;
 using EmberaEngine.Engine.Utilities;
 using OpenTK.Mathematics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Components
 {
+    [ExecuteInPauseMode]
     public class LightComponent : Component
     {
         public override string Type => nameof(LightComponent);
 
-        PointLight pointLight;
-        SpotLight spotLight;
-        DirectionalLight directionalLight;
+        private PointLight pointLight;
+        private SpotLight spotLight;
+        private DirectionalLight directionalLight;
 
         private bool enabled = true;
         private Vector3 color = Vector3.One;
@@ -32,12 +30,14 @@ namespace EmberaEngine.Engine.Components
 
         public LightType LightType
         {
-            get { return lightType; }
+            get => lightType;
             set
             {
-                OnChangeLightType(lightType, value);
-                lightType = value;
-                
+                if (lightType != value)
+                {
+                    OnChangeLightType(lightType, value);
+                    lightType = value;
+                }
             }
         }
 
@@ -49,7 +49,7 @@ namespace EmberaEngine.Engine.Components
 
         public Color4 Color
         {
-            get => new Color4(pointLight.Color.X, pointLight.Color.Y, pointLight.Color.Z, 1);
+            get => new Color4(color.X, color.Y, color.Z, 1);
             set { color = Helper.ToVector4(value).Xyz; OnChangedValue(); }
         }
 
@@ -67,12 +67,8 @@ namespace EmberaEngine.Engine.Components
 
         public LightAttenuationType AttenuationFunction
         {
-            get => this.attenuationType;
-            set
-            {
-                this.attenuationType = value;
-                OnChangedValue();
-            }
+            get => attenuationType;
+            set { attenuationType = value; OnChangedValue(); }
         }
 
         public float LinearFactor
@@ -84,11 +80,7 @@ namespace EmberaEngine.Engine.Components
         public float QuadraticFactor
         {
             get => quadraticFactor;
-            set
-            {
-                quadraticFactor = value;
-                OnChangedValue();
-            }
+            set { quadraticFactor = value; OnChangedValue(); }
         }
 
         public float InnerCutoff
@@ -105,81 +97,106 @@ namespace EmberaEngine.Engine.Components
 
         public LightComponent()
         {
+            // No light creation here; deferred to OnStart
+        }
 
-            pointLight = LightManager.AddPointLight(Vector3.Zero, color, intensity, radius);
+        private void DisposeLights()
+        {
+            if (pointLight != null)
+            {
+                LightManager.RemovePointLight(pointLight);
+                pointLight = null;
+            }
+
+            if (spotLight != null)
+            {
+                LightManager.RemoveSpotLight(spotLight);
+                spotLight = null;
+            }
+
+            if (directionalLight != null)
+            {
+                LightManager.RemoveDirectionalLight(directionalLight);
+                directionalLight = null;
+            }
         }
 
         public void OnChangeLightType(LightType previousValue, LightType newValue)
         {
-            if (previousValue == newValue) return;
-
-            if (previousValue == LightType.PointLight)
-            {
-                LightManager.RemovePointLight(pointLight);
-            }
-            else if (previousValue == LightType.SpotLight)
-            {
-                LightManager.RemoveSpotLight(spotLight);
-            } else
-            {
-                LightManager.RemoveDirectionalLight(directionalLight);
-            }
-
-            if (newValue == LightType.PointLight)
-            {
-                pointLight = LightManager.AddPointLight(gameObject.transform.Position, color, intensity, radius);
-            }
-            else if (newValue == LightType.SpotLight)
-            {
-                spotLight = LightManager.AddSpotLight(gameObject.transform.Position, color, Vector3.Normalize(gameObject.transform.Rotation), intensity, radius, innerCutoff, outerCutoff);
-            }
-            else if (newValue == LightType.DirectionalLight)
-            {
-                directionalLight = LightManager.AddDirectionalLight(gameObject.transform.Rotation, color, intensity);
-            }
+            DisposeLights();
+            lightType = newValue;
+            OnStart(); // Recreate the new light
         }
 
         public void OnChangedValue()
         {
-            if (LightType == LightType.PointLight)
+            switch (lightType)
             {
-                pointLight.position = gameObject.transform.Position;
-                pointLight.Color = color;
-                pointLight.range = radius;
-                pointLight.intensity = intensity;
-                pointLight.enabled = enabled;
-                pointLight.attenuationType = (int)attenuationType;
-                pointLight.attenuationParameters = new Vector2(linearFactor, quadraticFactor);
-            }
-            else if (LightType == LightType.SpotLight)
-            {
-                spotLight.position = gameObject.transform.Position;
-                spotLight.Color = color;
-                spotLight.range = radius;
-                spotLight.intensity = intensity;
-                spotLight.enabled = enabled;
-                spotLight.innerCutoff = innerCutoff;
-                spotLight.outerCutoff = outerCutoff;
-                spotLight.direction = Vector3.Normalize(gameObject.transform.Rotation);
-            }
-            else if (lightType == LightType.DirectionalLight)
-            {
-                directionalLight.direction = gameObject.transform.Rotation;
-                directionalLight.color = color;
-                directionalLight.intensity = intensity;
-                directionalLight.enabled = enabled;
+                case LightType.PointLight:
+                    if (pointLight != null)
+                    {
+                        pointLight.position = gameObject.transform.GlobalPosition;
+                        pointLight.Color = color;
+                        pointLight.range = radius;
+                        pointLight.intensity = intensity;
+                        pointLight.enabled = enabled;
+                        pointLight.attenuationType = (int)attenuationType;
+                        pointLight.attenuationParameters = new Vector2(linearFactor, quadraticFactor);
+                    }
+                    break;
+
+                case LightType.SpotLight:
+                    if (spotLight != null)
+                    {
+                        spotLight.position = gameObject.transform.GlobalPosition;
+                        spotLight.Color = color;
+                        spotLight.range = radius;
+                        spotLight.intensity = intensity;
+                        spotLight.enabled = enabled;
+                        spotLight.innerCutoff = innerCutoff;
+                        spotLight.outerCutoff = outerCutoff;
+                        spotLight.direction = Vector3.Normalize(gameObject.transform.Rotation);
+                    }
+                    break;
+
+                case LightType.DirectionalLight:
+                    if (directionalLight != null)
+                    {
+                        directionalLight.direction = gameObject.transform.Rotation;
+                        directionalLight.color = color;
+                        directionalLight.intensity = intensity;
+                        directionalLight.enabled = enabled;
+                    }
+                    break;
             }
         }
 
         public override void OnStart()
         {
-            if (lightType == LightType.PointLight)
+            DisposeLights(); // Just in case
+
+            Vector3 position = gameObject.transform.GlobalPosition;
+
+            switch (lightType)
             {
-                pointLight.position = gameObject.transform.Position;
-            } else if (lightType == LightType.SpotLight)
-            {
-                spotLight.position = gameObject.transform.Position;
+                case LightType.PointLight:
+                    pointLight = LightManager.AddPointLight(position, color, intensity, radius);
+                    break;
+
+                case LightType.SpotLight:
+                    spotLight = LightManager.AddSpotLight(
+                        position, color,
+                        Vector3.Normalize(gameObject.transform.Rotation),
+                        intensity, radius, innerCutoff, outerCutoff);
+                    break;
+
+                case LightType.DirectionalLight:
+                    directionalLight = LightManager.AddDirectionalLight(
+                        gameObject.transform.Rotation, color, intensity);
+                    break;
             }
+
+            OnChangedValue(); // Sync properties after light is created
         }
 
         public override void OnUpdate(float dt)
@@ -188,24 +205,11 @@ namespace EmberaEngine.Engine.Components
             {
                 OnChangedValue();
             }
-
         }
 
         public override void OnDestroy()
         {
-            return;
-            if (lightType == LightType.PointLight)
-            {
-                LightManager.RemovePointLight(pointLight);
-            }
-            else if (lightType == LightType.SpotLight)
-            {
-                LightManager.RemoveSpotLight(spotLight);
-            }
-            else if (lightType == LightType.DirectionalLight)
-            {
-                LightManager.RemoveDirectionalLight(directionalLight);
-            }
+            DisposeLights();
         }
     }
 }

@@ -104,19 +104,23 @@ namespace EmberaEngine.Engine.Core
 
         public List<Component> GetAllComponentsOfType(Type componentType)
         {
-            List<Component> components = new();
+            List<Component> result = new();
 
             foreach (var go in GameObjects)
             {
-                var component = go.GetComponent(componentType);
-                if (component != null)
+                var allComponents = go.GetComponentsRecursive();
+                foreach (var component in allComponents)
                 {
-                    components.Add(component);
+                    if (componentType.IsAssignableFrom(component.GetType()))
+                    {
+                        result.Add(component);
+                    }
                 }
             }
 
-            return components;
+            return result;
         }
+
 
 
         public void removeGameObject(GameObject gameObject)

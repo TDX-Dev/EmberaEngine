@@ -1,5 +1,7 @@
 ﻿using EmberaEngine.Engine.Attributes;
 using EmberaEngine.Engine.Core;
+using EmberaEngine.Engine.Utilities;
+using MessagePack;
 using OpenTK.Mathematics;
 using System;
 
@@ -18,15 +20,12 @@ namespace EmberaEngine.Engine.Components
         private Vector3 globalRotation = Vector3.Zero;
         private Vector3 globalScale = Vector3.One;
 
-        private Matrix4 localMatrix;
-        private Matrix4 worldMatrix;
+        private Matrix4 localMatrix = Matrix4.Identity;
+        private Matrix4 worldMatrix = Matrix4.Identity;
 
-        private Vector3 prev_position;
-        private Vector3 prev_rotation;
-        private Vector3 prev_scale;
-        private Vector3 prev_globalPosition;
-        private Vector3 prev_globalRotation;
-        private Vector3 prev_globalScale;
+        private Vector3 prev_position = Vector3.Zero;
+        private Vector3 prev_rotation = Vector3.Zero;
+        private Vector3 prev_scale = Vector3.One;
 
         public bool hasMoved = false;
 
@@ -35,9 +34,12 @@ namespace EmberaEngine.Engine.Components
             get => position;
             set
             {
-                position = value;
-                hasMoved = true;
-                UpdateTransform();
+                if (position != value)
+                {
+                    position = value;
+                    hasMoved = true;
+                    UpdateTransform();
+                }
             }
         }
 
@@ -46,9 +48,12 @@ namespace EmberaEngine.Engine.Components
             get => rotation;
             set
             {
-                rotation = value;
-                hasMoved = true;
-                UpdateTransform();
+                if (rotation != value)
+                {
+                    rotation = value;
+                    hasMoved = true;
+                    UpdateTransform();
+                }
             }
         }
 
@@ -57,100 +62,123 @@ namespace EmberaEngine.Engine.Components
             get => scale;
             set
             {
-                scale = value;
-                hasMoved = true;
-                UpdateTransform();
+                if (scale != value)
+                {
+                    scale = value;
+                    hasMoved = true;
+                    UpdateTransform();
+                }
             }
         }
 
-        public Vector3 GlobalPosition
+        [IgnoreMember]
+        public Vector3 GlobalPosition 
         {
             get => globalPosition;
-            set
-            {
-                if (gameObject.parentObject != null)
-                {
-                    var parentTransform = gameObject.parentObject.transform;
-                    if (parentTransform != null)
-                    {
-                        Matrix4 parentWorld = parentTransform.GetWorldMatrix();
-                        Matrix4 parentInv = parentWorld.Inverted();
-                        position = Vector3.TransformPosition(value, parentInv);
-                    }
-                    else
-                    {
-                        position = value;
-                    }
-                }
-                else
-                {
-                    position = value;
-                }
-
-                hasMoved = true;
-                UpdateTransform();
+            set  {
+                return;
             }
         }
-
-        public Vector3 GlobalRotation => globalRotation;
+        
+        [IgnoreMember]
+        public Vector3 GlobalRotation
+        {
+            get => globalRotation;
+            set {
+                globalRotation = value;
+            }
+        }
+        [IgnoreMember]
         public Vector3 GlobalScale => globalScale;
 
         public Matrix4 GetLocalMatrix() => localMatrix;
         public Matrix4 GetWorldMatrix() => worldMatrix;
 
-        public void UpdateTransform()
+        public void SetGlobalTransform(Vector3 globalPosition, Quaternion globalRotation)
+        {
+            // Apply global position and rotation directly
+            this.globalPosition = globalPosition;
+            this.globalRotation = Helper.ToDegrees(Helper.ToEulerAngles(globalRotation));
+
+            // Recalculate local matrix from world
+            if (gameObject.parentObject != null)
+            {
+                var parentWorld = gameObject.parentObject.transform.GetWorldMatrix();
+                this.localMatrix = worldMatrix * Matrix4.Invert(parentWorld);
+            }
+            else
+            {
+                this.localMatrix = worldMatrix;
+            }
+
+            // Update local TRS components
+            this.position = localMatrix.ExtractTranslation();
+            this.rotation = localMatrix.ExtractRotation().ToEulerAngles() * MathHelper.RadiansToDegrees(1f);
+            this.scale = localMatrix.ExtractScale();
+
+            UpdateTransform(true); // Recalculate world matrix from updated globals
+        }
+
+
+        public void UpdateTransform(bool forceUpdate = false)
         {
             if (gameObject == null) return;
 
-            // Correct TRS order: Translate * Rotate * Scale
+            Vector3 prevGlobalPosition = globalPosition;
+            Vector3 prevGlobalRotation = globalRotation;
+            Vector3 prevGlobalScale = globalScale;
+
             localMatrix = CreateTRS(position, rotation, scale);
 
-            // Apply parent world matrix
             if (gameObject.parentObject != null)
             {
                 var parentTransform = gameObject.parentObject.transform;
-                if (parentTransform != null)
-                {
-                    worldMatrix = localMatrix * parentTransform.GetWorldMatrix();
-                }
-                else
-                {
-                    worldMatrix = localMatrix;
-                }
+                worldMatrix = localMatrix * parentTransform.GetWorldMatrix();
+
+
             }
             else
             {
                 worldMatrix = localMatrix;
             }
 
-            // Extract global components
             globalPosition = worldMatrix.ExtractTranslation();
-            globalRotation = worldMatrix.ExtractRotation().ToEulerAngles() * MathHelper.RadiansToDegrees(1.0f);
+            globalRotation = worldMatrix.ExtractRotation().ToEulerAngles() * MathHelper.RadiansToDegrees(1f);
             globalScale = worldMatrix.ExtractScale();
 
-            // Recursively update children
+            hasMoved = forceUpdate ||
+                       !globalPosition.Equals(prevGlobalPosition) ||
+                       !globalRotation.Equals(prevGlobalRotation) ||
+                       !globalScale.Equals(prevGlobalScale);
+
+            // Only force child updates if this object moved
+            bool childForceUpdate = hasMoved;
+
             foreach (var child in gameObject.children)
             {
-                var childTransform = child.GetComponent<Transform>();
-                childTransform?.UpdateTransform();
+                child.transform.UpdateTransform(childForceUpdate);
             }
         }
 
+
         private Matrix4 CreateTRS(Vector3 pos, Vector3 rotDeg, Vector3 scl)
         {
+            Vector3 rotRad = Helper.ToRadians(rotDeg);
+
+            Matrix4 scale = Matrix4.CreateScale(scl);
+
+            // Rotation order ZYX
+            Matrix4 rotX = Matrix4.CreateRotationX(rotRad.X);
+            Matrix4 rotY = Matrix4.CreateRotationY(rotRad.Y);
+            Matrix4 rotZ = Matrix4.CreateRotationZ(rotRad.Z);
+            Matrix4 rotation = rotZ * rotY * rotX;
+
             Matrix4 translation = Matrix4.CreateTranslation(pos);
 
-            Quaternion rotationQuat = Quaternion.FromEulerAngles(
-                MathHelper.DegreesToRadians(rotDeg.X),
-                MathHelper.DegreesToRadians(rotDeg.Y),
-                MathHelper.DegreesToRadians(rotDeg.Z)
-            );
-            Matrix4 rotation = Matrix4.CreateFromQuaternion(rotationQuat);
-
-            Matrix4 scaling = Matrix4.CreateScale(scl);
-
-            return translation * rotation * scaling; // T * R * S
+            // Correct order: scale, then rotate, then translate
+            return scale * rotation * translation;
         }
+
 
 
         public override void OnStart()
@@ -160,10 +188,6 @@ namespace EmberaEngine.Engine.Components
             prev_position = position;
             prev_rotation = rotation;
             prev_scale = scale;
-
-            prev_globalPosition = globalPosition;
-            prev_globalRotation = globalRotation;
-            prev_globalScale = globalScale;
         }
 
         public override void OnUpdate(float dt)
@@ -171,26 +195,23 @@ namespace EmberaEngine.Engine.Components
             if (
                 prev_position != position ||
                 prev_rotation != rotation ||
-                prev_scale != scale ||
-                prev_globalPosition != globalPosition ||
-                prev_globalRotation != globalRotation ||
-                prev_globalScale != globalScale
+                prev_scale != scale
             )
             {
                 prev_position = position;
                 prev_rotation = rotation;
                 prev_scale = scale;
-
-                prev_globalPosition = globalPosition;
-                prev_globalRotation = globalRotation;
-                prev_globalScale = globalScale;
-
+                UpdateTransform();
                 hasMoved = true;
+                Console.WriteLine($"[Transform] {gameObject?.Name}: Position={position}, Global={globalPosition}, hasMoved={hasMoved}");
             }
             else
             {
                 hasMoved = false;
             }
+
+            // Debugging position drift
+           
         }
     }
 }

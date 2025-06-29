@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Components
 {
-    class WorldEnvironment : Component
+    public class WorldEnvironment : Component
     {
         public override string Type => nameof(WorldEnvironment);
 

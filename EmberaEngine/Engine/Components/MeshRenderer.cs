@@ -37,7 +37,6 @@ namespace EmberaEngine.Engine.Components
 
         public override void OnUpdate(float dt)
         {
-            Console.WriteLine("MR");
             if (entry != null)
             {
                 entry.Transform = gameObject.transform.GetWorldMatrix();

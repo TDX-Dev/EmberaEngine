@@ -132,15 +132,17 @@ namespace ElementalEditor.Editor.Utils
             ImGui.PopStyleColor();
         }
 
-        public static void DrawTextInput(string value, ref string text, bool multiline = false)
+        public static bool DrawTextInput(string value, ref string text, bool multiline = false)
         {
             if (multiline)
             {
 
             } else
             {
-                ImGui.InputText(value, ref text, 100);
+                return ImGui.InputText(value, ref text, 100);
             }
+
+            return false;
         }
 
 

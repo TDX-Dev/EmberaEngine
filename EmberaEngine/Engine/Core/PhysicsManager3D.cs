@@ -84,6 +84,12 @@ namespace EmberaEngine.Engine.Core
                     var pose = body.Pose;
                     transform.Position = new OpenTK.Mathematics.Vector3(pose.Position.X, pose.Position.Y, pose.Position.Z);
                     transform.Rotation = Helper.ToDegrees(Helper.ToEulerAngles(pose.Orientation)); // Still local!
+
+                    //transform.SetGlobalTransform(
+                    //    new OpenTK.Mathematics.Vector3(pose.Position.X, pose.Position.Y, pose.Position.Z),
+                    //    Helper.ToOpenTKQuaternion(pose.Orientation)
+                    //);
+
                 }
             }
         }

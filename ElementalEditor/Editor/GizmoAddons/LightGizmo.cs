@@ -28,7 +28,7 @@ namespace ElementalEditor.Editor.GizmoAddons
             LightComponent lComponent = (LightComponent)component;
             if (!lComponent.Enabled) return;
 
-            var pos = component.gameObject.transform.Position;
+            var pos = component.gameObject.transform.GlobalPosition;
 
             switch (lComponent.LightType)
             {

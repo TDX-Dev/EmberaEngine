@@ -56,10 +56,10 @@ namespace ElementalEditor.Editor.AssetHandling
                     //Console.WriteLine($"Hot reloading asset at: {path}");
 
                     AssetLookup.AssetChange(path, path); // Same path — no rename
-                    AssetMetadataDatabase.SaveFile();
 
                     MainThreadDispatcher.Queue(() =>
                     {
+                        AssetMetadataDatabase.SaveFile();
                         string relativePath = Path.GetRelativePath(watcherRootDirectory, path);
                         AssetReferenceRegistry.Reload(relativePath);
                     });

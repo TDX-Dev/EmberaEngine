@@ -49,12 +49,92 @@ namespace ElementalEditor.Editor.Panels
 
         ProjectAssetPanelType currentSelectedFile;
 
+        private string searchText = "";
+        private string pathInput = "";
+
+        private Stack<string> backHistory = new();
+        private Stack<string> forwardHistory = new();
+
+        private void NavigateTo(string newPath)
+        {
+            if (newPath == currentPath) return;
+
+            if (Directory.Exists(newPath))
+            {
+                backHistory.Push(currentPath);
+                forwardHistory.Clear();
+                currentPath = newPath;
+                UpdatePaths();
+            }
+        }
+
+        private void NavigateBack()
+        {
+            if (backHistory.Count > 0)
+            {
+                forwardHistory.Push(currentPath);
+                currentPath = backHistory.Pop();
+                UpdatePaths();
+            }
+        }
+
+        private void NavigateForward()
+        {
+            if (forwardHistory.Count > 0)
+            {
+                backHistory.Push(currentPath);
+                currentPath = forwardHistory.Pop();
+                UpdatePaths();
+            }
+        }
+
+        private void NavigateUp()
+        {
+            var parent = Path.GetFullPath(Path.Combine(currentPath, ".."));
+            if (Directory.Exists(parent) && parent != currentPath)
+            {
+                NavigateTo(parent);
+            }
+        }
+
+        private void CreateNewFolder()
+        {
+            string newFolderPath = Path.Combine(currentPath, "New Folder");
+            int i = 1;
+            while (Directory.Exists(newFolderPath))
+            {
+                newFolderPath = Path.Combine(currentPath, $"New Folder {i++}");
+            }
+
+            Directory.CreateDirectory(newFolderPath);
+            UpdatePaths();
+        }
+
+        private void OpenInFileExplorer()
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("explorer.exe", currentPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to open folder: " + ex.Message);
+            }
+        }
+
+
+
         public void UpdatePaths()
         {
             Console.WriteLine("Updating Path");
+            currentPathAssets ??= new();
+            directoryContents ??= new();
+            textureAssetCache ??= new();
+
             currentPathAssets.Clear();
             directoryContents.Clear();
             textureAssetCache.Clear();
+
             foreach (string file in VirtualFileSystem.EnumerateCurrentLevel(currentPath))
             {
                 currentPathAssets.Add(new ProjectAssetPanelType()
@@ -69,12 +149,13 @@ namespace ElementalEditor.Editor.Panels
             {
                 directoryContents.Add(Path.GetRelativePath(currentPath, dir));
             }
+
+            pathInput = Path.GetRelativePath(editor.projectPath, currentPath);
         }
 
         public override void OnAttach()
         {
             currentPathAssets = new List<ProjectAssetPanelType>();
-
             materialTexture = Helper.loadImageAsTex("Editor/Assets/Textures/FileTypeTextures/material.png");
             checkerTexture = Helper.loadImageAsTex("Editor/Assets/Textures/FileTypeTextures/assetCheckerBG.png");
             unknownFileTexture = Helper.loadImageAsTex("Editor/Assets/Textures/FileTypeTextures/unkfile.png");
@@ -85,14 +166,16 @@ namespace ElementalEditor.Editor.Panels
             textureAssetCache = new Dictionary<string, TextureReference>();
             directoryContents = new List<string>();
 
+            pathInput = Path.GetRelativePath(editor.projectPath, currentPath);
+
             UpdatePaths();
         }
 
         public override void OnGUI()
         {
             ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 0);
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0f));
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, Vector4.Zero);
 
             if (ImGui.Begin("Project Assets"))
             {
@@ -100,25 +183,22 @@ namespace ElementalEditor.Editor.Panels
 
                 Vector2 cursorPos = ImGui.GetCursorPos();
 
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.247f));
-                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0));
+                // Folder Tab
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.247f, 0.247f, 0.247f, 1));
+                ImGui.PushStyleColor(ImGuiCol.Button, Vector4.Zero);
                 if (ImGui.BeginChild("foldersTab", new Vector2(folderTabWidth, -1), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
-                    if (currentPath != rootPath)
+                    if (currentPath != rootPath && DirectoryButton(".."))
                     {
-                        if (DirectoryButton(".."))
-                        {
-                            currentPath = Path.GetFullPath(Path.Combine(currentPath, @".."));
-                            UpdatePaths();
-                        }
+                        NavigateTo(Path.GetFullPath(Path.Combine(currentPath, "..")));
                     }
 
                     for (int i = 0; i < directoryContents.Count; i++)
                     {
-                        if (DirectoryButton(directoryContents[i]))
+                        string dir = directoryContents[i];
+                        if (DirectoryButton(dir))
                         {
-                            currentPath = Path.GetFullPath(Path.Combine(currentPath, directoryContents[i]));
-                            UpdatePaths();
+                            NavigateTo(Path.GetFullPath(Path.Combine(currentPath, dir)));
                         }
                     }
                 }
@@ -126,45 +206,45 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.PopStyleColor(2);
 
                 ImGui.PopStyleVar();
-
                 ImGui.SetCursorPos(new Vector2(cursorPos.X + folderTabWidth, cursorPos.Y));
                 ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 10));
-
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.118f, 0.118f, 0.118f, 1f));
+
+                // Directory Header
                 if (ImGui.BeginChild("directory_ind", new Vector2(-1, directoryTabHeight), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
                     var btnGroup = new ButtonGroup("DirectoryControls", ButtonGroup.RenderMode.CustomDraw);
-                    btnGroup.Add(MaterialDesign.Arrow_back, () => { Console.WriteLine("Clicked!"); });
-
-                    btnGroup.Add(MaterialDesign.Arrow_forward, () => { });
-                    btnGroup.Add(MaterialDesign.Arrow_upward, () => { });
-                    btnGroup.Add(MaterialDesign.Create_new_folder, () => { });
-
+                    btnGroup.Add(MaterialDesign.Arrow_back, NavigateBack);
+                    btnGroup.Add(MaterialDesign.Arrow_forward, NavigateForward);
+                    btnGroup.Add(MaterialDesign.Arrow_upward, NavigateUp);
+                    btnGroup.Add(MaterialDesign.Create_new_folder, CreateNewFolder);
                     btnGroup.Render();
 
                     ImGui.SameLine();
-
-                    ImGui.Button(MaterialDesign.Folder_special);
+                    if (ImGui.Button(MaterialDesign.Folder_special))
+                    {
+                        OpenInFileExplorer();
+                    }
 
                     ImGui.SameLine();
-                    string path = Path.GetRelativePath(editor.projectPath, currentPath);
                     ImGui.SetNextItemWidth(700);
-                    EditorUI.DrawTextInput("##directory_path_input", ref path);
+                    if (EditorUI.DrawTextInput("##directory_path_input", ref pathInput) && Directory.Exists(Path.Combine(editor.projectPath, pathInput)))
+                    {
+                        string newPath = Path.GetFullPath(Path.Combine(editor.projectPath, pathInput));
+                        NavigateTo(newPath);
+                    }
 
                     ImGui.SameLine();
-                    string search = MaterialDesign.Search + "Search";
                     ImGui.SetNextItemWidth(400);
-                    EditorUI.DrawTextInput("##directory_search_input", ref search);
+                    EditorUI.DrawTextInput("##directory_search_input", ref searchText);
                 }
                 ImGui.EndChild();
                 ImGui.PopStyleColor();
-
                 ImGui.PopStyleVar();
 
+                // Grid Region
                 ImGui.SetCursorPos(new Vector2(cursorPos.X + folderTabWidth + assetTilePadding, cursorPos.Y + directoryTabHeight + assetTilePadding));
-
-                // Set the size of the grid area (height - directoryTabHeight)
-                Vector2 gridAreaSize = new Vector2(-1, ImGui.GetContentRegionAvail().Y); // fills remaining vertical space
+                Vector2 gridAreaSize = new Vector2(-1, ImGui.GetContentRegionAvail().Y);
 
                 if (ImGui.BeginChild("assetGrid", gridAreaSize, ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.HorizontalScrollbar))
                 {
@@ -172,11 +252,12 @@ namespace ElementalEditor.Editor.Panels
                 }
                 ImGui.EndChild();
             }
-            ImGui.End();
 
+            ImGui.End();
             ImGui.PopStyleVar(2);
             ImGui.PopStyleColor();
         }
+
 
         public bool DirectoryButton(string name)
         {
