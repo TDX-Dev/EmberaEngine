@@ -1,6 +1,8 @@
-﻿using EmberaEngine.Engine.Core;
+﻿using EmberaEngine.Engine.Attributes;
+using EmberaEngine.Engine.Core;
 using EmberaEngine.Engine.Rendering;
 using EmberaEngine.Engine.Utilities;
+using Newtonsoft.Json.Linq;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Components
 {
+    [ExecuteInPauseMode]
     public class CameraComponent3D : Component
     {
         public override string Type => nameof(CameraComponent3D);
@@ -30,6 +33,11 @@ namespace EmberaEngine.Engine.Components
         public Vector3 Front
         {
             get { return _front; }
+        }
+
+        public Vector3 Up
+        {
+            get { return _up; }
         }
 
         public Vector3 Right
@@ -55,10 +63,6 @@ namespace EmberaEngine.Engine.Components
             set
             {
                 camera.isDefault = value;
-                if (value)
-                {
-                    this.gameObject.Scene.SetMainCamera(this);
-                }
             }
         }
 
@@ -98,6 +102,10 @@ namespace EmberaEngine.Engine.Components
             camera.nearClip = nearClip;
             camera.farClip = farClip;
             camera.fovy = _fovy;
+            camera.front = _front;
+            camera.up = _up;
+            camera.right = _right;
+
             UpdateCameraVectors();
 
             width = Screen.Size.X;
@@ -107,6 +115,11 @@ namespace EmberaEngine.Engine.Components
             {
                 prevWidth = width; prevHeight = height;
                 SetCameraProperties();
+            }
+
+            if (camera.isDefault)
+            {
+                this.gameObject.Scene.SetMainCamera(this);
             }
         }
 
@@ -126,8 +139,8 @@ namespace EmberaEngine.Engine.Components
 
         private void UpdateCameraVectors()
         {
-            float PITCH = MathHelper.DegreesToRadians(gameObject.transform.Rotation.Y);
-            float YAW = MathHelper.DegreesToRadians(gameObject.transform.Rotation.X);
+            float PITCH = MathHelper.DegreesToRadians(gameObject.transform.Rotation.Z);
+            float YAW = -MathHelper.DegreesToRadians(gameObject.transform.Rotation.Y);
 
             // First, the front matrix is calculated using some basic trigonometry.
             _front.X = MathF.Cos(PITCH) * MathF.Cos(YAW);

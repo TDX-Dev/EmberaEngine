@@ -25,6 +25,10 @@ namespace ElementalEditor.Editor.GizmoAddons
             if (lComponent.ColliderShape == ColliderShapeType.Box)
             {
                 Guizmo3D.RenderCube(lComponent.gameObject.transform.Position, lComponent.Size, lComponent.gameObject.transform.Rotation);
+
+            } else if (lComponent.ColliderShape == ColliderShapeType.Capsule)
+            {
+                Guizmo3D.DrawCapsule(lComponent.gameObject.transform.GlobalPosition, lComponent.Height, lComponent.Radius, lComponent.gameObject.transform.Rotation + new Vector3(), Color4.Yellow);
             }
         }
     }

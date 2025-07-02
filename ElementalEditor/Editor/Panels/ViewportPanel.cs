@@ -93,7 +93,9 @@ namespace ElementalEditor.Editor.Panels
                 }, new Vector2(200f)),
                 new ViewportControl(ViewportAlignment.Center, () =>
                 {
-                    if (ImGui.Button(editor.EditorCurrentScene.IsPlaying ? MaterialDesign.Pause : MaterialDesign.Play_arrow, new Vector2(40f)))
+                    var btnGroup = new ButtonGroup("ViewportCenterToolbar", ButtonGroup.RenderMode.CustomDraw);
+
+                    btnGroup.Add(editor.EditorCurrentScene.IsPlaying ? MaterialDesign.Pause : MaterialDesign.Play_arrow, () =>
                     {
                         if (editor.EditorCurrentScene.IsPlaying)
                         {
@@ -102,38 +104,20 @@ namespace ElementalEditor.Editor.Panels
                             editor.EditorCurrentScene = sceneRestore;
                             editor.EditorCurrentScene.Initialize();
                             editor.StartEditorComponents();
+                            editor.EditorCurrentScene.OnComponentAdded += editor.StartEditorComponent;
                             GameObjectPanel.SelectedObject = (priorGOIndex != -1 && priorGOIndex < editor.EditorCurrentScene.GameObjects.Count) ? editor.EditorCurrentScene.GameObjects[priorGOIndex] : null;
-                            
+                            Renderer3D.SetRenderCamera(editor.EditorCamera.Camera);
 
                         } else
                         {
                             sceneRestore = SceneSerializer.DeSerialize(SceneSerializer.Serialize(editor.EditorCurrentScene));
                             editor.EditorCurrentScene.Play();
                         }
-                    }
-                }),
+                    });
 
-                new ViewportControl(
-                ViewportAlignment.Right,
-                () =>
-                {
-                    var btnGroup = new ButtonGroup("TestGroup 1", ButtonGroup.RenderMode.CustomDraw);
-                    //btnGroup.padding = new Vector2(12, 12);
-                    btnGroup.Add(MaterialDesign.Arrow_back, () => {Console.WriteLine("Clicked!"); });
-
-                    btnGroup.Add(MaterialDesign.Arrow_upward, () => {});
-                    btnGroup.Add(MaterialDesign.Arrow_downward, () => {});
-                    btnGroup.Add(MaterialDesign.Arrow_forward, () => {});
-                    btnGroup.Render();
-                },
-                new (400, 40)
-                ),
-
-                new ViewportControl(ViewportAlignment.Right, () =>
-                {
-                    var btnGroup = new ButtonGroup("Test Group 2", ButtonGroup.RenderMode.CustomDraw);
-                    btnGroup.Add("Save Scene", () =>
+                    btnGroup.Add(MaterialDesign.Save, () =>
                     {
+                        Console.WriteLine("Saved");
                         byte[] json = SceneSerializer.Serialize(editor.EditorCurrentScene);
 
                         using (FileStream fs = File.Create(Path.Join(editor.projectPath, Project.PROJECT_GAME_FILES_DIRECTORY, "scene1.dscn")))
@@ -144,11 +128,30 @@ namespace ElementalEditor.Editor.Panels
                         DebugLogPanel.Log("Saved Scene: " + editor.EditorCurrentScene.Name, DebugLogPanel.DebugMessageSeverity.Information, "Editor");
                     });
 
+                    btnGroup.Render();
+                }),
+
+                new ViewportControl(
+                ViewportAlignment.Right,
+                () =>
+                {
+
+                },
+                new (400, 40)
+                ),
+
+                new ViewportControl(ViewportAlignment.Right, () =>
+                {
+                    var btnGroup = new ButtonGroup("Test Group 2", ButtonGroup.RenderMode.CustomDraw);
+
                     btnGroup.Add(MaterialDesign.Settings, () =>
                     {
                         ImGui.OpenPopup("OptionsPopup");
 
-                        if (ImGui.BeginPopup("OptionsPopup"))
+                        
+                    });
+
+                    if (ImGui.BeginPopup("OptionsPopup"))
                     {
                         if (ImGui.BeginMenu("Overlays"))
                         {
@@ -209,7 +212,6 @@ namespace ElementalEditor.Editor.Panels
 
                        ImGui.EndPopup();
                     }
-                    });
 
                     btnGroup.Render();
 

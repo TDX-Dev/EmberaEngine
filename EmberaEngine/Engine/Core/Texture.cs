@@ -154,6 +154,16 @@ namespace EmberaEngine.Engine.Core
             GL.TextureParameter(handle, TextureParameterName.TextureWrapR, (int)wrapR);
         }
 
+        public void SetBaseLevel(float value)
+        {
+            GL.TextureParameter(handle, TextureParameterName.TextureBaseLevel, value);
+        }
+
+        public void SetMaxLevel(float value)
+        {
+            GL.TextureParameter(handle, TextureParameterName.TextureMaxLevel, value);
+        }
+
         public unsafe void SubTexture2D<T>(int width, int height, PixelFormat pixelFormat, PixelType pixelType, T[] pixels, int level = 0, int xOffset = 0, int yOffset = 0) where T : unmanaged
         {
             fixed (T* p = pixels)
@@ -168,10 +178,10 @@ namespace EmberaEngine.Engine.Core
             SubTexture2D(width, height, pixelFormat, pixelType, pixels, level, xOffset, yOffset);
         }
 
-        public void TexStorage2D(int width, int height, SizedInternalFormat pixelInternalFormat)
+        public void TexStorage2D(int width, int height, int mipLevels, TextureTarget2d texTarget, SizedInternalFormat pixelInternalFormat)
         {
             GL.BindTexture(target, handle);
-            GL.TexStorage2D(OpenTK.Graphics.OpenGL.TextureTarget2d.Texture2D, 0, (OpenTK.Graphics.OpenGL.SizedInternalFormat)pixelInternalFormat, width, height);
+            GL.TexStorage2D((OpenTK.Graphics.OpenGL.TextureTarget2d)target, mipLevels, (OpenTK.Graphics.OpenGL.SizedInternalFormat)pixelInternalFormat, width, height);
             GL.BindTexture(target, 0);
 
             this.Width = width;

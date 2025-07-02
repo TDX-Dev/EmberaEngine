@@ -98,7 +98,7 @@ namespace EmberaEngine.Engine.Rendering
             Exposure = 1f,
             bloomIntensity = 1f,
             AmbientColor = new Color4(0.1f, 0.1f, 0.1f, 0.1f),
-            useSkybox = false,
+            useSkybox = true,
             AmbientFactor = 0.1f,
             useIBL = false,
             useShadows = true,

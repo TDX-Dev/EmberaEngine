@@ -93,7 +93,7 @@ namespace EmberaEngine.Engine.Rendering
             // Setting up composite buffer
             MSCompositeBufferTexture = new Texture(TextureTargetd.Texture2DMultisample);
             MSCompositeBufferTexture.TexImageMultisample2D(width, height, numSamples, PixelInternalFormat.Rgba16f, IntPtr.Zero);
-            MSCompositeBufferTexture.GenerateMipmap();
+            //MSCompositeBufferTexture.GenerateMipmap();
 
             MSCompositeBufferEmissionTexture = new Texture(TextureTargetd.Texture2DMultisample);
             MSCompositeBufferEmissionTexture.TexImageMultisample2D(width, height, numSamples, PixelInternalFormat.Rgba16f, IntPtr.Zero);

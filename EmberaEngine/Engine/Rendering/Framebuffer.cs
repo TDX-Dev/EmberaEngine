@@ -69,8 +69,9 @@ namespace EmberaEngine.Engine.Rendering
         public void SetFramebufferTextureLayer(FramebufferAttachment attachment, Texture tex, int level = 0, int layer = 0)
         {
             Bind();
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, attachment, TextureTarget.TextureCubeMapPositiveX + layer, tex.GetRendererID(), level);
+            GL.FramebufferTextureLayer(FramebufferTarget.Framebuffer, attachment, tex.GetRendererID(), level, layer);
         }
+
 
 
         public void SetDrawBuffers(ReadOnlySpan<DrawBuffersEnum> drawBuffers)

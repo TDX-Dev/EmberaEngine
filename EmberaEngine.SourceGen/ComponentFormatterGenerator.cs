@@ -95,40 +95,53 @@ namespace EmberaEngine.SourceGen
                 fieldWrites.AppendLine($"{string.Format(writeExpr, $"value.{name}")};");
             }
 
-
             return $$"""
 
-                using MessagePack;
-                using MessagePack.Formatters;
-                using {{type.ContainingNamespace.ToDisplayString()}};
+    using MessagePack;
+    using MessagePack.Formatters;
+    using {{type.ContainingNamespace.ToDisplayString()}};
 
-                namespace {{namespaceName}} {
-                    public sealed class {{typename}}Formatter : IMessagePackFormatter<{{typename}}>
-                    {
-                        public void Serialize(ref MessagePackWriter writer, {{typename}} value, MessagePackSerializerOptions options)
-                        {
-                            writer.WriteArrayHeader({{members.Length + 1}});
-                            writer.Write((value.gameObject?.Id ?? Guid.Empty).ToString());
-                            {{fieldWrites.ToString().TrimEnd()}}
-                        }
-
-                        public {{typename}} Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
-                        {
-                            var count = reader.ReadArrayHeader();
-                            var guid = reader.ReadString();
-                            var value = new {{typename}}();
-
-                            if (SceneSerializer.gameObjectGUIDReference.TryGetValue(guid, out var go))
-                                value.gameObject = go;
-
-                            {{fieldReads.ToString().TrimEnd()}}
-                            return value;
-                        }
-                    }
+    namespace {{namespaceName}} {
+        public sealed class {{typename}}Formatter : IMessagePackFormatter<{{typename}}>
+        {
+            public void Serialize(ref MessagePackWriter writer, {{typename}} value, MessagePackSerializerOptions options)
+            {
+                try
+                {
+                    writer.WriteArrayHeader({{members.Length + 1}});
+                    writer.Write((value.gameObject?.Id ?? Guid.Empty).ToString());
+                    {{fieldWrites.ToString().TrimEnd()}}
                 }
+                catch
+                {
+                    writer.WriteArrayHeader(0); // Write an empty array if serialization fails
+                }
+            }
 
+            public {{typename}} Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+            {
+                try
+                {
+                    var count = reader.ReadArrayHeader();
+                    var guid = reader.ReadString();
+                    var value = new {{typename}}();
 
-            """;
+                    if (SceneSerializer.gameObjectGUIDReference.TryGetValue(guid, out var go))
+                        value.gameObject = go;
+
+                    {{fieldReads.ToString().TrimEnd()}}
+                    return value;
+                }
+                catch
+                {
+                    return new {{typename}}(); // Return default instance on error
+                }
+            }
+        }
+    }
+
+""";
+
 
         }
 

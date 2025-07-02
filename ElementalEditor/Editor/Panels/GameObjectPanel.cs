@@ -152,7 +152,7 @@ namespace ElementalEditor.Editor.Panels
             ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(4f, verticalPadding));
 
             // Draw the tree node
-            bool open = ImGui.TreeNodeEx(MaterialDesign.Crop_square + " " + gameObject.Name, flags);
+            bool open = ImGui.TreeNodeEx(IconRegistry.GetFontIcon(typeof(GameObject), gameObject.children.Count > 0 ? 1 : 0).icon + " " + gameObject.Name, flags);
 
             ImGui.PopStyleVar(); // FramePadding
             if (isSelected) ImGui.PopStyleColor(2); // Header + Hovered color
@@ -165,7 +165,7 @@ namespace ElementalEditor.Editor.Panels
             if (ImGui.BeginDragDropSource())
             {
                 ImGui.SetDragDropPayload("GAMEOBJECT", IntPtr.Zero, 0);
-                ImGui.Text(MaterialDesign.Crop_square + " " + gameObject.Name);
+                ImGui.Text(IconRegistry.GetFontIcon(typeof(GameObject)).icon + " " + gameObject.Name);
                 DraggedObject = gameObject;
                 ImGui.EndDragDropSource();
             }
@@ -226,15 +226,11 @@ namespace ElementalEditor.Editor.Panels
                 ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(5));
                 if (ImGui.BeginChild("gameobject_child_window", new Vector2(ImGui.GetContentRegionAvail().X, 50), ImGuiChildFlags.AlwaysUseWindowPadding))
                 {
-
-                    // Start a group so the icon and input share layout
                     ImGui.BeginGroup();
 
-                    ImGui.Button(MaterialDesign.Search); // Icon as a button (for spacing and consistency)
-
+                    ImGui.Button(MaterialDesign.Search); // Icon as a button
                     ImGui.SameLine();
 
-                    // Input field with hint and full remaining width
                     ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
                     ImGui.InputTextWithHint("##goSearch", "Search...", ref searchBuffer, 100);
 
@@ -242,8 +238,6 @@ namespace ElementalEditor.Editor.Panels
                 }
                 ImGui.EndChild();
                 ImGui.PopStyleVar();
-
-                ContextMenu.InspectorPanelPopup(this);
 
                 // Push styles for the object list rendering
                 ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(5, 5));
@@ -254,8 +248,6 @@ namespace ElementalEditor.Editor.Panels
 
                 if (ImGui.BeginChild("gameobject_hierarchy_scroll", ImGui.GetContentRegionAvail(), ImGuiChildFlags.AlwaysUseWindowPadding, ImGuiWindowFlags.ChildWindow))
                 {
-
-                    // Game object hierarchy rendering
                     var roots = editor.EditorCurrentScene.GameObjects;
                     int rowIndex = 0;
                     for (int i = 0; i < roots.Count; i++)
@@ -264,19 +256,25 @@ namespace ElementalEditor.Editor.Panels
                         DrawGameObjectRecursive(roots[i], 0, ref rowIndex);
                     }
 
-                    // Drop zone after the last item
                     if (roots.Count > 0)
                         DrawDropZone(roots[^1], before: false);
+
+                    if (ImGui.IsWindowHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+                    {
+                        Console.WriteLine("Context Menu!");
+                        ImGui.OpenPopup("GameObjectMenu");
+                    }
+
+                    ContextMenu.InspectorPanelPopup(this); // This is fine if it's showing a different popup
                 }
-                ImGui.EndChild();          // End scrollable child
+                ImGui.EndChild();
 
                 ImGui.PopStyleColor();
                 ImGui.PopStyleVar(4);
             }
 
             ImGui.End();
-
-            ImGui.PopStyleVar();           // WindowPadding (from the very beginning)
+            ImGui.PopStyleVar();
 
 
             // Drawing Inspector
@@ -300,7 +298,7 @@ namespace ElementalEditor.Editor.Panels
                     UI.BeginProperty("Name");
                     UI.PropertyString(ref SelectedObject.Name, false);
                     UI.EndProperty();
-                    
+
                     UI.EndPropertyGrid();
 
                     if (openPopupTemp)
@@ -308,7 +306,7 @@ namespace ElementalEditor.Editor.Panels
                         ImGui.OpenPopup("Component Menu");
                         ImGui.SetNextWindowPos(new Vector2(ImGui.GetWindowPos().X - ImGui.GetWindowSize().X / 2, ImGui.GetWindowPos().Y - ImGui.GetWindowSize().Y / 2));
                         openPopupTemp = false;
-                        
+
                     }
 
 
@@ -323,24 +321,49 @@ namespace ElementalEditor.Editor.Panels
 
                         for (int i = 0; i < components.Count; i++)
                         {
-                            if (searchBuffer.Trim() == "")
+                            if (searchBuffer.Trim() == "" ||
+    (searchBuffer.Length < components[i].Name.Length &&
+     searchBuffer.ToLower() == components[i].Name.Substring(0, searchBuffer.Length).ToLower()))
                             {
-                                if (ImGui.Button(MaterialDesign.Settings + components[i].Name.ToString(), new Vector2(-1, 50)))
+                                FontIconEntry icon = IconRegistry.GetFontIcon(components[i]);
+                                string iconStr = icon.icon;
+                                string labelStr = components[i].Name;
+
+                                Vector2 iconSize = ImGui.CalcTextSize(iconStr);
+                                Vector2 labelSize = ImGui.CalcTextSize(labelStr);
+                                float height = 50.0f;
+                                float padding = 8.0f;
+
+                                Vector2 fullSize = new Vector2(iconSize.X + labelSize.X + padding * 2, height);
+
+                                // Get starting position
+                                Vector2 cursorPos = ImGui.GetCursorScreenPos();
+
+                                // Handle input
+                                if (ImGui.InvisibleButton($"##component_btn_{i}", fullSize))
                                 {
                                     SelectedObject.AddComponent((Component)Activator.CreateInstance(components[i]));
                                     ImGui.CloseCurrentPopup();
                                 }
-                            } else if (searchBuffer.Length < components[i].GetType().Name.Length)
-                            {
-                                if (searchBuffer.ToLower() == components[i].Name.Substring(0, searchBuffer.Length).ToLower())
-                                {
-                                    if (ImGui.Button(MaterialDesign.Settings + components[i].GetType().Name.ToString(), new Vector2(-1, 50)))
-                                    {
-                                        SelectedObject.AddComponent((Component)Activator.CreateInstance(components[i]));
-                                        ImGui.CloseCurrentPopup();
-                                    }
-                                }
+
+                                // Align text vertically centered
+                                float iconYOffset = (height - iconSize.Y) * 0.5f;
+                                float labelYOffset = (height - labelSize.Y) * 0.5f;
+
+                                // Draw icon
+                                ImGui.SetCursorScreenPos(new Vector2(cursorPos.X + padding, cursorPos.Y + iconYOffset));
+                                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(icon.iconColor.R, icon.iconColor.G, icon.iconColor.B, icon.iconColor.A));
+                                ImGui.TextUnformatted(iconStr);
+                                ImGui.PopStyleColor();
+
+                                // Draw label
+                                ImGui.SameLine();
+                                ImGui.SetCursorScreenPos(new Vector2(ImGui.GetCursorScreenPos().X, cursorPos.Y + labelYOffset));
+                                ImGui.TextUnformatted(labelStr);
+
+
                             }
+
                         }
 
                         ImGui.EndPopup();
@@ -360,9 +383,7 @@ namespace ElementalEditor.Editor.Panels
                         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(5, 5));
                         ImGui.PushID(componentType.Name + i);
 
-                        string headerLabel = isTransform
-                            ? MaterialDesign.Flip_to_front + " " + component.Type
-                            : component.Type;
+                        string headerLabel = IconRegistry.GetFontIcon(componentType) + " " + component.Type;
 
                         // Collapsing header
                         bool open = EditorUI.DrawCollapsingHeaderStart(headerLabel, ImGuiTreeNodeFlags.DefaultOpen);

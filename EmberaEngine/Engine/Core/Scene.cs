@@ -139,7 +139,7 @@ namespace EmberaEngine.Engine.Core
                 this.Cameras[i].isDefault = false;
             }
 
-            Renderer3D.SetRenderCamera(camera.camera);
+            //Renderer3D.SetRenderCamera(camera.camera);
         }
 
         public void AddCamera(CameraComponent3D camera)
@@ -168,6 +168,13 @@ namespace EmberaEngine.Engine.Core
             {
                 GameObjects[i].OnStart();
             }
+            foreach (CameraComponent3D camera in Cameras)
+            {
+                if (camera.isDefault)
+                {
+                    Renderer3D.SetRenderCamera(camera.camera);
+                }
+            }
         }
 
         public void Pause()
@@ -178,12 +185,13 @@ namespace EmberaEngine.Engine.Core
         public void OnUpdate(float dt)
         {
             if (!IsPlaying) { return; }
+            PhysicsManager2D.Update(dt);
+            PhysicsManager3D.Update(dt);
+
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 GameObjects[i].OnUpdate(dt);
             }
-            PhysicsManager2D.Update(dt);
-            PhysicsManager3D.Update(dt);
         }
 
         public void ComponentAdded(Component component)

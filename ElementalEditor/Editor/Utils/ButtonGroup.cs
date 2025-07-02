@@ -96,11 +96,15 @@ namespace ElementalEditor.Editor.Utils
                 if (i > 0 && i < buttons.Count - 1)
                     flags = ImDrawFlags.RoundCornersNone;
 
-                // Create ImGui item for interaction tracking
+                // Set the cursor to the button position
                 ImGui.SetCursorScreenPos(pos);
-                ImGui.InvisibleButton($"##btn{i}{groupId}", buttonSize);
 
-                // ✅ FIXED: Only show active if mouse press started on this item
+                // Advance ImGui cursor AFTER creating the item!
+                if (ImGui.InvisibleButton($"##btn{i}{groupId}", buttonSize))
+                {
+                    buttons[i].onClick?.Invoke();
+                }
+
                 bool hovered = ImGui.IsItemHovered();
                 bool active = ImGui.IsItemActive() && hovered;
 
@@ -110,30 +114,29 @@ namespace ElementalEditor.Editor.Utils
                         ? ImGui.GetColorU32(ImGuiCol.ButtonHovered)
                         : ImGui.GetColorU32(ImGuiCol.Button);
 
-                // Draw background
                 drawList.AddRectFilled(p0, p1, color, rounding, flags);
 
-                // Draw text centered
                 Vector2 textPos = new Vector2(
                     p0.X + padding.X,
                     p0.Y + padding.Y
                 );
                 drawList.AddText(textPos, ImGui.GetColorU32(ImGuiCol.Text), label);
 
-                // Click logic: only fire if released while still hovering after a press started here
-                if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                // Register click
+                if (hovered && ImGui.IsMouseClicked(ImGuiMouseButton.Left))
                     ButtonGroupInputState.RegisterPress(groupId, i);
 
-                if (ImGui.IsItemHovered() && ButtonGroupInputState.ShouldTrigger(groupId, i))
-                    buttons[i].onClick?.Invoke();
+                if (hovered && ButtonGroupInputState.ShouldTrigger(groupId, i))
+                {
+                    //buttons[i].onClick?.Invoke();
+                }
 
                 ButtonGroupInputState.ClearIfReleased(groupId);
 
-                // Advance to next button
+                // Advance drawing cursor for next button
                 pos.X += buttonSize.X + spacing;
-                if (i < buttons.Count - 1)
-                    ImGui.SameLine(0, spacing);
             }
+
         }
 
     }

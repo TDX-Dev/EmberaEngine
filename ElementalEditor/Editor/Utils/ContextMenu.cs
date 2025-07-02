@@ -21,10 +21,9 @@ namespace ElementalEditor.Editor.Utils
         {
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 10));
 
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0, 0, 0, 1));
-
-            if (ImGui.BeginPopupContextWindow("MyPopup", ImGuiPopupFlags.MouseButtonRight))
+            if (ImGui.BeginPopupContextWindow("GameObjectMenu", ImGuiPopupFlags.MouseButtonRight))
             {
+                Console.WriteLine("Hello");
                 if (ImGui.MenuItem("Action 1"))
                 {
                     // Handle Action 1
@@ -88,8 +87,6 @@ namespace ElementalEditor.Editor.Utils
             }
 
             ImGui.PopStyleVar();
-
-            ImGui.PopStyleColor();
         }
 
 

@@ -86,8 +86,15 @@ namespace EmberaEngine.Engine.Serializing
             );
 
             var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);//.WithCompression(MessagePackCompression.Lz4BlockArray);
-            var binary = MessagePackSerializer.Serialize(scene, options);
-            return binary;
+            try
+            {
+                return MessagePackSerializer.Serialize(scene, options);
+            } catch (Exception ex)
+            {
+                Console.WriteLine("[Scene Deserializer]: An error occurred while deserializing: " + ex.Message);
+            }
+
+            return new byte[0];
         }
 
         public static Scene DeSerialize(byte[] binary)
@@ -104,7 +111,15 @@ namespace EmberaEngine.Engine.Serializing
 
             var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
 
-            return MessagePackSerializer.Deserialize<Scene>(binary, options);
+            try
+            {
+                return MessagePackSerializer.Deserialize<Scene>(binary, options);
+            } catch (Exception ex)
+            {
+                Console.WriteLine("[Scene Deserializer]: An error occurred while deserializing: " + ex.Message);
+            }
+
+            return new Scene();
         }
     }
 
@@ -227,100 +242,112 @@ namespace EmberaEngine.Engine.Serializing
 
         public GameObject Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
         {
-            //Console.WriteLine(reader.ReadSingle());
-            var count = reader.ReadMapHeader();
-
-            string name = null;
-            Guid id = Guid.Empty;
-            Guid? parentId = null;
-            List<GameObject> children = null;
-            Transform transform = null;
-            List<(ushort, Component)> deserializedComponents = new();
-
-            var go = new GameObject();
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                var key = reader.ReadString();
+                //Console.WriteLine(reader.ReadSingle());
+                var count = reader.ReadMapHeader();
 
-                switch (key)
+                string name = null;
+                Guid id = Guid.Empty;
+                Guid? parentId = null;
+                List<GameObject> children = null;
+                Transform transform = null;
+                List<(ushort, Component)> deserializedComponents = new();
+
+                var go = new GameObject();
+
+                for (int i = 0; i < count; i++)
                 {
-                    case "NAME":
-                        name = reader.ReadString();
-                        break;
-                    case "GUID":
-                        id = Guid.Parse(reader.ReadString());
-                        go.Id = id;
-                        SceneSerializer.gameObjectGUIDReference.Add(id.ToString(), go);
-                        break;
-                    case "PARENT_GUID":
-                        var parentStr = reader.ReadString();
-                        parentId = string.IsNullOrEmpty(parentStr) ? null : Guid.Parse(parentStr);
-                        break;
-                    case "CHILDREN":
-                        children = options.Resolver.GetFormatterWithVerify<List<GameObject>>().Deserialize(ref reader, options);
-                        break;
-                    case "TRANSFORM":
-                        transform = MessagePackSerializer.Deserialize<Transform>(ref reader, options);
-                        go.AddComponent(transform);
-                        go.transform = transform;
-                        break;
-                    case "COMPONENTS":
-                        {
-                            int compCount = reader.ReadArrayHeader();
-                            for (int j = 0; j < compCount; j++)
-                            {
-                                var mapCount = reader.ReadMapHeader();
-                                ushort compId = 0;
-                                string type = null;
-                                Component comp = null;
+                    var key = reader.ReadString();
 
-                                for (int k = 0; k < mapCount; k++)
-                                {
-                                    var mapKey = reader.ReadString();
-                                    switch (mapKey)
-                                    {
-                                        case "ID":
-                                            compId = reader.ReadUInt16();
-                                            break;
-                                        case "TYPE":
-                                            reader.Skip();
-                                            break;
-                                        case "DATA":
-                                            var formatter = ComponentRegistry.GetFormatter(compId);
-                                            comp = formatter.Deserialize(ref reader, options);
-                                            break;
-                                        default:
-                                            reader.Skip();
-                                            break;
-                                    }
-                                }
-
-                                if (comp != null)
-                                    deserializedComponents.Add((compId, comp));
-                            }
+                    switch (key)
+                    {
+                        case "NAME":
+                            name = reader.ReadString();
                             break;
-                        }
+                        case "GUID":
+                            id = Guid.Parse(reader.ReadString());
+                            go.Id = id;
+                            SceneSerializer.gameObjectGUIDReference.Add(id.ToString(), go);
+                            break;
+                        case "PARENT_GUID":
+                            var parentStr = reader.ReadString();
+                            parentId = string.IsNullOrEmpty(parentStr) ? null : Guid.Parse(parentStr);
+                            break;
+                        case "CHILDREN":
+                            children = options.Resolver.GetFormatterWithVerify<List<GameObject>>().Deserialize(ref reader, options);
+                            break;
+                        case "TRANSFORM":
+                            transform = MessagePackSerializer.Deserialize<Transform>(ref reader, options);
+                            go.AddComponent(transform);
+                            go.transform = transform;
+                            break;
+                        case "COMPONENTS":
+                            {
+                                int compCount = reader.ReadArrayHeader();
+                                for (int j = 0; j < compCount; j++)
+                                {
+                                    var mapCount = reader.ReadMapHeader();
+                                    ushort compId = 0;
+                                    string type = null;
+                                    Component comp = null;
+
+                                    for (int k = 0; k < mapCount; k++)
+                                    {
+                                        var mapKey = reader.ReadString();
+                                        switch (mapKey)
+                                        {
+                                            case "ID":
+                                                compId = reader.ReadUInt16();
+                                                break;
+                                            case "TYPE":
+                                                reader.Skip();
+                                                break;
+                                            case "DATA":
+                                                var formatter = ComponentRegistry.GetFormatter(compId);
+                                                comp = formatter.Deserialize(ref reader, options);
+                                                break;
+                                            default:
+                                                reader.Skip();
+                                                break;
+                                        }
+                                    }
+
+                                    if (comp != null)
+                                        deserializedComponents.Add((compId, comp));
+                                }
+                                break;
+                            }
+                    }
                 }
+                go.Name = name;
+                go.children = children ?? new List<GameObject>();
+                if (transform != null)
+                {
+                    transform.gameObject = go;
+                }
+
+                go.Components = new List<Component>();
+                if (transform != null)
+                    go.Components.Add(transform);
+
+                foreach (var (compId, comp) in deserializedComponents)
+                {
+                    comp.gameObject = go;
+                    go.Components.Add(comp);
+                }
+
+                return go;
             }
-            go.Name = name;
-            go.children = children ?? new List<GameObject>();
-            if (transform != null)
+
+            catch (Exception e)
             {
-                transform.gameObject = go;
+                Console.WriteLine(e.Message);
+                GameObject go = new GameObject();
+                go.Initialize();
+                go.Name = "Error";
+                return go;
             }
-
-            go.Components = new List<Component>();
-            if (transform != null)
-                go.Components.Add(transform);
-
-            foreach (var (compId, comp) in deserializedComponents)
-            {
-                comp.gameObject = go;
-                go.Components.Add(comp);
-            }
-
-            return go;
         }
     }
 

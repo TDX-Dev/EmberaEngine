@@ -13,7 +13,7 @@ Devoid Engine is a custom-built game engine designed as a personal learning proj
 - [x] Component System
 - [x] Asset Management
 - [x] Type Serialization
-- [x] Assimp Model Importer
+- [x] Assimp Model Importer!
 - [x] Asset hotreloading
 - [x] Async Texture Loading
 - [x] Async Mesh Loading

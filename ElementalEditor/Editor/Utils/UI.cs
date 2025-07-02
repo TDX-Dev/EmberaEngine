@@ -266,6 +266,14 @@ namespace ElementalEditor.Editor.Utils
             ImGui.SetCursorPos(cursorPos);
 
             ImGui.Button(fieldType.Name, new System.Numerics.Vector2(-1, 30));
+
+            //if (ImGui.BeginDragDropTarget())
+            //{
+            //    UIDragBehavior.ResolveDragTarget(fieldType);
+
+            //    ImGui.EndDragDropTarget();
+            //}
+
             ImGui.PopStyleVar();
         }
 

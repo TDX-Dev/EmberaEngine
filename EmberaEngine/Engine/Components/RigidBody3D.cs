@@ -19,6 +19,7 @@ namespace EmberaEngine.Engine.Components
     {
         public override string Type => nameof(RigidBody3D);
 
+
         private Rigidbody3DType type = Rigidbody3DType.Dynamic;
         private float mass = 1f;
         [IgnoreMember]

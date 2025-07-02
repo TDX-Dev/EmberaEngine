@@ -9,6 +9,7 @@ uniform samplerCube SKYBOX_TEXTURE;
 
 void main()
 {    
-    FragColor = texture(SKYBOX_TEXTURE, texCoords);
+    FragColor = textureLod(SKYBOX_TEXTURE, texCoords, 0);
     EmissionColor = vec4(0);
+    //FragColor = vec4(1);
 }

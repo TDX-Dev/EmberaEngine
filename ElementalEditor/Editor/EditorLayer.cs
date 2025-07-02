@@ -14,6 +14,7 @@ using OIconFont;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using static Assimp.Metadata;
 using static EmberaEngine.Engine.Utilities.ModelImporter;
 using static EmberaEngine.Engine.Utilities.NewModelImporter;
 
@@ -68,9 +69,12 @@ namespace ElementalEditor.Editor
             EditorUI.DefaultFontLarge = ImGui.GetIO().Fonts.AddFontFromFileTTF("Editor/Assets/Fonts/JetBrainsMono-Bold.ttf", 32);
             app.ImGuiLayer.SetFont(ImGui.GetIO().Fonts.AddFontFromFileTTF("Editor/Assets/Fonts/JetBrainsMono-Bold.ttf", 20));
             
-            app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/forkawesome-webfont.ttf", 25, (FontAwesome.ForkAwesome.IconMin, FontAwesome.ForkAwesome.IconMax16));
-            app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/MaterialIcons-Regular.ttf", 25, (MaterialDesign.IconMin, MaterialDesign.IconMax16));
-            materialIcon24 = app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/MaterialIcons-Regular.ttf", 128, (MaterialDesign.IconMin, MaterialDesign.IconMax16));
+            //app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/forkawesome-webfont.ttf", 25, (FontAwesome.ForkAwesome.IconMin, FontAwesome.ForkAwesome.IconMax16));
+            //app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/MaterialIcons-Regular.ttf", 25, (MaterialDesign.IconMin, MaterialDesign.IconMax16));
+            app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/bootstrap-icons.ttf", 21, (BootstrapIconFont.IconMin, BootstrapIconFont.IconMax16));
+
+
+            //materialIcon24 = app.ImGuiLayer.SetIconFont("Editor/Assets/Fonts/MaterialIcons-Regular.ttf", 128, (MaterialDesign.IconMin, MaterialDesign.IconMax16));
             app.ImGuiLayer.RecreateFontDevice();
 
             EditorUI.SetEditorStyling();
@@ -79,7 +83,8 @@ namespace ElementalEditor.Editor
 
             // Setup Scene
             EditorCurrentScene = new Scene();
-            EditorCamera = new EditorCamera(65.0f, Screen.Size.X, Screen.Size.Y, 1000f, 0.1f);
+            EditorCurrentScene.OnComponentAdded += StartEditorComponent;
+            EditorCamera = new EditorCamera(65.0f, Screen.Size.X, Screen.Size.Y, 10000f, 0.1f);
             LoadTestSandbox();
 
 
@@ -163,6 +168,18 @@ namespace ElementalEditor.Editor
                 ProcessEditorComponents(entity, comp => comp.OnStart());
             }
         }
+
+        public void StartEditorComponent(Component component)
+        {
+            if (EditorCurrentScene.IsPlaying) return;
+
+            var type = component.GetType();
+            if (Attribute.IsDefined(type, typeof(ExecuteInPauseMode)))
+            {
+                component.OnStart();
+            }
+        }
+
 
 
         public override void OnResize(int width, int height)

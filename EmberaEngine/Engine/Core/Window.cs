@@ -36,6 +36,8 @@ namespace EmberaEngine.Engine.Core
             Size = new OpenTK.Mathematics.Vector2i(specification.Width, specification.Height),
             Title = specification.Name,
             StartVisible = false,
+            Flags = ContextFlags.Debug
+            
         })
         {
             this.specification = specification;

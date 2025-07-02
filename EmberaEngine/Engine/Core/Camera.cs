@@ -11,9 +11,13 @@ namespace EmberaEngine.Engine.Core
         public Vector3 position;
         public float nearClip = .1f, farClip = 1000f;
         public float fovy;
+        public Vector3 front;
+        public Vector3 up;
+        public Vector3 right;
 
         private Matrix4 projection;
         private Matrix4 ViewMatrix;
+
         internal int rendererID;
 
         public Color4 ClearColor = Color4.Black;

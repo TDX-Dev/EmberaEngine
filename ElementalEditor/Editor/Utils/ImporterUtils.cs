@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using EmberaEngine.Engine.Utilities;
 using static EmberaEngine.Engine.Utilities.NewModelImporter;
 using EmberaEngine.Engine.Components;
+using EmberaEngine.Engine.AssetHandling;
+using EmberaEngine.Engine.Rendering;
 
 namespace ElementalEditor.Editor.Utils
 {
@@ -48,6 +50,7 @@ namespace ElementalEditor.Editor.Utils
                     {
                         var meshRenderer = obj.AddComponent<MeshRenderer>();
                         meshRenderer.SetMesh(meshNode.mesh);
+                        meshNode.mesh.MaterialRenderHandle = MaterialManager.AddMaterial(AssetLoader.LoadSync<Material>(meshNode.mesh.MaterialReference));
                         // Optionally assign material by meshNode.materialID here
                     }
                     break;

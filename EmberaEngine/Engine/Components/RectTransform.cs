@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmberaEngine.Engine.Components
 {
-    class RectTransform : Component
+    public class RectTransform : Component
     {
 
         public override string Type => nameof(RectTransform);

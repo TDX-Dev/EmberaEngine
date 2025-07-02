@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace EmberaEngine.Game.Scripts
 {
-    class ChunkSpawner : Component
+    public class ChunkSpawner : Component
     {
         public override string Type => nameof(ChunkSpawner);
 

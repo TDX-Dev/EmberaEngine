@@ -8,6 +8,7 @@
     <EnforceExtendedAnalyzerRules>True</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Editor\Assets\Fonts\bootstrap-icons.ttf" />
     <None Remove="Editor\Assets\Fonts\forkawesome-webfont.ttf" />
     <None Remove="Editor\Assets\Fonts\InterExtraBold.ttf" />
     <None Remove="Editor\Assets\Fonts\JetBrainsMono-Bold.ttf" />
@@ -21,6 +22,10 @@
     <None Remove="Editor\Assets\Fonts\TerminalDosis-Regular.ttf" />
     <None Remove="Editor\Assets\Shaders\gizmoTexture.frag" />
     <None Remove="Editor\Assets\Shaders\gizmoTexture.vert" />
+    <None Remove="Editor\Assets\Shaders\gridshader.frag" />
+    <None Remove="Editor\Assets\Shaders\gridshader.vert" />
+    <None Remove="Editor\Assets\Shaders\linerender.frag" />
+    <None Remove="Editor\Assets\Shaders\linerender.vert" />
     <None Remove="Editor\Assets\Shaders\viewportBlitShader.frag" />
     <None Remove="Editor\Assets\Textures\EditorBrand\DevoidLogo.png" />
     <None Remove="Editor\Assets\Textures\FileTypeTextures\assetCheckerBG.png" />
@@ -28,10 +33,14 @@
     <None Remove="Editor\Assets\Textures\FileTypeTextures\unkfile.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\DirectionalLightOverlay.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\LightComponentTexture.png" />
+    <None Remove="Editor\Assets\Textures\GizmoTextures\ObjectIndicator.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\PointLightOverlay.png" />
     <None Remove="Editor\Assets\Textures\GizmoTextures\SpotLightOverlay.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Editor\Assets\Fonts\bootstrap-icons.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Editor\Assets\Fonts\forkawesome-webfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -77,6 +86,18 @@
     <Content Include="Editor\Assets\Shaders\gizmoTexture.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Editor\Assets\Shaders\gridshader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Shaders\gridshader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Shaders\linerender.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Shaders\linerender.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Editor\Assets\Shaders\viewportBlitShader.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -93,6 +114,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Editor\Assets\Textures\GizmoTextures\DirectionalLightOverlay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\Assets\Textures\GizmoTextures\ObjectIndicator.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Editor\Assets\Textures\GizmoTextures\PointLightOverlay.png">

@@ -150,7 +150,7 @@ namespace EmberaEngine.Engine.Rendering
         public void Resize(int width, int height)
         {
             screenDimensions = new Vector2(width, height);
-            SSAOShader.Set("screenDimensions", screenDimensions * renderScale);
+            //SSAOShader.Set("screenDimensions", screenDimensions * renderScale);
 
             SSAOTexture.TexImage2D((int)(screenDimensions.X * renderScale), (int)(screenDimensions.Y * renderScale), PixelInternalFormat.R16f, PixelFormat.Red, PixelType.Float, IntPtr.Zero);
             SSAOTexture.SetFilter(TextureMinFilter.Nearest, TextureMagFilter.Nearest);
